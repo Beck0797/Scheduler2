@@ -13,11 +13,11 @@
         <activity android:name=".attendance" />
         <activity android:name=".schedule" />
         <activity android:name=".register" />
-        <activity android:name=".menu" />
+        <activity android:name=".MainActivity" />
         <activity android:name=".signIn" />
         <activity
-            android:name=".MainActivity"
-            android:theme="@style/AppTheme">
+            android:name=".menu"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

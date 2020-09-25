@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#7EEFD3"
+    android:background="#16b988"
     tools:context=".MainActivity">
+<!--#16b988-->
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
@@ -151,7 +152,7 @@
             android:layout_marginStart="15dp"
             android:layout_marginTop="50dp"
             android:text="Sign in"
-            android:textColor="#7EEFD3"
+            android:textColor="#16b988"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="@+id/button"
             app:layout_constraintHorizontal_bias="0.0"
@@ -169,7 +170,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logo2" />
+        app:srcCompat="@drawable/white_scheduler_logo" />
 
     <!--    <TextView-->
 <!--        android:id="@+id/textView2"-->
