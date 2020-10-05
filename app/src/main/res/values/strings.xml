@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">Scheduler2</string>
     <string name="title_activity_sign_in">FullscreenActivity</string>
     <string name="open">Open</string>
     <string name="close">Close</string>

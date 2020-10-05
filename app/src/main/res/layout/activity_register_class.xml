@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+     >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="25dp"
+        android:paddingRight="20dp"
+        android:layout_marginTop="110dp"
+        android:background="@drawable/circle"
+        android:paddingTop="70dp"
+        >
+    <TextView
+        android:id="@+id/subject_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_alignParentLeft="true"
+        android:text="Subject Name: "
+        android:textColor="@color/Black"
+        android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/subject_edit"
+        android:layout_width="wrap_content"
+        android:ems="10"
+        android:background="@drawable/edittextunderline"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="20dp"
+        android:layout_alignParentRight="true"
+        android:hint="subject name"
+        android:layout_toEndOf="@+id/subject_name"
+        android:layout_toRightOf="@+id/subject_name"
+        />
+    <TextView
+        android:id="@+id/weekday_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Week Days: "
+        android:layout_alignParentLeft="true"
+        android:textColor="@color/Black"
+        android:layout_marginTop="20dp"
+        android:textSize="18dp"
+        android:layout_below="@id/subject_name" />
+    <Spinner
+        android:id="@+id/spinner_days"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/subject_edit"
+        android:layout_marginLeft="45dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="20dp"
+        android:contextClickable="true"
+
+        android:textDirection="firstStrong"
+        android:layout_toRightOf="@id/weekday_name"
+        android:layout_toEndOf="@id/weekday_name"
+        />
+    <TextView
+        android:id="@+id/time_start_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start time:"
+        android:textSize="18sp"
+        android:textColor="@color/Black"
+        android:layout_below="@id/weekday_name"
+        android:layout_marginTop="25dp"
+        android:layout_alignParentLeft="true"/>
+    <TextView
+        android:id="@+id/time_start_select"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:paddingTop="5dp"
+        android:text="00:00"
+        android:textAlignment="center"
+        android:textColor="@color/White"
+        android:background="#16b988"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="56dp"
+        android:layout_below="@id/spinner_days"
+        android:layout_toEndOf="@id/time_start_name"
+        android:layout_alignParentRight="true"/>
+    <TextView
+        android:id="@+id/time_end_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="End time: "
+        android:textSize="18sp"
+        android:textColor="@color/Black"
+        android:layout_below="@id/time_start_name"
+        android:layout_marginTop="25dp"
+        android:layout_alignParentLeft="true"/>
+    <TextView
+        android:id="@+id/time_end_select"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:text="00:00"
+        android:paddingTop="5dp"
+        android:textAlignment="center"
+        android:textColor="@color/White"
+        android:background="#16b988"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="60dp"
+        android:layout_below="@id/time_start_select"
+        android:layout_toEndOf="@+id/time_end_name"
+        android:layout_alignParentRight="true"/>
+    <TextView
+        android:id="@+id/alarm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Alarm: "
+        android:textSize="18sp"
+        android:textColor="@color/Black"
+        android:layout_below="@id/time_end_name"
+        android:layout_marginTop="25dp"
+        android:layout_alignParentLeft="true"/>
+    <TextView
+        android:id="@+id/alarm_select"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:text="00:00"
+        android:paddingTop="5dp"
+        android:textAlignment="center"
+        android:textColor="@color/White"
+        android:background="#16b988"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="60dp"
+        android:layout_below="@id/time_end_select"
+        android:layout_toEndOf="@+id/time_end_name"
+        android:layout_alignParentRight="true"/>
+        <TextView
+            android:id="@+id/webex_link"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Webex link: "
+            android:textSize="18sp"
+            android:textColor="@color/Black"
+            android:layout_below="@id/alarm"
+            android:layout_marginTop="25dp"
+            android:layout_alignParentLeft="true"/>
+        <TextView
+            android:id="@+id/link_button"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:text="click"
+            android:textAlignment="center"
+            android:paddingTop="5dp"
+            android:textColor="@color/White"
+            android:background="#16b988"
+            android:layout_marginTop="18dp"
+            android:layout_marginLeft="60dp"
+            android:layout_below="@id/alarm_select"
+            android:layout_toEndOf="@+id/time_end_name"
+            android:layout_alignParentRight="true"/>
+        <Button
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:layout_below="@id/link_button"
+            android:background="@drawable/button_background"
+            android:text="Register class"/>
+    </RelativeLayout>
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="150dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
+        android:contentDescription="Logo"
+        android:background="@drawable/white_scheduler_logo" />
+
+
+</RelativeLayout>
