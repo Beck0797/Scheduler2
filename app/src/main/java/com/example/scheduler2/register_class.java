@@ -1,15 +1,14 @@
 package com.example.scheduler2;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.TimePickerDialog;
-import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,7 +46,7 @@ public class register_class extends AppCompatActivity implements View.OnClickLis
         final int min = cal.get(Calendar.MINUTE);
 
         TimePickerDialog timePickerDialog = new TimePickerDialog(register_class.this,
-                new TimePickerDialog.OnTimeSetListener() {
+               R.style.DialogTheme, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         switch (v.getId()) {

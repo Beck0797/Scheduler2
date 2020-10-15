@@ -146,5 +146,6 @@
         <color name="DarkBlue">#00008B</color>
         <color name="Navy">#000080</color>
         <color name="Black">#000000</color>
+        <color name="time_color">#304FFF</color>
 
 </resources>
