@@ -14,21 +14,31 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 public class register extends AppCompatActivity {
     private static final String TAG = "register";
     private EditText editEmail, editPassword, editConfirmPassword, editName;
     private Button registerButton;
-    private FirebaseAuth mAuth;
+    private StorageReference mStorageRef;
+    private FirebaseUser user;
+    private FirebaseStorage firebaseStorage;
+
+    private FirebaseAuth firebaseAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        mAuth = FirebaseAuth.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
+//        mStorageRef= firebaseStorage.getReference();
         editName = findViewById(R.id.edit_name);
         editEmail = findViewById(R.id.edit_email);
         editPassword = findViewById(R.id.edit_password);
@@ -70,16 +80,17 @@ public class register extends AppCompatActivity {
         }
 
 
-        mAuth.createUserWithEmailAndPassword(email, password)
+        firebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            sendUserData();
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
                             Toast.makeText(register.this, "Authentication succes.",
                                     Toast.LENGTH_SHORT).show();
-                            FirebaseUser user = mAuth.getCurrentUser();
+                             user = firebaseAuth.getCurrentUser();
                             Intent intent = new Intent(getApplicationContext(), signIn.class);
                             startActivity(intent);
                             // updateUI(user);
@@ -92,5 +103,15 @@ public class register extends AppCompatActivity {
                         }
                     }
                 });
+    }
+    public void sendUserData() {
+
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = firebaseDatabase.getReference(firebaseAuth.getCurrentUser().getUid());
+
+        Upload userProfile = new Upload(editName.getText().toString());
+
+        myRef.setValue(userProfile);
+
     }
 }

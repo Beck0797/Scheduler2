@@ -1,23 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.scheduler2">
+
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".register_class" android:label="Register Class"></activity>
-        <activity android:name=".assignment" android:label="Assigment"> </activity>
-        <activity android:name=".attendance" />
-        <activity android:name=".schedule" android:label="Time Table"> </activity>
-        <activity android:name=".menu" android:theme="@style/AppTheme.NoActionBar"> </activity>
+        <activity android:name=".menu"></activity>
+        <activity android:name=".profile_update" />
+        <activity
+            android:name=".register_class"
+            android:label="Register Class" />
+        <activity
+            android:name=".assignment"
+            android:label="Assigment" />
+        <activity
+            android:name=".attendance"
+            android:label="Attendance" />
+        <activity android:name=".profile" />
+        <activity
+            android:name=".schedule"
+            android:label="Time Table" />
+
         <activity android:name=".MainActivity" />
-        <activity android:name=".signIn" android:label="Sign In"></activity>
+        <activity
+            android:name=".signIn"
+            android:label="Sign In" />
         <activity
             android:name=".register"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

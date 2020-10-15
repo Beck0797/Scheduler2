@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginTop="0dp"
-        android:background="#16b988">
+        android:background="#304fff">
         <RelativeLayout
             android:id="@+id/div"
             android:layout_width="0dp"

@@ -8,5 +8,10 @@
         <attr name="metaButtonBarStyle" format="reference" />
         <attr name="metaButtonBarButtonStyle" format="reference" />
     </declare-styleable>
-
+    <declare-styleable name="AvatarBehavior">
+    <attr name="startYPosition" format="dimension"/>
+    <attr name="startXPosition" format="dimension"/>
+    <attr name="endYPosition" format="dimension"/>
+    <attr name="endXPosition" format="dimension"/>
+</declare-styleable>
 </resources>
