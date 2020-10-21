@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,7 +12,12 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -21,6 +27,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class profile extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener {
 
@@ -28,12 +40,18 @@ public class profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
     private static final float PERCENTAGE_TO_HIDE_TITLE_DETAILS     = 0.3f;
     private static final int ALPHA_ANIMATIONS_DURATION              = 200;
     private FloatingActionButton floatingActionButton;
-    private TextView text_title, go_back_button;
+    private TextView text_title, go_back_button, go_back_button2, profileName;
     private AppBarLayout barLayout;
+    private FirebaseAuth firebaseAuth;
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference myRef;
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
+    private Uri imageUrl;
     private boolean fabVisible = true;
     private int barOffset;
     protected boolean appBarLocked;
-
+    private CircleImageView circleImageView;
     private boolean mIsTheTitleContainerVisible = true;
     private boolean mIsTheTitleVisible          = false;
 
@@ -42,17 +60,101 @@ public class profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
         floatingActionButton = findViewById(R.id.add);
         barLayout = findViewById(R.id.app_bar_layout);
         barLayout.addOnOffsetChangedListener(this);
         go_back_button = findViewById(R.id.go_back);
-        TextView phoneInput = findViewById(R.id.phone);
-        TextView nicknameInput = findViewById(R.id.nickname);
+        go_back_button2 = findViewById(R.id.go_back2);
+        ButtonClick buttonClick = new ButtonClick();
+        go_back_button.setOnClickListener(buttonClick);
+        go_back_button2.setOnClickListener(buttonClick);
         text_title = findViewById(R.id.title);
+        circleImageView = findViewById(R.id.ava);
 
-        startAlphaAnimation(text_title, go_back_button,0, View.INVISIBLE);
+        profileName = findViewById(R.id.profile_name);
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        myRef = firebaseDatabase.getReference(firebaseAuth.getCurrentUser().getUid());
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
+        displayProfileName(); // display profile name
+        // set profile photo button
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openGallery();
+            }
+        });
+
+        // after image uploaded, then dispay
+       displayImage();
+    }
+     private void displayImage() {
+        storageReference.child(firebaseAuth.getCurrentUser().getUid()).child("Profile_Image").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+             public void onSuccess(Uri uri) {
+                 Picasso.with(getApplicationContext()).load(uri).fit().centerCrop().into(circleImageView);
+             }
+         }).addOnFailureListener(new OnFailureListener() {
+             @Override
+             public void onFailure(@NonNull Exception exception) {
+                 // Handle any errors
+             }
+         });
+     }
+    private void openGallery() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        startActivityForResult(intent, 1);
 
     }
+    // set image
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 1 && resultCode == RESULT_OK
+                && data != null && data.getData() != null) {
+            imageUrl = data.getData();
+            circleImageView.setImageURI(imageUrl);
+            uploadImage();
+        }
+    }
+    private void uploadImage() {
+        StorageReference imageReference = storageReference.child(firebaseAuth.getCurrentUser().getUid()).child("Profile_Image");  //User id/Images/Profile Pic.jpg
+        UploadTask uploadTask = imageReference.putFile(imageUrl);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getApplicationContext(), "Upload failed!", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                Toast.makeText(getApplicationContext(), "Upload successful!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+       // display profile name
+    private void displayProfileName() {
+
+            myRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    Upload upload = snapshot.getValue(Upload.class);
+                    profileName.setText(upload.getName().toString());
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+            startAlphaAnimation(text_title, go_back_button,0, View.INVISIBLE);
+
+        }
 
     private void startAlphaAnimation(TextView text_title, TextView go_back_button, long duration, int visibility) {
         AlphaAnimation alphaAnimation = (visibility == View.VISIBLE)
@@ -91,16 +193,12 @@ public class profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
         float percentage = (float)Math.abs(verticalOffset) / (float)maxScroll;
         barOffset = verticalOffset;
         if (dy > 0 && fabVisible) {
+
             // scrolling up
             toggleButtons(false);
         } else if (dy < 0 && !fabVisible) {
-
-
-
-
             // scrolling down
             toggleButtons(true);
-
         }
 
 
@@ -137,6 +235,23 @@ public class profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
         anim.setDuration(1000);
         v.startAnimation(anim);
     }
+        class ButtonClick implements  View.OnClickListener {
 
+          @Override
+          public void onClick(View v) {
+               switch (v.getId()) {
+                   case R.id.go_back:
+                       Intent intent = new Intent(profile.this, menu.class );
+                       startActivity(intent);
+                       break;
+                   case R.id.go_back2:
+                       Intent intent1 = new Intent(profile.this, menu.class);
+                       startActivity(intent1);
+                       break;
+                   default:
+                       System.out.println("Button clicked, but can't start activity");
+               }
+          }
+      }
 
 }

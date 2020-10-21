@@ -45,18 +45,18 @@ public class AvatarBehavior extends CoordinatorLayout.Behavior<CircleImageView> 
         CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) child.getLayoutParams();
         if (mainActivity != null && !mainActivity.appBarLocked) {
             float ratio = dependency.getY() / barSize;
-            parent.findViewById(R.id.nickname).setAlpha(ratio *ratio);
+            parent.findViewById(R.id.profile_name).setAlpha(ratio *ratio);
             parent.findViewById(R.id.phone).setAlpha(ratio * ratio);
-            child.setY(endYPosition-5 + startYPosition * ratio);
+            child.setY(endYPosition + startYPosition * ratio);
             child.setX((endXPosition + 60) + startXPosition * ratio);
             lp.width = (int) Math.max(100, avaSize * ratio);
             lp.height = (int) Math.max(100, avaSize * ratio);
 
         } else {
             //prevent resizing if AppBarLayout is locked
-            parent.findViewById(R.id.nickname).setAlpha(1);
+            parent.findViewById(R.id.profile_name).setAlpha(1);
             parent.findViewById(R.id.phone).setAlpha(1);
-          child.setY(endYPosition-5 + startYPosition);
+          child.setY(endYPosition + startYPosition);
             child.setX((endXPosition + 60 ) + startXPosition);
             lp.width = lp.height = Math.max(100, avaSize);
         }

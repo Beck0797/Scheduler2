@@ -2,178 +2,314 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
+    android:background="@drawable/gradient_background"
      >
+    <TextView
+        android:id="@+id/go_back2"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:gravity="start|center"
+        android:visibility="visible"
+        android:background="@drawable/icon_goback"
+        android:textStyle="bold"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:textAlignment="textStart"></TextView>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Scheduler"
+        android:fontFamily="sans-serif-black"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:paddingTop="20dp"
+        android:textColor="#fff"
+        android:textSize="40sp"
+        android:textStyle="bold"/>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingLeft="25dp"
-        android:paddingRight="20dp"
-        android:layout_marginTop="110dp"
+        android:layout_marginTop="90dp"
         android:background="@drawable/circle"
-        android:paddingTop="70dp"
-        >
-    <TextView
-        android:id="@+id/subject_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_alignParentLeft="true"
-        android:text="Subject Name: "
-        android:textColor="@color/Black"
-        android:textSize="18sp" />
+        android:paddingLeft = "20dp"
+        android:paddingRight= "20dp">
 
-    <EditText
-        android:id="@+id/subject_edit"
-        android:layout_width="wrap_content"
-        android:ems="10"
-        android:background="@drawable/edittextunderline"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="20dp"
-        android:layout_alignParentRight="true"
-        android:hint="subject name"
-        android:layout_toEndOf="@+id/subject_name"
-        android:layout_toRightOf="@+id/subject_name"
-        />
-    <TextView
-        android:id="@+id/weekday_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Week Days: "
-        android:layout_alignParentLeft="true"
-        android:textColor="@color/Black"
-        android:layout_marginTop="20dp"
-        android:textSize="18dp"
-        android:layout_below="@id/subject_name" />
-    <Spinner
-        android:id="@+id/spinner_days"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/subject_edit"
-        android:layout_marginLeft="45dp"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="20dp"
-        android:contextClickable="true"
+        <RelativeLayout
+            android:id="@+id/first_layout"
 
-        android:textDirection="firstStrong"
-        android:layout_toRightOf="@id/weekday_name"
-        android:layout_toEndOf="@id/weekday_name"
-        />
-    <TextView
-        android:id="@+id/time_start_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Start time:"
-        android:textSize="18sp"
-        android:textColor="@color/Black"
-        android:layout_below="@id/weekday_name"
-        android:layout_marginTop="25dp"
-        android:layout_alignParentLeft="true"/>
-    <TextView
-        android:id="@+id/time_start_select"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:paddingTop="5dp"
-        android:text="00:00"
-        android:textAlignment="center"
-        android:textColor="@color/White"
-        android:background="#16b988"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="56dp"
-        android:layout_below="@id/spinner_days"
-        android:layout_toEndOf="@id/time_start_name"
-        android:layout_alignParentRight="true"/>
-    <TextView
-        android:id="@+id/time_end_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="End time: "
-        android:textSize="18sp"
-        android:textColor="@color/Black"
-        android:layout_below="@id/time_start_name"
-        android:layout_marginTop="25dp"
-        android:layout_alignParentLeft="true"/>
-    <TextView
-        android:id="@+id/time_end_select"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:text="00:00"
-        android:paddingTop="5dp"
-        android:textAlignment="center"
-        android:textColor="@color/White"
-        android:background="#16b988"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="60dp"
-        android:layout_below="@id/time_start_select"
-        android:layout_toEndOf="@+id/time_end_name"
-        android:layout_alignParentRight="true"/>
-    <TextView
-        android:id="@+id/alarm"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Alarm: "
-        android:textSize="18sp"
-        android:textColor="@color/Black"
-        android:layout_below="@id/time_end_name"
-        android:layout_marginTop="25dp"
-        android:layout_alignParentLeft="true"/>
-    <TextView
-        android:id="@+id/alarm_select"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:text="00:00"
-        android:paddingTop="5dp"
-        android:textAlignment="center"
-        android:textColor="@color/White"
-        android:background="#16b988"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="60dp"
-        android:layout_below="@id/time_end_select"
-        android:layout_toEndOf="@+id/time_end_name"
-        android:layout_alignParentRight="true"/>
-        <TextView
-            android:id="@+id/webex_link"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Webex link: "
-            android:textSize="18sp"
-            android:textColor="@color/Black"
-            android:layout_below="@id/alarm"
-            android:layout_marginTop="25dp"
-            android:layout_alignParentLeft="true"/>
-        <TextView
-            android:id="@+id/link_button"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:text="click"
-            android:textAlignment="center"
-            android:paddingTop="5dp"
-            android:textColor="@color/White"
-            android:background="#16b988"
-            android:layout_marginTop="18dp"
-            android:layout_marginLeft="60dp"
-            android:layout_below="@id/alarm_select"
-            android:layout_toEndOf="@+id/time_end_name"
-            android:layout_alignParentRight="true"/>
-        <Button
-            android:id="@+id/button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            android:layout_below="@id/link_button"
-            android:background="@drawable/button_background"
-            android:text="Register class"/>
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:paddingTop="20dp"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:text="Course Registeration"
+                android:fontFamily="sans-serif-black"
+                android:textColor="@color/Black">
+
+            </TextView>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/above_relayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/first_layout"
+            android:layout_marginTop="-1dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical">
+                <!--      line -->
+                <LinearLayout
+                    android:id="@+id/setting"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="8dp">
+
+
+                    <EditText
+                        android:id="@+id/subject_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edittextunderline"
+                        android:hint="Course name"
+                        android:paddingStart="5dp"
+                        android:paddingBottom="5dp"
+                        android:textSize="16sp">
+
+                    </EditText>
+                </LinearLayout>
+                <!--      line -->
+
+
+                <LinearLayout
+                    android:id="@+id/login"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="8dp"
+
+                    >
+
+
+                    <EditText
+                        android:id="@+id/professor_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edittextunderline"
+                        android:hint="Professor name"
+                        android:paddingStart="5dp"
+                        android:paddingBottom="5dp"
+                        android:textSize="16sp">
+
+                    </EditText>
+                </LinearLayout>
+                <!--         line 3   -->
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="8dp"
+
+                    >
+
+                    <EditText
+                        android:id="@+id/room_number"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edittextunderline"
+                        android:hint="Classroom number"
+                        android:inputType="number"
+                        android:paddingStart="5dp"
+                        android:paddingBottom="5dp"
+                        android:textSize="16sp">
+
+                    </EditText>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="8dp"
+
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Course day"
+                        android:fontFamily="sans-serif-black"
+                        android:textColor="@color/Black">
+
+                    </TextView>
+
+                    <Spinner
+                        android:id="@+id/spinner_days"
+                        android:layout_width="200dp"
+                        android:layout_height="25dp"
+                        android:layout_marginStart="25dp"
+                        android:background="@drawable/border_text"
+                        android:paddingStart="5dp"
+                        android:textSize="18sp">
+
+                    </Spinner>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="8dp"
+
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Start time"
+                        android:fontFamily="sans-serif-black"
+                        android:textColor="@color/Black">
+
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/time_start_select"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="35dp"
+                        android:background="@drawable/border_text"
+                        android:hint="set time"
+                        android:textAlignment="center"
+                        android:textSize="18sp">
+
+                    </TextView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="8dp"
+
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="End time"
+
+                        android:fontFamily="sans-serif-black"
+                        android:textColor="@color/Black">
+
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/time_end_select"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="42dp"
+                        android:background="@drawable/border_text"
+                        android:hint="set time"
+                        android:textAlignment="center"
+                        android:textSize="18sp">
+
+                    </TextView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="8dp"
+
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Alarm time"
+                        android:fontFamily="sans-serif-black"
+                        android:textColor="@color/Black">
+
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/alarm_select"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="28dp"
+                        android:background="@drawable/border_text"
+                        android:hint="set time"
+                        android:textAlignment="center"
+                        android:textSize="18sp">
+
+                    </TextView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="8dp"
+
+                    >
+
+
+                    <EditText
+                        android:id="@+id/webex_link"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edittextunderline"
+                        android:hint="Enter class webex link"
+                        android:paddingStart="5dp"
+                        android:paddingBottom="5dp"
+                        android:textSize="16sp">
+
+                    </EditText>
+
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/above_relayout"
+        android:gravity="center"
+        >
+    <Button
+
+        android:id="@+id/signin_button"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:paddingBottom="5dp"
+        android:background="@drawable/gradient_button_bg"
+        android:text="add"
+        android:textColor="#fff" />
     </RelativeLayout>
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="150dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="10dp"
-        android:layout_centerHorizontal="true"
-        android:contentDescription="Logo"
-        android:background="@drawable/white_scheduler_logo" />
-
-
+    </RelativeLayout>
 </RelativeLayout>

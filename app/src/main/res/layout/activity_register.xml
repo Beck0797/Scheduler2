@@ -86,7 +86,6 @@
             app:layout_constraintTop_toBottomOf="@+id/edit_password"
             android:autofillHints="" />
 
-        bekzod hacker, [16.10.20 00:12]
         <Button
             android:id="@+id/register_button"
             android:layout_width="match_parent"

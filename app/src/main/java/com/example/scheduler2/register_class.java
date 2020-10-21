@@ -32,11 +32,13 @@ public class register_class extends AppCompatActivity implements View.OnClickLis
 
         // to select days of week
         Spinner spinner = (Spinner) findViewById(R.id.spinner_days);
+
         ArrayList<String> plantList= new ArrayList<String>(Arrays.asList(days));
         final ArrayAdapter<String> adapter = new ArrayAdapter(this,
                 android.R.layout.simple_spinner_item, plantList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+        spinner.setSelected(true);
     }
 
     // time picker method
@@ -47,7 +49,7 @@ public class register_class extends AppCompatActivity implements View.OnClickLis
         final int min = cal.get(Calendar.MINUTE);
 
         TimePickerDialog timePickerDialog = new TimePickerDialog(register_class.this,
-                new TimePickerDialog.OnTimeSetListener() {
+                android.R.style.Theme_Holo_Light_Dialog_NoActionBar, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         switch (v.getId()) {

@@ -27,13 +27,16 @@
                 android:id="@+id/go_back2"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
+                android:onClick="onClick"
                 android:gravity="start|center"
                 android:visibility="visible"
                 android:background="@drawable/icon_goback"
                 android:textStyle="bold"
                 android:textColor="@android:color/white"
                 android:textSize="18sp"
-                android:textAlignment="textStart"></TextView>
+                android:textAlignment="textStart">
+
+            </TextView>
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -52,7 +55,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/nickname"
+                        android:id="@+id/profile_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="80dp"
@@ -66,7 +69,6 @@
                     <TextView
                         android:id="@+id/phone"
                         android:layout_width="wrap_content"
-
                         android:layout_height="wrap_content"
                         android:hint="Phone number"
                         android:text="201739011"
@@ -225,6 +227,7 @@
                 android:id="@+id/go_back"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
+                android:onClick="onClick"
                 android:gravity="start|center"
                 android:visibility="invisible"
                 android:background="@drawable/icon_goback"
@@ -253,15 +256,13 @@
         android:layout_width="130dp"
         android:scaleType="centerCrop"
         android:layout_height="130dp"
-        android:layout_weight="1"
         android:src="@drawable/sample_odam"
         app:civ_border_color="#304fff"
-        app:civ_border_width="1dp"
-        app:endXPosition="0dp"
-        app:endYPosition="15dp"
+        app:endXPosition="10dp"
+        app:endYPosition="10dp"
         app:layout_behavior=".AvatarBehavior"
-        app:startXPosition="10dp"
-        app:startYPosition="20dp" />
+        app:startXPosition="15dp"
+        app:startYPosition="15dp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add"

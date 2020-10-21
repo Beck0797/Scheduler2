@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_background"
+    tools:context=".addAssignment">
+
+    <TextView
+        android:id="@+id/go_back2"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:background="@drawable/icon_goback"
+        android:gravity="start|center"
+        android:textAlignment="textStart"
+        android:onClick="onBackButtonClicked"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:visibility="visible"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:fontFamily="sans-serif-black"
+        android:gravity="center"
+        android:paddingTop="20dp"
+        android:text="Scheduler"
+        android:textColor="#fff"
+        android:textSize="40sp"
+        android:textStyle="bold" />
+
+    <RelativeLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="90dp"
+        android:background="@drawable/circle"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+
+        <RelativeLayout
+            android:id="@+id/first_layout"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:fontFamily="sans-serif-black"
+                android:gravity="center"
+                android:paddingTop="20dp"
+                android:layout_marginBottom="10dp"
+                android:text="Assignment Registeration"
+                android:textAlignment="center"
+                android:textColor="#000"
+                android:textSize="20sp">
+
+            </TextView>
+        </RelativeLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nestedScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/first_layout">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+
+                    android:id="@+id/above_relayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-1dp">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:orientation="vertical"
+                        android:layout_gravity="center"
+                        >
+                        <!--                        //spinner-->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_gravity="center"
+                            android:padding="8dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="sans-serif-black"
+                                android:text="Subject"
+                                android:gravity="left"
+                                android:textColor="#000">
+
+                            </TextView>
+
+
+                            <Spinner
+                                android:id="@+id/spinner_subjects"
+                                android:layout_width="match_parent"
+                                android:layout_height="20dp"
+                                android:layout_marginStart="25dp"
+                                android:background="@drawable/border_text"
+                                android:gravity="right"
+                                android:textSize="18sp">
+
+                            </Spinner>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_gravity="center"
+                            android:padding="10dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="sans-serif-black"
+                                android:text="Title"
+                                android:gravity="left"
+                                android:textColor="#000">
+
+                            </TextView>
+
+
+                            <EditText
+                                android:id="@+id/assignmentTitle"
+                                android:layout_width="match_parent"
+                                android:layout_height="20dp"
+                                android:layout_marginStart="25dp"
+                                android:background="@drawable/edittextunderline"
+                                android:hint="Give title to the Assignment"
+                                android:paddingStart="5dp"
+                                android:textSize="16sp">
+
+                            </EditText>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/login"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:padding="8dp">
+
+
+                            <CalendarView
+                                android:id="@+id/calendarView"
+                                style="@android:style/Widget.DeviceDefault.CalendarView"
+                                android:layout_width="300dp"
+                                android:layout_height="wrap_content"
+                                android:dateTextAppearance="@style/TextAppearance.AppCompat.Body2"
+                                android:focusableInTouchMode="false"
+                                android:focusedMonthDateColor="#304fff"
+                                android:keepScreenOn="false"
+                                android:longClickable="false"
+                                android:scrollbarSize="5dp"
+                                android:selectedWeekBackgroundColor="#304fff"
+                                android:soundEffectsEnabled="false"
+                                android:unfocusedMonthDateColor="#304fff"
+                                android:visibility="visible"
+                                android:weekDayTextAppearance="@style/CalendarWeekDateText"
+                                android:weekNumberColor="#304fff"
+                                android:weekSeparatorLineColor="#304fff"
+
+                                />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center">
+                            <!--                            textViews-->
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:gravity="left">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="sans-serif-black"
+                                    android:text="Due Date:"
+                                    android:layout_margin="12dp"
+
+                                    android:textColor="#000"
+                                    android:textSize="16sp" />
+
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="sans-serif-black"
+                                    android:text="Due time:"
+                                    android:layout_margin="12dp"
+
+                                    android:textColor="#000"
+                                    android:textSize="16sp" />
+
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="sans-serif-black"
+                                    android:text="Alarm Date:"
+                                    android:layout_margin="12dp"
+                                    android:textColor="#000"
+                                    android:textSize="16sp" />
+
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="sans-serif-black"
+                                    android:text="Alarm time:"
+                                    android:layout_margin="12dp"
+
+                                    android:textColor="#000"
+                                    android:textSize="16sp" />
+
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="sans-serif-black"
+                                    android:text="Alarm sound:"
+                                    android:layout_margin="12dp"
+                                    android:textColor="#000"
+                                    android:textSize="16sp" />
+
+
+                            </LinearLayout>
+                            <!--                            buttons-->
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="40dp"
+                                android:gravity="right"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/btnAddAssignmentDateselect"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="8dp"
+                                    android:layout_marginStart="28dp"
+                                    android:background="@drawable/border_text"
+                                    android:hint="choose date"
+                                    android:onClick="onbtnAddAssignmentDateselectClicked"
+                                    android:padding="4dp"
+                                    android:textAlignment="center"
+                                    android:textSize="16sp" />
+
+                                <TextView
+                                    android:id="@+id/btnAlarm_select"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="8dp"
+                                    android:layout_marginStart="28dp"
+                                    android:background="@drawable/border_text"
+                                    android:hint="set time"
+                                    android:padding="4dp"
+                                    android:textAlignment="center"
+                                    android:textSize="16sp" />
+
+                                <TextView
+                                    android:id="@+id/btnAddAssignmentAlarmDateselect"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="8dp"
+                                    android:padding="4dp"
+                                    android:layout_marginStart="28dp"
+                                    android:background="@drawable/border_text"
+                                    android:hint="choose date"
+                                    android:onClick="onbtnAddAssignmentAlarmDateselectClicked"
+                                    android:textAlignment="center"
+                                    android:textSize="16sp" />
+
+                                <TextView
+                                    android:id="@+id/btnTime_start_select"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="8dp"
+                                    android:layout_marginStart="28dp"
+                                    android:background="@drawable/border_text"
+                                    android:hint="set time"
+                                    android:padding="4dp"
+                                    android:textAlignment="center"
+                                    android:textSize="16sp" />
+
+                                <TextView
+                                    android:id="@+id/btnChooseSound"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="8dp"
+                                    android:padding="4dp"
+                                    android:layout_marginStart="28dp"
+                                    android:background="@drawable/border_text"
+                                    android:hint="set sound"
+                                    android:onClick="choose_audio"
+                                    android:textAlignment="center"
+                                    android:textSize="16sp" />
+
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
+
+                    <Button
+                        android:id="@+id/btnAddAssignment"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/gradient_button_bg"
+                        android:onClick="onAddAssignmentClicked"
+                        android:paddingBottom="5dp"
+                        android:text="add"
+                        android:layout_marginBottom="20dp"
+                        android:textColor="#fff" />
+                </RelativeLayout>
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+    </RelativeLayout>
+</RelativeLayout>
