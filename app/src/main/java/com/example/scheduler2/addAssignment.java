@@ -221,7 +221,7 @@ public class addAssignment extends AppCompatActivity implements View.OnClickList
     }
 
     public void onBackButtonClicked(View view) {
-        Intent i = new Intent(getApplicationContext(), menu.class);
+        Intent i = new Intent(getApplicationContext(), assignment.class);
         startActivity(i);
         finish();
     }

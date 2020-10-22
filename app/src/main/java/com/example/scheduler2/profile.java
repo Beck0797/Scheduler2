@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +15,9 @@ import android.view.animation.ScaleAnimation;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -30,6 +34,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -69,7 +75,7 @@ public class profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
         ButtonClick buttonClick = new ButtonClick();
         go_back_button.setOnClickListener(buttonClick);
         go_back_button2.setOnClickListener(buttonClick);
-        text_title = findViewById(R.id.title);
+        text_title = findViewById(R.id.toolbar_profile_name);
         circleImageView = findViewById(R.id.ava);
 
         profileName = findViewById(R.id.profile_name);
@@ -94,8 +100,20 @@ public class profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
      private void displayImage() {
         storageReference.child(firebaseAuth.getCurrentUser().getUid()).child("Profile_Image").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
-             public void onSuccess(Uri uri) {
-                 Picasso.with(getApplicationContext()).load(uri).fit().centerCrop().into(circleImageView);
+             public void onSuccess( final Uri uri) {
+                // Picasso.with(getApplicationContext()).load(uri).fit().centerCrop().into(circleImageView);
+                Glide.with(getApplicationContext())
+                        .load(uri)
+                        .fitCenter()
+                        .centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                        .preload();
+                Glide.with(getApplicationContext())
+                        .load(uri)
+                        .fitCenter()
+                        .centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.RESOURCE) // ALL works here too
+                        .into(circleImageView);
              }
          }).addOnFailureListener(new OnFailureListener() {
              @Override
@@ -103,6 +121,35 @@ public class profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
                  // Handle any errors
              }
          });
+               /* Picasso.with(getApplicationContext())
+                        .load(uri)
+                        .networkPolicy(NetworkPolicy.OFFLINE)
+                        .into(circleImageView, new Callback() {
+                            @Override
+                            public void onSuccess() {
+
+                            }
+
+                            @Override
+                            public void onError() {
+                                //Try again online if cache failed
+                                Picasso.with(getApplicationContext())
+                                        .load(uri)
+                                        .error(R.drawable.icon_person)
+                                        .into(circleImageView, new Callback() {
+                                            @Override
+                                            public void onSuccess() {
+
+                                            }
+
+                                            @Override
+                                            public void onError() {
+                                                Log.v("Picasso", "Could not fetch image");
+                                            }
+                                        });
+                            }
+                        });*/
+
      }
     private void openGallery() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -145,6 +192,7 @@ public class profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     Upload upload = snapshot.getValue(Upload.class);
                     profileName.setText(upload.getName().toString());
+                    text_title.setText(upload.getName().toString());
                 }
 
                 @Override

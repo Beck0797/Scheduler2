@@ -3,7 +3,6 @@
     package="com.example.scheduler2">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <application
         android:allowBackup="true"
@@ -12,6 +11,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".menu"></activity>
+        <activity android:name=".Attendance_Detail"></activity>
+        <activity android:name=".addAssignment"></activity>
+        <activity android:name=".notification"></activity>
+        <activity android:name=".webpage"></activity>
+        <activity android:name=".courseList"></activity>
         <activity android:name=".profile_update" />
         <activity
             android:name=".register_class"
@@ -27,12 +31,12 @@
             android:name=".schedule"
             android:label="Time Table" />
 
-        <activity android:name=".MainActivity" />
+        <activity android:name=".signIn" />
         <activity
             android:name=".register"
             android:label="Sign In" />
         <activity
-            android:name=".signIn"
+            android:name=".MainActivity"
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -28,6 +28,7 @@
             android:id="@+id/notification_icon"
             android:background="@drawable/icon_notification"
             android:layout_width="30dp"
+            android:onClick="onNotificationClicked"
             android:layout_height="30dp"
             android:layout_alignParentRight="true"/>
         <TextView
@@ -136,6 +137,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/attendance_window"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_row="1"
@@ -209,6 +211,7 @@
 
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/webPageCard"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_row="2"
@@ -253,6 +256,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/cardViewExit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_row="2"

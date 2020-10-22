@@ -1,11 +1,6 @@
 package com.example.scheduler2;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.os.Bundle;
-
-
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,7 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-public class assignment extends AppCompatActivity {
+public class notification extends AppCompatActivity {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private RecyclerView recyclerView;
@@ -21,30 +16,18 @@ public class assignment extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_assignment);
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        setContentView(R.layout.activity_notification);
+
+        recyclerView = (RecyclerView) findViewById(R.id.notificationRecycler_view);
 
         recyclerView.setHasFixedSize(true);
 
-        recyclerView.setAdapter(new adapter_data(getApplicationContext(), "Assingments"));
+        recyclerView.setAdapter(new adapterNotification(getApplicationContext(), "Notification"));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-
-        // specify an adapter (see also next example)
-
     }
 
-    public void onAddButtonClicked(View view) {
-        Intent intent = new Intent(getApplicationContext(), addAssignment.class);
-        startActivity(intent);
-        finish();
-    }
-
-    public void goBacktoMenu(View view) {
+    public void onBack2ButtonClicked(View view) {
         Intent intent = new Intent(getApplicationContext(), menu.class);
         startActivity(intent);
-        finish();
     }
 }
-// use a linear layout manager
-

@@ -3,6 +3,7 @@ package com.example.scheduler2;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
 import android.view.View;
@@ -68,5 +69,11 @@ public class register_class extends AppCompatActivity implements View.OnClickLis
                     }
                 },hour,min,android.text.format.DateFormat.is24HourFormat(register_class.this));
         timePickerDialog.show();
+    }
+
+    public void backToClasslist(View view) {
+        Intent intent = new Intent(getApplicationContext(), courseList.class);
+        startActivity(intent);
+        finish();
     }
 }

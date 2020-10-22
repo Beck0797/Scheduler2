@@ -1,18 +1,251 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    android:background="@color/White"
-    >
-          <TextView
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:text="Hello world"
-              android:textSize="18sp"
-              android:textColor="@color/Red">
+    android:background="@drawable/gradient_background"
+    android:fitsSystemWindows="true">
 
-          </TextView>
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar_attendance"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@drawable/gradient_background"
+        android:fitsSystemWindows="true"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsingToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            android:background="@drawable/gradient_background"
+            app:expandedTitleMarginEnd="64dp"
+            app:expandedTitleMarginStart="48dp"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
+            <RelativeLayout
+                android:id="@+id/relative_topbar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <RelativeLayout
+                    android:id="@+id/attendance_top_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp">
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/lin"
+                        android:orientation="horizontal"
+                        android:layout_gravity="start"
+                        android:gravity="center_vertical"
+                        android:paddingEnd="10dp">
+                        <TextView
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+
+                            android:gravity="start|center"
+                            android:visibility="visible"
+                            android:onClick="onBack2ButtonClicked"
+                            android:background="@drawable/icon_goback"
+                            android:textStyle="bold"
+                            android:textColor="@android:color/white"
+                            android:textSize="18sp"
+                            tools:ignore="OnClick" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="#fff"
+                            android:textStyle="bold"
+                            android:text="Attendance"
+                            android:layout_centerInParent="true"
+                            android:textSize="20dp"/>
+
+                    </RelativeLayout>
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_below="@id/attendance_top_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <RelativeLayout
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                        android:layout_centerHorizontal="true"
+                    >
+                    <RelativeLayout
+                        android:id="@+id/chart_layout"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent">
+                        <lecho.lib.hellocharts.view.PieChartView
+                            android:id="@+id/chart"
+                            android:layout_width="120dp"
+                            android:layout_height="120dp" />
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:id="@+id/listOfCharts"
+                        android:layout_toEndOf="@id/chart_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="50px"
+                            android:gravity="center"
+                            android:padding="50px"
+                            android:orientation="vertical">
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                >
+                                <ListView
+                                    android:id="@+id/attendance_list"
+                                    android:layout_width="50px"
+                                    android:layout_height="50px"
+                                    android:background="@color/Blue"
+                                    >
+
+                                </ListView>
+                                <TextView
+                                    android:layout_toEndOf="@id/attendance_list"
+                                    android:paddingLeft="15px"
+                                    android:layout_width="350px"
+                                    android:textColor="@color/White"
+                                    android:layout_height="wrap_content"
+                                    android:text="attendance">
+
+                                </TextView>
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_marginTop="10px"
+                                >
+                                <ListView
+                                    android:id="@+id/absence_list"
+                                    android:layout_width="50px"
+                                    android:layout_height="50px"
+                                    android:background="@color/Red"
+                                    >
+
+                                </ListView>
+                                <TextView
+                                    android:layout_toEndOf="@id/absence_list"
+                                    android:paddingLeft="15px"
+                                    android:layout_width="350px"
+                                    android:textColor="@color/White"
+                                    android:layout_height="wrap_content"
+                                    android:text="absence">
+
+                                </TextView>
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_marginTop="10px"
+                                >
+                                <ListView
+                                    android:id="@+id/taridness_list"
+                                    android:layout_width="50px"
+                                    android:layout_height="50px"
+                                    android:background="@color/LightGrey"
+                                    >
+
+                                </ListView>
+                                <TextView
+                                    android:layout_toEndOf="@id/taridness_list"
+                                    android:paddingLeft="15px"
+                                    android:layout_width="350px"
+                                    android:textColor="@color/White"
+                                    android:layout_height="wrap_content"
+                                    android:text="taridness">
+
+                                </TextView>
+                            </LinearLayout>
+                        </LinearLayout>
+                    </RelativeLayout>
+                </RelativeLayout>
+                </RelativeLayout>
+            </RelativeLayout>
+
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_anchor="@+id/nestedScrollView2"
+        app:layout_anchorGravity="center"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/white"
+            android:clipToPadding="true"
+            android:paddingTop="28dp"
+            app:layoutManager="LinearLayoutManager"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:context="MainActivity"
+            tools:listitem="@layout/list_item">
+
+        </androidx.recyclerview.widget.RecyclerView>
+    </androidx.core.widget.NestedScrollView>
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_attendance"
+        android:layout_width="match_parent"
+        android:background="@drawable/gradient_background"
+        app:layout_anchor="@id/relative_topbar"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark"
+        app:title=""
+        app:layout_scrollFlags="scroll|snap"
+
+        android:paddingLeft="0dp"
+        android:paddingRight="0dp"
+        app:contentInsetStart="0dp"
+        app:layout_anchorGravity="bottom"
+        android:layout_height="56dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/attendance_bottom_goback"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:onClick="onBack2ButtonClicked"
+                android:gravity="start|center"
+                android:visibility="invisible"
+                android:background="@drawable/icon_goback"
+                android:textStyle="bold"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                android:textAlignment="textStart" />
+
+            <TextView
+                android:id="@+id/attendance_bottom_title"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="start|center"
+                android:visibility="invisible"
+                android:text="Attendance"
+                android:textStyle="bold"
+                android:textAlignment="center"
+                android:paddingRight="35dp"
+                android:textColor="@android:color/white"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+    </androidx.appcompat.widget.Toolbar>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 
@@ -21,7 +22,7 @@ import com.google.android.material.navigation.NavigationView;
 
 public class menu extends AppCompatActivity {
 
-    private CardView register_window, schedule_window, assignment_window;
+    private CardView register_window, schedule_window, assignment_window, attendance_window, cardViewExit, web_page;
     private ImageView image_profile;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +37,7 @@ public class menu extends AppCompatActivity {
         register_window = findViewById(R.id.register_card);
         register_window.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
-                Intent intent1 = new Intent(getApplicationContext(), register_class.class);
+                Intent intent1 = new Intent(getApplicationContext(), courseList.class);
                 startActivity(intent1);
             }
         });
@@ -65,6 +66,52 @@ public class menu extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        attendance_window = findViewById(R.id.attendance_window);
+        attendance_window.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), attendance.class);
+                startActivity(intent);
+            }
+        });
+
+
+        // exitbutton and webpage
+        web_page = findViewById(R.id.webPageCard);
+        web_page.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(menu.this, "Long press to change the link", Toast.LENGTH_SHORT).show();
+
+                // check if user webPage attribute is empty. If it is, then register
+                Intent intent = new Intent(getApplicationContext(), webpage.class);
+                startActivity(intent);
+            }
+        });
+        web_page.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), webpage.class);
+                startActivity(intent);
+                return true;
+            }
+        });
+
+        cardViewExit = findViewById(R.id.cardViewExit);
+        cardViewExit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+                finishAffinity();
+                System.exit(0);
+            }
+        });
+    }
+
+
+    public void onNotificationClicked(View view) {
+        Intent intent = new Intent(getApplicationContext(), notification.class);
+        startActivity(intent);
     }
 
 
