@@ -212,7 +212,6 @@
         app:theme="@style/ThemeOverlay.AppCompat.Dark"
         app:title=""
         app:layout_scrollFlags="scroll|snap"
-
         android:paddingLeft="0dp"
         android:paddingRight="0dp"
         app:contentInsetStart="0dp"
@@ -256,7 +255,7 @@
         android:layout_width="130dp"
         android:scaleType="centerCrop"
         android:layout_height="130dp"
-        android:src="@drawable/sample_odam"
+        android:src="@drawable/profile_icon"
         app:civ_border_color="#304fff"
         app:endXPosition="10dp"
         app:endYPosition="10dp"

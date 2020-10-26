@@ -76,25 +76,22 @@ public class attendance extends AppCompatActivity {
             // top head bar
             attendance_appbar = findViewById(R.id.appbar_attendance);
             attendance_toolbar = findViewById(R.id.toolbar_attendance);
+            setSupportActionBar(attendance_toolbar);
             attendance_bottom_title = findViewById(R.id.attendance_bottom_title);
             attendance_bottom_goback = findViewById(R.id.attendance_bottom_goback);
-            AppbarChangeListener appbarChangeListener = new AppbarChangeListener();
-            attendance_appbar.addOnOffsetChangedListener(appbarChangeListener);
+          /*  AppbarChangeListener appbarChangeListener = new AppbarChangeListener();
+            attendance_appbar.addOnOffsetChangedListener(appbarChangeListener);*/
             names = new ArrayList<>();
-            names.add(new AtttendanceInfo("Math", "38", "4"));
-            names.add(new AtttendanceInfo("Python", "38", "4"));
-            names.add(new AtttendanceInfo("C lan", "38", "4"));
-            names.add(new AtttendanceInfo("java", "38", "4"));
-            names.add(new AtttendanceInfo("java", "38", "4"));
-            names.add(new AtttendanceInfo("java", "38", "4"));
-            names.add(new AtttendanceInfo("java", "38", "4"));
-            names.add(new AtttendanceInfo("java", "38", "4"));
-            names.add(new AtttendanceInfo("java", "38", "4"));
+            names.add(new AtttendanceInfo("Math", "Tue", "303", "Hwang", "78 %", "13 %", "8 %"));
+            names.add(new AtttendanceInfo("Java", "Fri", "403", "Hwang", "78 %", "13 %", "8 %"));
+            names.add(new AtttendanceInfo("C++", "Wed", "303", "Hwang", "78 %", "13 %", "8 %"));
+            names.add(new AtttendanceInfo("Discrete Mathematics", "Mon", "303", "Hwang", "78 %", "13 %", "8 %"));
+
             pieChartView = findViewById(R.id.chart);
             List pieData = new ArrayList<>();
-            pieData.add(new SliceValue(15, Color.BLUE));
-            pieData.add(new SliceValue(25, Color.RED));
-            pieData.add(new SliceValue(10, Color.LTGRAY));
+            pieData.add(new SliceValue(55, Color.BLUE));
+            pieData.add(new SliceValue(15, Color.RED));
+            pieData.add(new SliceValue(10, Color.parseColor("#FF8C00")));
 
             PieChartData pieChartData = new PieChartData(pieData);
             pieChartData.setHasLabels(true);
@@ -116,7 +113,7 @@ public class attendance extends AppCompatActivity {
             finish();
     }
 
-    public class AppbarChangeListener implements AppBarLayout.OnOffsetChangedListener {
+   /*  public class AppbarChangeListener implements AppBarLayout.OnOffsetChangedListener {
 
         @Override
         public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
@@ -149,5 +146,5 @@ public class attendance extends AppCompatActivity {
             text_title.startAnimation(alphaAnimation);
             go_back_button.startAnimation(alphaAnimation);
         }
-    }
+    }*/
 }

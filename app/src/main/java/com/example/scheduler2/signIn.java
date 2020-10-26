@@ -80,4 +80,9 @@ public class signIn extends AppCompatActivity {
                     }
                 });
     }
+    public void to_register_activity(View view) {
+        Intent intent = new Intent(getApplicationContext(), register.class);
+        startActivity(intent);
+        finish();
+    }
 }

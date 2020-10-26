@@ -8,13 +8,15 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-public class courses_adapter_data extends  RecyclerView.Adapter<courses_adapter_data.ViewHolder> {
-    private String string;
-    private Context context;
+import java.util.ArrayList;
 
-    public courses_adapter_data(Context context, String string) {
-        this.string = string;
+public class courses_adapter_data extends  RecyclerView.Adapter<courses_adapter_data.ViewHolder> {
+
+    private Context context;
+   private ArrayList<Course_display> list;
+    public courses_adapter_data(Context context, ArrayList<Course_display> list) {
         this.context = context;
+        this.list = list;
     }
 
 
@@ -26,21 +28,30 @@ public class courses_adapter_data extends  RecyclerView.Adapter<courses_adapter_
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
-        holder.assignment.setText("Python");
+                Course_display display = list.get(position);
+                holder.course_name.setText(display.getCourse_display_name());
+                holder.course_day.setText(display.getCourse_day_name());
+                holder.course_room_number.setText(display.getCourse_display_classroom() + " room");
+                holder.course_professor_name.setText(display.getCourse_display_professor_name());
+
 
 
     }
 
     @Override
     public int getItemCount() {
-        return 1;
+        return list.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView assignment;
+        private TextView course_name, course_day, course_room_number, course_professor_name;
         public ViewHolder(View itemView) {
             super(itemView);
-            assignment = itemView.findViewById(R.id.txtCourseNameCourses);
+            course_name = itemView.findViewById(R.id.course_name);
+            course_day = itemView.findViewById(R.id.course_day);
+            course_room_number = itemView.findViewById(R.id.course_room_number);
+            course_professor_name = itemView.findViewById(R.id.course_professor_name);
+
 
         }
     }

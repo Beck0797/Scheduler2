@@ -1,33 +1,166 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:onClick="onClick"
-    android:background="@drawable/ic_launcher_foreground"
+    android:background="@color/White"
     android:id="@+id/parentLayout">
-    <TextView
-        android:id="@+id/counter"
-        android:layout_width="wrap_content"
-        android:layout_height="36dp"
-        android:gravity="center"
-        android:paddingLeft="8dp"
-        android:text="1" />
-    <TextView
-        android:id="@+id/attendance"
-        android:layout_width="wrap_content"
-        android:layout_height="36dp"
-        android:gravity="center"
-        android:paddingLeft="8dp"
-        android:text="1" />
-    <TextView
-        android:id="@+id/absence"
-        android:layout_width="wrap_content"
-        android:layout_height="36dp"
-        android:gravity="center"
-        android:paddingLeft="8dp"
-        android:text="1" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/White"
+        >
+        <RelativeLayout
+            android:id="@+id/begin_layout_s"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:background="@color/White"
+            >
+               <RelativeLayout
+                    android:id="@+id/class_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp">
+                    <TextView
+                       android:id="@+id/attendance_class_name"
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:textStyle="bold"
+                       android:textAlignment="textStart"
+                       android:textSize="22sp"
+                       android:textColor="@color/Black"
+                       android:layout_alignParentBottom="true"
+                       android:text="Mathematics" />
 
+
+              </RelativeLayout>
+            <View
+                android:layout_below="@+id/class_layout"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/LightGrey" />
+              <LinearLayout
+                  android:id="@+id/names_and_days_layout"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_below="@id/class_layout"
+                  android:orientation="horizontal"
+                  android:paddingTop="5dp"
+                  android:paddingBottom="5dp"
+                  >
+
+                  <TextView
+                      android:id="@+id/attendance_class_day"
+                      android:layout_width="wrap_content"
+                      android:layout_height="match_parent"
+                      android:layout_weight="0.1"
+                      android:layout_alignParentBottom="true"
+                      android:textSize="12sp"
+                      android:textColor="@color/Black"
+                      android:text="Mon" />
+                  <TextView
+                      android:id="@+id/attendance_room_number"
+                      android:layout_width="wrap_content"
+                      android:layout_height="match_parent"
+                      android:layout_weight="0.3"
+                      android:layout_alignParentBottom="true"
+                      android:textColor="@color/Black"
+                      android:textSize="12sp"
+                      android:text="703 room" />
+                  <TextView
+
+                      android:layout_width="wrap_content"
+                      android:layout_height="match_parent"
+                      android:layout_weight="0.01"
+                      android:layout_alignParentBottom="true"
+                      android:textSize="12sp"
+                      android:textColor="@color/Black"
+                      android:text="prof:" />
+                  <TextView
+                      android:id="@+id/attendance_professor_name"
+                      android:layout_width="wrap_content"
+                      android:layout_height="match_parent"
+                      android:layout_weight="1"
+                      android:layout_alignParentBottom="true"
+                      android:textSize="12sp"
+                      android:textColor="@color/Green"
+                      android:text="Hwang" />
+              </LinearLayout>
+            <View
+                android:layout_below="@+id/names_and_days_layout"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/LightGrey" />
+            <LinearLayout
+                android:id="@+id/for_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:showDividers="middle"
+                android:layout_below="@+id/names_and_days_layout">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="0dp"
+                    android:paddingStart="0dp"
+                    android:text="attendance: "
+                    android:textColor="@color/Black"
+                    android:textSize="12sp" />
+                <TextView
+                    android:id="@+id/attendance_percentage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.1"
+                    android:text="0"
+                    android:textColor="@color/Blue"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textSize="12sp"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/Black"
+                    android:text="absence:" />
+                <TextView
+                    android:id="@+id/absence_percentage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textSize="12sp"
+                    android:textAlignment="textStart"
+                    android:layout_weight="0.1"
+                    android:textColor="@color/Red"
+                    android:text="0" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textAlignment="textStart"
+                    android:textSize="12sp"
+                    android:textColor="@color/Black"
+                    android:text="tardiness:" />
+                <TextView
+                    android:id="@+id/tardiness_percentage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textAlignment="textStart"
+                    android:textSize="12sp"
+                    android:layout_weight="0.1"
+                    android:textColor="#FF8C00"
+                    android:text="0" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+        <View
+            android:layout_below="@+id/begin_layout_s"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/LightGrey" />
+    </RelativeLayout>
 
 </LinearLayout>

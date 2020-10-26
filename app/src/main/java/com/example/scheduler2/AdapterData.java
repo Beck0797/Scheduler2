@@ -46,6 +46,11 @@ public class AdapterData extends RecyclerView.Adapter<AdapterData.ViewHolder>{
             holder.class_name.setText(item.getClass_name());
             holder.absence_statues.setText(item.getAbsence());
             holder.attendance_statues.setText(item.getAttendance());
+            //tariddness_statues, attend_class_day, atten_class_room, atten_prof_name;
+            holder.tariddness_statues.setText(item.getTardiness());
+            holder.attend_class_day.setText(item.getClass_day());
+            holder.atten_class_room.setText(item.getRoom_number());
+            holder.atten_prof_name.setText(item.getProfessor_name());
 
             holder.parentLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -73,14 +78,19 @@ public class AdapterData extends RecyclerView.Adapter<AdapterData.ViewHolder>{
 
         public class ViewHolder extends RecyclerView.ViewHolder{
 
-            TextView class_name, attendance_statues, absence_statues;
+            TextView class_name, attendance_statues, absence_statues, tariddness_statues, attend_class_day, atten_class_room, atten_prof_name;
             LinearLayout parentLayout;
 
             public ViewHolder(View itemView) {
                 super(itemView);
-                class_name = itemView.findViewById(R.id.counter);
-                attendance_statues = itemView.findViewById(R.id.attendance);
-                absence_statues = itemView.findViewById(R.id.absence);
+                class_name = itemView.findViewById(R.id.attendance_class_name);
+                attendance_statues = itemView.findViewById(R.id.attendance_percentage);
+                absence_statues = itemView.findViewById(R.id.absence_percentage);
+                tariddness_statues = itemView.findViewById(R.id.tardiness_percentage);
+                attend_class_day = itemView.findViewById(R.id.attendance_class_day);
+                atten_class_room = itemView.findViewById(R.id.attendance_room_number);
+                atten_prof_name = itemView.findViewById(R.id.attendance_professor_name);
+
                 parentLayout = itemView.findViewById(R.id.parentLayout);
             }
         }

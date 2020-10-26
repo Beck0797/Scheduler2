@@ -88,15 +88,14 @@
             app:layout_constraintTop_toBottomOf="@+id/signin_button" />
 
         <TextView
-            android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
             android:layout_marginTop="70dp"
             android:text="Sign up"
+            android:onClick="to_register_activity"
             android:textColor="#304FFF"
             android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="@+id/button"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/textView"
             app:layout_constraintTop_toBottomOf="@+id/signin_button" />

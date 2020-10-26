@@ -9,13 +9,13 @@
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:gravity="start|center"
-        android:onClick="backToClasslist"
         android:visibility="visible"
         android:background="@drawable/icon_goback"
+        android:onClick="backToCourseList"
         android:textStyle="bold"
         android:textColor="@android:color/white"
         android:textSize="18sp"
-        android:textAlignment="textStart"></TextView>
+        android:textAlignment="textStart"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -51,7 +51,7 @@
                 android:layout_centerVertical="true"
                 android:gravity="center"
                 android:textSize="20sp"
-                android:text="Course Registeration"
+                android:text="Course Registration"
                 android:fontFamily="sans-serif-black"
                 android:textColor="@color/Black">
 
@@ -85,6 +85,7 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/edittextunderline"
                         android:hint="Course name"
+
                         android:paddingStart="5dp"
                         android:paddingBottom="5dp"
                         android:textSize="16sp">
@@ -303,13 +304,14 @@
         >
     <Button
 
-        android:id="@+id/signin_button"
+        android:id="@+id/insert_class"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:paddingBottom="5dp"
         android:background="@drawable/gradient_button_bg"
         android:text="add"
+        android:onClick="onClickInsertClass"
         android:textColor="#fff" />
     </RelativeLayout>
     </RelativeLayout>
