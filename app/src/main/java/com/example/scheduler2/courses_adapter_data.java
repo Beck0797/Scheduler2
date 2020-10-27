@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,6 +15,7 @@ public class courses_adapter_data extends  RecyclerView.Adapter<courses_adapter_
 
     private Context context;
    private ArrayList<Course_display> list;
+   //private OnItemClickListener mListener;;
     public courses_adapter_data(Context context, ArrayList<Course_display> list) {
         this.context = context;
         this.list = list;
@@ -43,7 +45,7 @@ public class courses_adapter_data extends  RecyclerView.Adapter<courses_adapter_
         return list.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder{
         private TextView course_name, course_day, course_room_number, course_professor_name;
         public ViewHolder(View itemView) {
             super(itemView);
@@ -51,9 +53,11 @@ public class courses_adapter_data extends  RecyclerView.Adapter<courses_adapter_
             course_day = itemView.findViewById(R.id.course_day);
             course_room_number = itemView.findViewById(R.id.course_room_number);
             course_professor_name = itemView.findViewById(R.id.course_professor_name);
-
+            //itemView.setOnClickListener(this);
 
         }
+
+
     }
 }
 
