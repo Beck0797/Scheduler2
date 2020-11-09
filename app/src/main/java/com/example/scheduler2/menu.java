@@ -87,9 +87,13 @@ public class menu extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    check_attendance_cons check = dataSnapshot.getValue(check_attendance_cons.class);
-                    check_attendance_list.add(new check_attendance_cons(check.getClass_name().toString(), check.getStatus().toString(), check.getDate().toString()));
-            }
+                    try {
+                        check_attendance_cons check = dataSnapshot.getValue(check_attendance_cons.class);
+                        check_attendance_list.add(new check_attendance_cons(check.getClass_name().toString(), check.getStatus().toString(), check.getDate().toString()));
+                    }catch (NullPointerException e){
+                        e.printStackTrace();
+                    }
+                    }
             }
 
             @Override
@@ -103,7 +107,7 @@ public class menu extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), attendance.class);
-                Log.d(TAG, "sizeL: " + check_attendance_list.size());
+                //Log.d(TAG, "sizeL: " + check_attendance_list.size());
                 Bundle bundle = new Bundle();
 
                 bundle.putSerializable("attendance_info", check_attendance_list);

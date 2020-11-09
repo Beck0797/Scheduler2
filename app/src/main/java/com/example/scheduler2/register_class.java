@@ -41,7 +41,7 @@ import java.util.Locale;
 import java.util.Map;
 
 public class register_class extends AppCompatActivity implements View.OnClickListener {
-    String[] days = new String[]{"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Sunday"};
+    String[] days = new String[]{"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
     private TextView time_start, time_end, time_alarm;
     public static final String TAG = "register_class";
 

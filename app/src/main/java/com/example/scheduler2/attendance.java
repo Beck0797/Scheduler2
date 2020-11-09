@@ -86,6 +86,7 @@ public class attendance extends AppCompatActivity {
         private float total = 0;
         private TextView attendace_show, absence_show, tardiness;
         private   HashMap<String, Point> att_calc;
+        private float total_att = 0, total_abs =  0, total_tar  = 0;
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -111,7 +112,7 @@ public class attendance extends AppCompatActivity {
 
 
             Log.d(TAG, "size arraylist: " + check_list.size());
-            float total_att = 0, total_abs =  0, total_tar  = 0;
+
 
              att_calc = new HashMap<String,Point>();
             for(int i= 0;i < check_list.size(); i++) {
@@ -144,6 +145,7 @@ public class attendance extends AppCompatActivity {
                          actual_point.setAbs(ab);
                          actual_point.setTard(tar);
                      }
+                     Log.d(TAG, "printingg: " + check_list.get(i).getClass_name());
                      att_calc.put(check_list.get(i).getClass_name(), actual_point);
                  }catch (NullPointerException e) {
                      e.printStackTrace();
@@ -157,13 +159,18 @@ public class attendance extends AppCompatActivity {
                         try {
                             Course_Info course_info = dataSnapshot.getValue(Course_Info.class);
                             boolean check = false;
-                            if(att_calc.containsKey(course_info.getCourse_name())) {
+                            if(att_calc.containsKey(course_info.getCourse_name().toString())) {
+                                Log.d(TAG, "print true: " + course_info.getCourse_name().toString());
+                            }else {
+                                Log.d(TAG, "print false: " + course_info.getCourse_name().toString());
+                            }
+                            if(att_calc.containsKey(course_info.getCourse_name().toString())) {
                                 check = true;
                                 Point p = att_calc.get(course_info.getCourse_name().toString());
-                                String att_s = Float.toString( p.getAtt() == 0 ? 0 : p.getAtt() / total * 100);
-                                Log.d(TAG, "another" + p.getAbs());
-                                String abs_s = Float.toString(p.getAbs() == 0 ? 0 : p.getAbs() / total * 100);
-                                String tar_d = Float.toString(p.getTard() == 0 ? 0 : p.getTard() / total * 100);
+                                String att_s = String.format("%.1f",  p.getAtt() == 0 ? 0 : p.getAtt() / total_att * 100);
+                                //Log.d(TAG, "another" + p.getAbs());
+                                String abs_s = String.format("%.1f", p.getAbs() == 0 ? 0 : p.getAbs() / total_abs * 100);
+                                String tar_d = String.format("%.1f",p.getTard() == 0 ? 0 : p.getTard() / total_tar * 100);
                                 names.add(new AtttendanceInfo(course_info.getCourse_name().toString(), course_info.getCourse_day().toString()
                                         , course_info.getClassroom_number().toString(), course_info.getProfessor_name().toString(),
                                         att_s + "%", abs_s + "%", tar_d+"%"));
@@ -193,9 +200,9 @@ public class attendance extends AppCompatActivity {
                 pieData.add(new SliceValue(total_att == 0 ? 0 :(total_att / total) * 100, Color.BLUE));
                 pieData.add(new SliceValue(total_abs == 0 ? 0 : (total_abs / total) * 100, Color.RED));
                 pieData.add(new SliceValue(total_tar == 0 ? 0 :(total_tar / total) * 100, Color.parseColor("#FF8C00")));
-                attendace_show.setText( "attendance" + Float.toString(total_att == 0 ? 0 :(total_att / total) * 100) + " %");
-                absence_show.setText( "absence" + Float.toString(total_abs == 0 ? 0 :(total_abs / total) * 100) + " %");
-                tardiness.setText("tardiness" + Float.toString(total_tar == 0 ? 0 :(total_tar / total) * 100) + " %");
+                attendace_show.setText( "attendance" + String.format("%.1f", total_att == 0 ? 0 :(total_att / total) * 100) + " %");
+                absence_show.setText( "absence" + String.format("%.1f",total_abs == 0 ? 0 :(total_abs / total) * 100) + " %");
+                tardiness.setText("tardiness" + String.format("%.1f", total_tar == 0 ? 0 :(total_tar / total) * 100) + " %");
             }catch (ArithmeticException e) {
                 e.printStackTrace();
             }
