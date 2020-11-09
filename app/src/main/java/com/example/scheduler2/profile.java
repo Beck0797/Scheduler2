@@ -9,9 +9,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,13 +42,13 @@ import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class profile extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener {
+public class profile extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener, profile_setFragment.BottomSheetListener {
 
     private static final float PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR  = 0.9f;
     private static final float PERCENTAGE_TO_HIDE_TITLE_DETAILS     = 0.3f;
     private static final int ALPHA_ANIMATIONS_DURATION              = 200;
     private FloatingActionButton floatingActionButton;
-    private TextView text_title, go_back_button, go_back_button2, profileName;
+    private TextView text_title, go_back_button, go_back_button2, profileName, studentNumber;
     private AppBarLayout barLayout;
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
@@ -60,6 +62,8 @@ public class profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
     private CircleImageView circleImageView;
     private boolean mIsTheTitleContainerVisible = true;
     private boolean mIsTheTitleVisible          = false;
+    private LinearLayout setting_profile_name, setting_student_number;
+
 
 
     @Override
@@ -77,9 +81,25 @@ public class profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
         go_back_button2.setOnClickListener(buttonClick);
         text_title = findViewById(R.id.toolbar_profile_name);
         circleImageView = findViewById(R.id.ava);
-
+        studentNumber = findViewById(R.id.phone);
         profileName = findViewById(R.id.profile_name);
+        setting_profile_name = findViewById(R.id.setting);
+        setting_student_number = findViewById(R.id.student_number_click);
+        setting_profile_name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                profile_setFragment profile_setFragment= new profile_setFragment();
+                profile_setFragment.show(getSupportFragmentManager(), "test");
 
+            }
+        });
+        setting_student_number.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                profile_stnumberFragment profile_stnumberFragment = new profile_stnumberFragment();
+                profile_stnumberFragment.show(getSupportFragmentManager(), "test1");
+            }
+        });
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         myRef = firebaseDatabase.getReference(firebaseAuth.getCurrentUser().getUid());
@@ -96,6 +116,23 @@ public class profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
 
         // after image uploaded, then dispay
        displayImage();
+    }
+    @Override
+    public void onButtonClicked(String text) {
+        Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+        if(currentUser == null) {
+            Intent intent = new Intent(profile.this, signIn.class);
+            startActivity(intent);
+            finish();
+        }
+
     }
      private void displayImage() {
         storageReference.child(firebaseAuth.getCurrentUser().getUid()).child("Profile_Image").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -187,12 +224,38 @@ public class profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
        // display profile name
     private void displayProfileName() {
 
-            myRef.addValueEventListener(new ValueEventListener() {
+            myRef.child("user_name").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    Upload upload = snapshot.getValue(Upload.class);
-                    profileName.setText(upload.getName().toString());
-                    text_title.setText(upload.getName().toString());
+
+                        Upload upload = snapshot.getValue(Upload.class);
+
+
+                        try {
+
+
+                            profileName.setText(upload.getName().toString());
+                            text_title.setText(upload.getName().toString());
+                        } catch (NullPointerException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+            myRef.child("student_number").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    try {
+                        st_num st_num = snapshot.getValue(st_num.class);
+                        studentNumber.setText(st_num.getStudent_number().toString());
+                    }catch (NullPointerException e) {
+                        e.printStackTrace();
+                    }
                 }
 
                 @Override
@@ -283,7 +346,14 @@ public class profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
         anim.setDuration(1000);
         v.startAnimation(anim);
     }
-        class ButtonClick implements  View.OnClickListener {
+
+    public void logout_button(View view) {
+        FirebaseAuth.getInstance().signOut();
+        Intent intent = new Intent(profile.this, signIn.class);
+        startActivity(intent);
+    }
+
+    class ButtonClick implements  View.OnClickListener {
 
           @Override
           public void onClick(View v) {
@@ -301,5 +371,6 @@ public class profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
                }
           }
       }
+
 
 }

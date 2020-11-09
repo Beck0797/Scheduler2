@@ -70,7 +70,6 @@
                         android:id="@+id/phone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:hint="Phone number"
                         android:text="201739011"
                         android:textColor="#fff"
                         android:textSize="18sp"
@@ -127,7 +126,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Profile"
+                        android:text="change user name "
                         android:layout_marginStart="25dp"
                         android:layout_marginLeft="25dp"
                         android:layout_marginTop="5dp"
@@ -141,7 +140,7 @@
 
 
                 <LinearLayout
-                    android:id="@+id/login"
+                    android:id="@+id/student_number_click"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -152,13 +151,13 @@
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_gravity="center_vertical"
-                        android:background="@drawable/icon_login">
+                        android:background="@drawable/edit_text_24">
 
                     </Button>
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Log in"
+                        android:text="edit student number"
                         android:textSize="14sp"
                         android:layout_marginTop="5dp"
                         android:layout_marginStart="25dp"
@@ -172,6 +171,7 @@
                 <LinearLayout
                     android:id="@+id/logout"
                     android:layout_width="match_parent"
+                    android:onClick="logout_button"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:padding="8dp"

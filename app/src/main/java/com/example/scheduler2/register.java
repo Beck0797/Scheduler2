@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -58,13 +59,20 @@ public class register extends AppCompatActivity {
             }
         });
     }
-    public final boolean isInternetOn() {
-        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Activity.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected())
+    private boolean isNetworkConnected() {
+        ConnectivityManager connectivityManager = (ConnectivityManager)
+                this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if ((connectivityManager
+                .getNetworkInfo(ConnectivityManager.TYPE_MOBILE) != null && connectivityManager
+                .getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED)
+                || (connectivityManager
+                .getNetworkInfo(ConnectivityManager.TYPE_WIFI) != null && connectivityManager
+                .getNetworkInfo(ConnectivityManager.TYPE_WIFI)
+                .getState() == NetworkInfo.State.CONNECTED)) {
             return true;
-        else
+        } else {
             return false;
+        }
     }
     public void doAuthentication() {
         String name = editName.getText().toString();
@@ -93,7 +101,8 @@ public class register extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "confirm pass is not match", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(isInternetOn()) {
+        Log.d(TAG, "internet" + isNetworkConnected());
+        if(isNetworkConnected()) {
             firebaseAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
@@ -118,17 +127,30 @@ public class register extends AppCompatActivity {
                         }
                     });
         } else {
-            Toast.makeText(getApplicationContext(), "internet connection is off ", Toast.LENGTH_SHORT).show();
+            Snackbar.make(findViewById(R.id.register_activity), "NO INTERNET CONNECTION", Snackbar.LENGTH_LONG)
+                    .setAction("CLOSE", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+                        }
+                    })
+                    .setActionTextColor(getResources().getColor(android.R.color.holo_red_light ))
+                    .show();
         }
     }
     public void sendUserData() {
 
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = firebaseDatabase.getReference(firebaseAuth.getCurrentUser().getUid());
+        DatabaseReference myRef = firebaseDatabase.getReference(firebaseAuth.getCurrentUser().getUid()).child("user_name");
 
         Upload userProfile = new Upload(editName.getText().toString());
 
         myRef.setValue(userProfile);
 
+    }
+
+    public void goto_register(View view) {
+        Intent intent = new Intent(register.this, signIn.class);
+        startActivity(intent);
     }
 }

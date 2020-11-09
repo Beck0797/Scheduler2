@@ -11,7 +11,17 @@ public class Course_Info {
     private String end_time;
     private String  alarm_time;
     private String url_name;
-    public Course_Info(String course_name, String professor_name, String classroom_number, String course_day, String start_time, String end_time, String alarm_time, String url_name) {
+    private String current_date;
+    public String getCurrent_date() {
+        return current_date;
+    }
+
+    public void setCurrent_date(String current_date) {
+        this.current_date = current_date;
+    }
+
+
+    public Course_Info(String course_name, String professor_name, String classroom_number, String course_day, String start_time, String end_time, String alarm_time, String url_name, String current_date) {
         this.course_name = course_name;
         this.professor_name = professor_name;
         this.classroom_number = classroom_number;
@@ -20,6 +30,7 @@ public class Course_Info {
         this.end_time = end_time;
         this.alarm_time = alarm_time;
         this.url_name = url_name;
+        this.current_date = current_date;
     }
 
     // empty constructor needed; don't delete

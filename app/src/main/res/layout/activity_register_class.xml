@@ -132,7 +132,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edittextunderline"
-                        android:hint="Classroom number"
+                        android:hint="Classroom number (optional)"
                         android:inputType="number"
                         android:paddingStart="5dp"
                         android:paddingBottom="5dp"
@@ -280,7 +280,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edittextunderline"
-                        android:hint="Enter class webex link"
+                        android:hint="Enter class webex link (optional)"
                         android:paddingStart="5dp"
                         android:paddingBottom="5dp"
                         android:textSize="16sp">

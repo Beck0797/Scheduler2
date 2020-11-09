@@ -3,20 +3,23 @@
     package="com.example.scheduler2">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:icon="@drawable/app_logo"
+        android:label="@string/app_name"
+        android:roundIcon="@drawable/app_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".menu"></activity>
-        <activity android:name=".Attendance_Detail"></activity>
-        <activity android:name=".addAssignment"></activity>
-        <activity android:name=".notification"></activity>
-        <activity android:name=".webpage"></activity>
-        <activity android:name=".courseList"></activity>
-        <activity android:name=".profile_update" />
+        <activity android:name="button_action"></activity>
+        <activity android:name=".menu" />
+        <activity android:name=".Attendance_Detail" />
+        <activity android:name=".addAssignment" />
+        <activity android:name=".notification" />
+        <activity android:name=".webpage" />
+        <activity android:name=".courseList" />
         <activity
             android:name=".register_class"
             android:label="Register Class" />
@@ -30,7 +33,6 @@
         <activity
             android:name=".schedule"
             android:label="Time Table" />
-
         <activity android:name=".signIn" />
         <activity
             android:name=".register"
@@ -44,6 +46,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <receiver
+            android:name=".Alarm.BootUpReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".Alarm.AlarmBrodcast" />
+        <receiver android:name=".Alarm.StartAlarmBrodcast" />
     </application>
 
 </manifest>

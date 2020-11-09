@@ -2,7 +2,7 @@ package com.example.scheduler2;
 
 public class Upload {
 
-    private String name;
+    private String name="";
 
     public Upload() {
     }

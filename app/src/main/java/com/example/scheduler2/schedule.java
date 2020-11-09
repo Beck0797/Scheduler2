@@ -3,9 +3,11 @@ package com.example.scheduler2;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
 
 import android.content.Intent;
 import android.content.res.Resources;
@@ -15,6 +17,7 @@ import android.os.Parcel;
 import android.util.Log;
 import android.util.Pair;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -156,7 +159,30 @@ public class schedule extends AppCompatActivity {
         int randomNum = rand.nextInt((10) + 1);
 
         Resources r = getResources();
-        View v = new View(schedule.this);
+        LinearLayout v = new LinearLayout(schedule.this);
+        v.setOrientation(LinearLayout.VERTICAL);
+
+        v.setGravity(Gravity.CENTER);
+
+        TextView cN = new TextView(getApplicationContext());
+        TextView cR = new TextView(getApplicationContext());
+
+        cN.setText(courseName);
+        cN.setTextColor(Color.WHITE);
+        cN.setTypeface(cN.getTypeface(), Typeface.BOLD);
+
+        cR.setText(classroom);
+        cR.setTextColor(Color.WHITE);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        params.gravity = Gravity.CENTER;
+
+        //params.setMarginStart(20);
+        cR.setLayoutParams(params);
+        cN.setLayoutParams(params);
+        v.addView(cN);
+        v.addView(cR);
 
         String color = colorsList.get(randomNum);
         while(usedColors.contains(color)){
@@ -218,9 +244,9 @@ public class schedule extends AppCompatActivity {
                 popUpTime.setText(s);
 
 //                need to be initialized from database
-                popUpClassroom.setText(classroom);
-                popUpCourseName.setText(courseName);
-                popUpProfessor.setText(professorName);
+                popUpClassroom.setText("Classroom: " +classroom);
+                popUpCourseName.setText("Course name: " +courseName);
+                popUpProfessor.setText("Professor: " + professorName);
 
             }
         });

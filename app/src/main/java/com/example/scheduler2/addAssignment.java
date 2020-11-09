@@ -2,6 +2,9 @@ package com.example.scheduler2;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,38 +17,78 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.scheduler2.Alarm.AlarmBrodcast;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.kevalpatel.ringtonepicker.RingtonePickerDialog;
 import com.kevalpatel.ringtonepicker.RingtonePickerListener;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
-public class addAssignment extends AppCompatActivity implements View.OnClickListener {
+public class addAssignment extends AppCompatActivity  implements View.OnClickListener {
+    public static final String TAG = "addAssignment.this";
     private TextView btnTime_start_select, btnAlarm_select, btnChooseSound, btnAddAssignmentDateselect, btnAddAssignmentAlarmDateselect;
     private Uri mCurrentSelectedUri;
     private CalendarView mCalendarView;
     private boolean isAssignmentDate, isAlarmDate;
     private EditText assignmentTitle;
-
+    private Spinner spinner;
+    private ArrayAdapter adapter;
+    String take_class;
+    private FirebaseAuth firebaseAuth;
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference databaseReference;
+    public HashMap<String, String> hashMap;
+    private ArrayList<String> list_of_classes;
+    private String timeTonotify, alarmTime, alarmDate, title, courseName;
+    private String take;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_assignment);
+
+        // firesbase setup
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference(firebaseAuth.getCurrentUser().getUid()).child("all_class");
+        hashMap =(HashMap<String, String>) getIntent().getSerializableExtra("arraylist");
+        list_of_classes = new ArrayList<>();
+        for(Map.Entry<String, String> entry : hashMap.entrySet()) {
+                list_of_classes.add(entry.getKey());
+        }
         isAssignmentDate = false;
         isAlarmDate = false;
+        spinner = findViewById(R.id.spinner_subjects);
         mCalendarView = findViewById(R.id.calendarView);
-        btnAlarm_select = findViewById(R.id.btnAlarm_select);
-        btnTime_start_select = findViewById(R.id.btnTime_start_select);
-        btnChooseSound = findViewById(R.id.btnChooseSound);
-        btnAddAssignmentDateselect = findViewById(R.id.btnAddAssignmentDateselect);
+        btnAlarm_select = findViewById(R.id.btnAlarmTime);
         btnAddAssignmentAlarmDateselect = findViewById(R.id.btnAddAssignmentAlarmDateselect);
+        btnChooseSound = findViewById(R.id.btnChooseSound);
+        btnTime_start_select = findViewById(R.id.btnDueTime_select);
+        btnAddAssignmentDateselect = findViewById(R.id.btnAddAssignmentDateselect);
         assignmentTitle = findViewById(R.id.assignmentTitle);
 
         btnAddAssignmentDateselect.setOnLongClickListener(new View.OnLongClickListener() {
@@ -74,29 +117,19 @@ public class addAssignment extends AppCompatActivity implements View.OnClickList
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
                 month = month +1;
-                String date = dayOfMonth +". "+ month+". "+ year;
-//                switch (view.getId()){
-//
-//                    case R.id.btnAddAssignmentDateselect:
-//                        btnAddAssignmentDateselect.setBackground(getResources().getDrawable(R.drawable.edittextunderline));
-//                        btnAddAssignmentDateselect.setText(date);
-//                        break;
-//
-//                    case R.id.btnAddAssignmentAlarmDateselect:
-//                        btnAddAssignmentAlarmDateselect.setBackground(getResources().getDrawable(R.drawable.edittextunderline));
-//                        btnAddAssignmentAlarmDateselect.setText(date);
-//                        break;
-//                    default:
-//                        break;
-//                }
-                if(isAssignmentDate == true){
+
+
+                Log.d(TAG, "month and date: " + dayOfMonth + month);
+                String date = year +"-"+ (month < 10 ? "0" + month : month) + "-"+ (dayOfMonth < 10 ? "0" + dayOfMonth : dayOfMonth) ;
+                if(isAssignmentDate){
                     btnAddAssignmentDateselect.setBackground(getResources().getDrawable(R.drawable.edittextunderline));
                     btnAddAssignmentDateselect.setText(date);
                     isAssignmentDate = false;
                 }
-                if(isAlarmDate == true){
+                if(isAlarmDate){
                     btnAddAssignmentAlarmDateselect.setBackground(getResources().getDrawable(R.drawable.edittextunderline));
                     btnAddAssignmentAlarmDateselect.setText(date);
+                    alarmDate = year +"-"+ (month < 10 ? "0" + month : month) + "-"+ (dayOfMonth < 10 ? "0" + dayOfMonth : dayOfMonth) ;
                     isAlarmDate = false;
                 }
 
@@ -104,7 +137,30 @@ public class addAssignment extends AppCompatActivity implements View.OnClickList
             }
         });
 
+        adapter = new ArrayAdapter(this,
+                android.R.layout.simple_spinner_dropdown_item , list_of_classes);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setSelected(true);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+               if(list_of_classes.isEmpty() == false) {
+                   take_class = list_of_classes.get(position).toString();
+                   courseName = take_class;
+
+               }
+
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
     }
+    // save assigment data
 
 
     // time picker method
@@ -119,12 +175,17 @@ public class addAssignment extends AppCompatActivity implements View.OnClickList
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 switch (v.getId()) {
-                    case R.id.btnTime_start_select:
-                        btnTime_start_select.setText(hourOfDay + ":" + minute);
+                    case R.id.btnDueTime_select:
+                        btnTime_start_select.setText((hourOfDay < 10 ? "0" + hourOfDay : hourOfDay) + ":" + (minute < 10? "0" + minute : minute));
                         break;
-                    case R.id.btnAlarm_select:
-                        btnAlarm_select.setText(hourOfDay + ":" + minute);
+                    case R.id.btnAlarmTime:
+                        timeTonotify = hourOfDay + ":" + minute;
+                        btnAlarm_select.setText((hourOfDay < 10 ? "0" + hourOfDay : hourOfDay) + ":" + (minute < 10? "0" + minute : minute));
+                        alarmTime = FormatTime(hourOfDay, minute);
+//                        Log.d(TAG, "111111111111111111" + "timeTonotify is " + timeTonotify);
+//                        Toast.makeText(addAssignment.this, "Time to notify is " + timeTonotify, Toast.LENGTH_SHORT).show();
                         break;
+
                     default:
                         break;
                 }
@@ -192,9 +253,19 @@ public class addAssignment extends AppCompatActivity implements View.OnClickList
     }
 
     public void onAddAssignmentClicked(View view) {
-        Toast.makeText(this, "Add button is clicked", Toast.LENGTH_SHORT).show();
-    }
+        title = assignmentTitle.getText().toString().trim();
+        if(title.isEmpty()){
+            Toast.makeText(this, "Enter Assignment title", Toast.LENGTH_SHORT).show();
+        }else{
+            setAlarm(alarmDate, alarmTime);
+            Toast.makeText(addAssignment.this, "Alarm set to " + alarmDate + " " + alarmTime, Toast.LENGTH_SHORT).show();
 
+        }
+
+        Log.d(TAG, "working" + hashMap.get(take_class));
+        AssignmentCons assignmentCons = new AssignmentCons(take_class,assignmentTitle.getText().toString(), btnAddAssignmentDateselect.getText().toString(), btnTime_start_select.getText().toString());
+        databaseReference.child(hashMap.get(take_class)).child("assignments").push().setValue(assignmentCons);
+    }
     public void onbtnAddAssignmentDateselectClicked(View view) {
         if(btnAddAssignmentDateselect.getText().toString().equals("")){
             Toast.makeText(this, "Choose Date from Calendar", Toast.LENGTH_SHORT).show();
@@ -224,6 +295,60 @@ public class addAssignment extends AppCompatActivity implements View.OnClickList
         Intent i = new Intent(getApplicationContext(), assignment.class);
         startActivity(i);
         finish();
+    }
+
+    private void setAlarm(String date, String time) {
+
+        AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(getApplicationContext(), AlarmBrodcast.class);
+
+        intent.putExtra("title", title);
+        intent.putExtra("courseName", courseName);
+        intent.putExtra("time", date);
+        intent.putExtra("date", time);
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT);
+        String dateandtime = date + " " + timeTonotify;
+        DateFormat formatter = new SimpleDateFormat("d-M-yyyy hh:mm");
+        try {
+            Date date1 = formatter.parse(dateandtime);
+            am.set(AlarmManager.RTC_WAKEUP, date1.getTime(), pendingIntent);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        // going back to assignment list after setting alarm
+        Intent i = new Intent(getApplicationContext(), assignment.class);
+        startActivity(i);
+        finish();
+    }
+
+    public String FormatTime(int hour, int minute) {
+
+        String time;
+        time = "";
+        String formattedMinute;
+
+        if (minute / 10 == 0) {
+            formattedMinute = "0" + minute;
+        } else {
+            formattedMinute = "" + minute;
+        }
+
+
+        if (hour == 0) {
+            time = "12" + ":" + formattedMinute + " AM";
+        } else if (hour < 12) {
+            time = hour + ":" + formattedMinute + " AM";
+        } else if (hour == 12) {
+            time = "12" + ":" + formattedMinute + " PM";
+        } else {
+            int temp = hour - 12;
+            time = temp + ":" + formattedMinute + " PM";
+        }
+
+
+        return time;
     }
 }
 
