@@ -28,6 +28,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -37,6 +38,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -50,13 +57,16 @@ import android.app.LauncherActivity;
 import android.os.Bundle;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import lecho.lib.hellocharts.model.PieChartData;
 import lecho.lib.hellocharts.model.SliceValue;
 import lecho.lib.hellocharts.view.PieChartView;
 
 public class attendance extends AppCompatActivity {
+        private static final String TAG = "attendance";
         private static final float PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR  = 0.9f;
         private static final float PERCENTAGE_TO_HIDE_TITLE_DETAILS     = 0.3f;
         private static final int ALPHA_ANIMATIONS_DURATION              = 200;
@@ -69,10 +79,21 @@ public class attendance extends AppCompatActivity {
         private TextView attendance_bottom_title, attendance_bottom_goback;
         private boolean mIsTheTitleContainerVisible = true;
         private boolean mIsTheTitleVisible          = false;
+        private FirebaseAuth firebaseAuth;
+        private FirebaseDatabase firebaseDatabase;
+        private DatabaseReference databaseReference;
+        private ArrayList<check_attendance_cons> check_list;
+        private float total = 0;
+        private TextView attendace_show, absence_show, tardiness;
+        private   HashMap<String, Point> att_calc;
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_attendance);
+            // database initialize
+            firebaseAuth = FirebaseAuth.getInstance();
+            firebaseDatabase = FirebaseDatabase.getInstance();
+            databaseReference = firebaseDatabase.getReference(firebaseAuth.getCurrentUser().getUid());
             // top head bar
             attendance_appbar = findViewById(R.id.appbar_attendance);
             attendance_toolbar = findViewById(R.id.toolbar_attendance);
@@ -81,18 +102,103 @@ public class attendance extends AppCompatActivity {
             attendance_bottom_goback = findViewById(R.id.attendance_bottom_goback);
           /*  AppbarChangeListener appbarChangeListener = new AppbarChangeListener();
             attendance_appbar.addOnOffsetChangedListener(appbarChangeListener);*/
+            attendace_show = findViewById(R.id.attendance_show);
+            absence_show = findViewById(R.id.absence_show);
+            tardiness = findViewById(R.id.tardiness_show);
             names = new ArrayList<>();
-            names.add(new AtttendanceInfo("Math", "Tue", "303", "Hwang", "78 %", "13 %", "8 %"));
-            names.add(new AtttendanceInfo("Java", "Fri", "403", "Hwang", "78 %", "13 %", "8 %"));
-            names.add(new AtttendanceInfo("C++", "Wed", "303", "Hwang", "78 %", "13 %", "8 %"));
-            names.add(new AtttendanceInfo("Discrete Mathematics", "Mon", "303", "Hwang", "78 %", "13 %", "8 %"));
+            Bundle bundle = getIntent().getExtras();
+            check_list = (ArrayList<check_attendance_cons>) bundle.getSerializable("attendance_info");
 
+
+            Log.d(TAG, "size arraylist: " + check_list.size());
+            float total_att = 0, total_abs =  0, total_tar  = 0;
+
+             att_calc = new HashMap<String,Point>();
+            for(int i= 0;i < check_list.size(); i++) {
+                total  += 1;
+                int at = 0;
+                int ab = 0;
+                int tar = 0;
+                             Log.d(TAG, "class status" + check_list.get(i).getStatus().toString());
+                if(check_list.get(i).getStatus().toString().equals("attendance")) {
+                    at = 1;
+                    total_att += 1;
+                }else if(check_list.get(i).getStatus().toString().equals("absence"))  {
+                    ab = 1;
+                    total_abs += 1;
+                } else {
+                    tar  = 1;
+                    total_tar += 1;
+                }
+               Log.d(TAG, "chek" + ab);
+                 try {
+                     Point actual_point = new Point();
+                     if (!att_calc.isEmpty() && att_calc.containsKey(check_list.get(i).getClass_name())) {
+                         Point points = att_calc.get(check_list.get(i).getClass_name());
+                         actual_point.setAtt(points.getAtt() + at);
+                         actual_point.setAbs(points.getAbs() + ab);
+                         actual_point.setTard(points.getTard() + tar);
+
+                     } else {
+                         actual_point.setAtt(at);
+                         actual_point.setAbs(ab);
+                         actual_point.setTard(tar);
+                     }
+                     att_calc.put(check_list.get(i).getClass_name(), actual_point);
+                 }catch (NullPointerException e) {
+                     e.printStackTrace();
+                 }
+            }
+            Log.d(TAG, "hashmap_size" + att_calc.size());
+            databaseReference.child("all_class").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for(DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        try {
+                            Course_Info course_info = dataSnapshot.getValue(Course_Info.class);
+                            boolean check = false;
+                            if(att_calc.containsKey(course_info.getCourse_name())) {
+                                check = true;
+                                Point p = att_calc.get(course_info.getCourse_name().toString());
+                                String att_s = Float.toString( p.getAtt() == 0 ? 0 : p.getAtt() / total * 100);
+                                Log.d(TAG, "another" + p.getAbs());
+                                String abs_s = Float.toString(p.getAbs() == 0 ? 0 : p.getAbs() / total * 100);
+                                String tar_d = Float.toString(p.getTard() == 0 ? 0 : p.getTard() / total * 100);
+                                names.add(new AtttendanceInfo(course_info.getCourse_name().toString(), course_info.getCourse_day().toString()
+                                        , course_info.getClassroom_number().toString(), course_info.getProfessor_name().toString(),
+                                        att_s + "%", abs_s + "%", tar_d+"%"));
+                            }
+
+                            if(check == false) {
+                                names.add(new AtttendanceInfo(course_info.getCourse_name().toString(), course_info.getCourse_day().toString()
+                                        , course_info.getClassroom_number().toString(), course_info.getProfessor_name().toString(),
+                                        "0%", "0%", "0%"));
+                            }
+
+
+                        }catch (NullPointerException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
             pieChartView = findViewById(R.id.chart);
             List pieData = new ArrayList<>();
-            pieData.add(new SliceValue(55, Color.BLUE));
-            pieData.add(new SliceValue(15, Color.RED));
-            pieData.add(new SliceValue(10, Color.parseColor("#FF8C00")));
-
+            try {
+                pieData.add(new SliceValue(total_att == 0 ? 0 :(total_att / total) * 100, Color.BLUE));
+                pieData.add(new SliceValue(total_abs == 0 ? 0 : (total_abs / total) * 100, Color.RED));
+                pieData.add(new SliceValue(total_tar == 0 ? 0 :(total_tar / total) * 100, Color.parseColor("#FF8C00")));
+                attendace_show.setText( "attendance" + Float.toString(total_att == 0 ? 0 :(total_att / total) * 100) + " %");
+                absence_show.setText( "absence" + Float.toString(total_abs == 0 ? 0 :(total_abs / total) * 100) + " %");
+                tardiness.setText("tardiness" + Float.toString(total_tar == 0 ? 0 :(total_tar / total) * 100) + " %");
+            }catch (ArithmeticException e) {
+                e.printStackTrace();
+            }
             PieChartData pieChartData = new PieChartData(pieData);
             pieChartData.setHasLabels(true);
             //pieChartData.setHasCenterCircle(true).setCenterText1(" ").setCenterText1FontSize(20).setCenterText1Color(Color.parseColor("#0097A7"));
@@ -112,6 +218,7 @@ public class attendance extends AppCompatActivity {
             startActivity(intent);
             finish();
     }
+
 
    /*  public class AppbarChangeListener implements AppBarLayout.OnOffsetChangedListener {
 
@@ -147,4 +254,41 @@ public class attendance extends AppCompatActivity {
             go_back_button.startAnimation(alphaAnimation);
         }
     }*/
+
+   class Point {
+       public Point() {}
+       public Point(int att, int abs, int tard) {
+           this.att = att;
+           this.abs = abs;
+           this.tard = tard;
+       }
+
+       public int getAtt() {
+           return att;
+       }
+
+       public void setAtt(int att) {
+           this.att = att;
+       }
+
+       public int getAbs() {
+           return abs;
+       }
+
+       public void setAbs(int abs) {
+           this.abs = abs;
+       }
+
+       public int getTard() {
+           return tard;
+       }
+
+       public void setTard(int tard) {
+           this.tard = tard;
+       }
+
+       int att;
+       int abs;
+       int tard;
+   }
 }

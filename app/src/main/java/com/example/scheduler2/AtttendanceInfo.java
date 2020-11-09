@@ -62,7 +62,7 @@ public class AtttendanceInfo {
     public AtttendanceInfo(String class_name, String class_day, String room_number, String professor_name,String attendance, String absence, String tardiness) {
         this.class_name = class_name;
         this.attendance = attendance;
-        this.absence = attendance;
+        this.absence = absence;
         this.class_day = class_day;
         this.room_number = room_number;
         this.professor_name = professor_name;

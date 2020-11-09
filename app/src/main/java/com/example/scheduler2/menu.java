@@ -7,6 +7,7 @@ import androidx.cardview.widget.CardView;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -20,6 +21,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -33,7 +35,7 @@ public class menu extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference, databaseReference1;
-
+    public ArrayList<check_attendance_cons> check_attendance_list;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,18 +45,18 @@ public class menu extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference(firebaseAuth.getCurrentUser().getUid()).child("web_link");
-       Intent intent = new Intent(this, signIn.class);
+        Intent intent = new Intent(this, signIn.class);
 
-       // register_window button
+        // register_window button
         register_window = findViewById(R.id.register_card);
-        register_window.setOnClickListener(new View.OnClickListener(){
+        register_window.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent1 = new Intent(getApplicationContext(), courseList.class);
                 startActivity(intent1);
             }
         });
         schedule_window = findViewById(R.id.schedule_card);
-        schedule_window.setOnClickListener(new View.OnClickListener(){
+        schedule_window.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Intent intent1 = new Intent(getApplicationContext(), schedule.class);
                 startActivity(intent1);
@@ -78,11 +80,34 @@ public class menu extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        // attendance read database
+        databaseReference1 = firebaseDatabase.getReference(firebaseAuth.getCurrentUser().getUid());
+        check_attendance_list = new ArrayList<check_attendance_cons>();
+        databaseReference1.child("attendance").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    check_attendance_cons check = dataSnapshot.getValue(check_attendance_cons.class);
+                    check_attendance_list.add(new check_attendance_cons(check.getClass_name().toString(), check.getStatus().toString(), check.getDate().toString()));
+            }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
         attendance_window = findViewById(R.id.attendance_window);
         attendance_window.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), attendance.class);
+                Log.d(TAG, "sizeL: " + check_attendance_list.size());
+                Bundle bundle = new Bundle();
+
+                bundle.putSerializable("attendance_info", check_attendance_list);
+                intent.putExtras(bundle);
                 startActivity(intent);
             }
         });
@@ -122,10 +147,10 @@ public class menu extends AppCompatActivity {
                             intent.setData(Uri.parse(link));
                             startActivity(intent);
 
-                        }catch(NullPointerException e) {
-                           Toast.makeText(menu.this, "Please save your school webpage link at first", Toast.LENGTH_SHORT).show();
-                           Intent intent = new Intent(getApplicationContext(), webpage.class);
-                           startActivity(intent);
+                        } catch (NullPointerException e) {
+                            Toast.makeText(menu.this, "Please save your school webpage link at first", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(getApplicationContext(), webpage.class);
+                            startActivity(intent);
                         }
                     }
 
@@ -150,8 +175,6 @@ public class menu extends AppCompatActivity {
 
 
     }
-
-
     @Override
     public void onStart() {
         super.onStart();

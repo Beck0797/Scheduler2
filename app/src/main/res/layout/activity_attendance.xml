@@ -83,6 +83,7 @@
 
                                 </ListView>
                                 <TextView
+                                    android:id="@+id/attendance_show"
                                     android:layout_toEndOf="@id/attendance_list"
                                     android:paddingLeft="15dp"
                                     android:layout_width="350dp"
@@ -107,6 +108,7 @@
 
                                 </ListView>
                                 <TextView
+                                    android:id="@+id/absence_show"
                                     android:layout_toEndOf="@id/absence_list"
                                     android:paddingLeft="15dp"
                                     android:layout_width="350dp"
@@ -131,6 +133,7 @@
 
                                 </ListView>
                                 <TextView
+                                    android:id="@+id/tardiness_show"
                                     android:layout_toEndOf="@id/taridness_list"
                                     android:paddingLeft="15dp"
                                     android:layout_width="350dp"

@@ -1,6 +1,7 @@
 package com.example.scheduler2;
 
 import androidx.annotation.DimenRes;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,6 +15,13 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.View;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 
 public class Attendance_Detail extends AppCompatActivity {
@@ -21,6 +29,9 @@ public class Attendance_Detail extends AppCompatActivity {
     public int statues = 1;
     GridViewAdapter adapter;
     ArrayList<SatuesDates> names;
+    private FirebaseAuth firebaseAuth;
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference databaseReference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,15 +41,25 @@ public class Attendance_Detail extends AppCompatActivity {
         class_name = intent.getStringExtra("class_name").toString();
         absence_statues  = intent.getStringExtra("absence_statues").toString();
         attendance_statues = intent.getStringExtra("attendance_statues").toString();
-        names.add(new SatuesDates("10.25", "attendance"));
-        names.add(new SatuesDates("10.25", "attendance"));
-        names.add(new SatuesDates("10.25", "attendance"));
-        names.add(new SatuesDates("10.25", "attendance"));
-        names.add(new SatuesDates("10.25", "attendance"));
-        names.add(new SatuesDates("10.25", "attendance"));
-        names.add(new SatuesDates("10.25", "attendance"));
-        names.add(new SatuesDates("10.25", "attendance"));
-        names.add(new SatuesDates("10.25", "attendance"));
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference(firebaseAuth.getCurrentUser().getUid());
+        databaseReference.child("attendance").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot data: snapshot.getChildren()) {
+                    check_attendance_cons ch = data.getValue(check_attendance_cons.class);
+                    if(class_name.equals(ch.getClass_name())) {
+                        names.add(new SatuesDates(ch.getDate().toString(), ch.getStatus().toString()));
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
         RecyclerView recyclerView = findViewById(R.id.grid_recycler_view);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 4));

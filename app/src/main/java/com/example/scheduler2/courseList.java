@@ -117,11 +117,11 @@ public class courseList extends AppCompatActivity implements courses_adapter_dat
                     Course_Info courseinfo = data.getValue(Course_Info.class);
                     String start_time = courseinfo.getStart_time();
                     final String end_time = courseinfo.getEnd_time();
-                    Log.d(TAG, "class checking" + start_time);
+                    //Log.d(TAG, "class checking" + start_time);
                     final Double s_time = makeDouble(start_time);
                     final Double e_time = makeDouble(end_time);
-                    Log.d(TAG, "time checking" + s_time);
-                    Log.d(TAG, "time checking" + e_time);
+                    //Log.d(TAG, "time checking" + s_time);
+                    //Log.d(TAG, "time checking" + e_time);
                     ArrayList<
                             List<Double>> monClasses = new ArrayList<List<Double>>() {{
                         add(Arrays.<Double>asList(s_time, e_time));}};

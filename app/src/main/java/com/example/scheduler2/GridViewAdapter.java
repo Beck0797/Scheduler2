@@ -37,21 +37,24 @@ public class GridViewAdapter extends RecyclerView.Adapter<GridViewAdapter.ViewHo
     // binds the data to the TextView in each cell
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        SatuesDates taken_data = list.get(position);
-        holder.class_statues.setText(taken_data.getStatues());
-        holder.class_date.setText(taken_data.getDate());
-        if (obj.statues == 1) {
+        if(list.size() > 0) {
+            SatuesDates taken_data = list.get(position);
 
-            holder.gridLayout.setBackgroundResource(R.drawable.green_color);
-        } else {
-            holder.gridLayout.setBackgroundResource(R.drawable.red_color);
+            holder.class_date.setText(taken_data.getDate());
+            if (taken_data.getStatues().equals("attendance")) {
+                holder.class_statues.setText(taken_data.getStatues());
+                holder.gridLayout.setBackgroundResource(R.drawable.green_color);
+            } else {
+                holder.gridLayout.setBackgroundResource(R.drawable.red_color);
+                holder.class_statues.setText(taken_data.getStatues());
+            }
         }
     }
 
     // total number of cells
     @Override
     public int getItemCount() {
-        return 9;
+        return list.size();
     }
 
 

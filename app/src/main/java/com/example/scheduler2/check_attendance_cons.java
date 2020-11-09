@@ -1,6 +1,11 @@
 package com.example.scheduler2;
 
-public class check_attendance_cons {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.io.Serializable;
+
+public class check_attendance_cons implements Serializable {
 
     private String class_name;
     private String status;
@@ -11,6 +16,8 @@ public class check_attendance_cons {
         this.status = status;
         this.date = date;
     }
+
+
 
 
     public String getClass_name() {
