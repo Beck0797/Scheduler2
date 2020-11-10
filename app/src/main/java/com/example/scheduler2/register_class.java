@@ -59,6 +59,7 @@ public class register_class extends AppCompatActivity implements View.OnClickLis
     private EditText subject_namem,professor_name,room_number,webex_link;
     private String alarmTime, courseName;
     private int h, m, hS, mS;
+    private String time_s, time_e;
     Course_Info course_info;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,6 +158,8 @@ public class register_class extends AppCompatActivity implements View.OnClickLis
             return;
         }
         String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+        //String time_s = Integer.parseInt(time_start.getText().toString()) < 10 ? "0" + time_start.getText().toString() : time_start.getText().toString();
+        //String time_e = Integer.parseInt(time_end.getText().toString()) < 10 ? "0"
         course_info = new Course_Info(subject_namem.getText().toString(),  professor_name.getText().toString(), room_number.getText().toString(),
                 day, time_start.getText().toString(), time_end.getText().toString(), time_alarm.getText().toString(),webex_link.getText().toString(), date);
 
@@ -253,6 +256,7 @@ public class register_class extends AppCompatActivity implements View.OnClickLis
 
 
     public void backToCourseList(View view) {
+
         Intent i = new Intent(getApplicationContext(), courseList.class);
         startActivity(i);
         finish();

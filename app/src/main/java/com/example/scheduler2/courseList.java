@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
@@ -90,9 +91,6 @@ public class courseList extends AppCompatActivity implements courses_adapter_dat
                 adapter_data = new courses_adapter_data(getApplicationContext(), course_displays);
                 recyclerView.setAdapter(adapter_data);
                 adapter_data.setOnItemClickListener(courseList.this);
-
-
-
                 adapter_data.notifyDataSetChanged();
 
 
@@ -114,18 +112,23 @@ public class courseList extends AppCompatActivity implements courses_adapter_dat
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot data: snapshot.getChildren()) {
-                    Course_Info courseinfo = data.getValue(Course_Info.class);
-                    String start_time = courseinfo.getStart_time();
-                    final String end_time = courseinfo.getEnd_time();
-                    //Log.d(TAG, "class checking" + start_time);
-                    final Double s_time = makeDouble(start_time);
-                    final Double e_time = makeDouble(end_time);
-                    //Log.d(TAG, "time checking" + s_time);
-                    //Log.d(TAG, "time checking" + e_time);
-                    ArrayList<
-                            List<Double>> monClasses = new ArrayList<List<Double>>() {{
-                        add(Arrays.<Double>asList(s_time, e_time));}};
-                    myMap.put(courseinfo.getCourse_day().toString(), monClasses);
+                    try {
+                        Course_Info courseinfo = data.getValue(Course_Info.class);
+                        String start_time = courseinfo.getStart_time();
+                        String end_time = courseinfo.getEnd_time();
+                        //Log.d(TAG, "class checking" + start_time);
+                        final Double s_time = makeDouble(start_time);
+                        final Double e_time = makeDouble(end_time);
+                        //Log.d(TAG, "time checking" + s_time);
+                        //Log.d(TAG, "time checking" + e_time);
+                        ArrayList<
+                                List<Double>> monClasses = new ArrayList<List<Double>>() {{
+                            add(Arrays.<Double>asList(s_time, e_time));
+                        }};
+                        myMap.put(courseinfo.getCourse_day().toString(), monClasses);
+                    }catch(DatabaseException e) {
+                        e.printStackTrace();
+                    }
                 }
 
             }
@@ -137,7 +140,7 @@ public class courseList extends AppCompatActivity implements courses_adapter_dat
         });
     }
     public Double makeDouble(String time) {
-
+         //Log.d(TAG, "check extra: " + time);
         boolean half_done = false;
         String hour="";
         String minute="";

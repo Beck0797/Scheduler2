@@ -30,6 +30,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
@@ -251,9 +252,11 @@ public class profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     try {
-                        st_num st_num = snapshot.getValue(st_num.class);
-                        studentNumber.setText(st_num.getStudent_number().toString());
-                    }catch (NullPointerException e) {
+                        for(DataSnapshot ds : snapshot.getChildren()) {
+                            st_num st = ds.getValue(st_num.class);
+                            studentNumber.setText(st.getStudent_number().toString());
+                        }
+                    }catch (DatabaseException e) {
                         e.printStackTrace();
                     }
                 }
