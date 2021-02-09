@@ -21,7 +21,7 @@
         <ImageView
             android:id="@+id/profile_icon"
             android:background="@drawable/last_profile_icon"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_width="30dp"
             android:layout_height="30dp"/>
         <ImageView
@@ -30,7 +30,7 @@
             android:layout_width="30dp"
             android:onClick="onNotificationClicked"
             android:layout_height="30dp"
-            android:layout_alignParentRight="true"/>
+            android:layout_alignParentEnd="true"/>
         <TextView
             android:layout_centerInParent="true"
             android:layout_below="@id/profile_icon"
@@ -83,15 +83,14 @@
                     <ImageView
                         android:layout_width="60dp"
                         android:layout_height="60dp"
-                        android:layout_row="0"
-                        android:layout_column="0"
-                        android:src="@drawable/register_class" />
+                        android:src="@drawable/gradient_class" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="20dp"
+                        android:textSize="20sp"
                         android:fontFamily="sans-serif"
-                        android:textColor="#000"
+                        android:textStyle="bold"
+                        android:textColor="#5121A5"
                         android:textAlignment="center"
                         android:text="Class"
                         />
@@ -121,13 +120,14 @@
                     <ImageView
                         android:layout_width="60dp"
                         android:layout_height="60dp"
-                        android:src="@drawable/schedule" />
+                        android:src="@drawable/gradient_timetable" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="20dp"
                         android:fontFamily="sans-serif"
-                        android:textColor="#000"
+                        android:textStyle="bold"
+                        android:textColor="#5121A5"
                         android:textAlignment="center"
                         android:text="Timetable"
                         />
@@ -159,13 +159,14 @@
                     <ImageView
                         android:layout_width="60dp"
                         android:layout_height="60dp"
-                        android:src="@drawable/attendance" />
+                        android:src="@drawable/gradient_attendance" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="20dp"
                         android:fontFamily="sans-serif"
-                        android:textColor="#000"
+                        android:textStyle="bold"
+                        android:textColor="#5121A5"
                         android:textAlignment="center"
                         android:text="Attendance"
                         />
@@ -196,13 +197,14 @@
                     <ImageView
                         android:layout_width="60dp"
                         android:layout_height="60dp"
-                        android:src="@drawable/assignment" />
+                        android:src="@drawable/gradient_assignment" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="20dp"
                         android:fontFamily="sans-serif"
-                        android:textColor="#000"
+                        android:textStyle="bold"
+                        android:textColor="#5121A5"
                         android:textAlignment="center"
                         android:text="Assignment"
                         />
@@ -233,13 +235,14 @@
                     <ImageView
                         android:layout_width="55dp"
                         android:layout_height="55dp"
-                        android:src="@drawable/cyber_campus" />
+                        android:src="@drawable/gradient_homepage" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="20dp"
                         android:fontFamily="sans-serif"
-                        android:textColor="#000"
+                        android:textStyle="bold"
+                        android:textColor="#5121A5"
                         android:textAlignment="center"
                         android:text="School"
                         />
@@ -248,7 +251,8 @@
                         android:layout_height="wrap_content"
                         android:textSize="20dp"
                         android:fontFamily="sans-serif"
-                        android:textColor="#000"
+                        android:textStyle="bold"
+                        android:textColor="#5121A5"
                         android:textAlignment="center"
                         android:text="WebPage"
                         />
@@ -278,13 +282,14 @@
                     <ImageView
                         android:layout_width="60dp"
                         android:layout_height="60dp"
-                        android:src="@drawable/exit" />
+                        android:src="@drawable/gradient_exit" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="20dp"
                         android:fontFamily="sans-serif"
-                        android:textColor="#000"
+                        android:textStyle="bold"
+                        android:textColor="#5121A5"
                         android:textAlignment="center"
                         android:text="Exit"
                         />

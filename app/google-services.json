@@ -1,43 +1,33 @@
 {
   "project_info": {
-    "project_number": "953001093518",
-    "firebase_url": "https://scheduler-f2540.firebaseio.com",
-    "project_id": "scheduler-f2540",
-    "storage_bucket": "scheduler-f2540.appspot.com"
+    "project_number": "558538808948",
+    "project_id": "scheduler-68dfd",
+    "storage_bucket": "scheduler-68dfd.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:953001093518:android:293055df09eaa29b26dcdf",
+        "mobilesdk_app_id": "1:558538808948:android:4d6ad263b1272880a37b21",
         "android_client_info": {
-          "package_name": "com.example.scheduler2"
-
+          "package_name": "com.scheduler.beck"
         }
       },
       "oauth_client": [
         {
-          "client_id": "953001093518-13lsajk1m0t0v1rbcg6c99rk4sqgqqci.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.scheduler2",
-            "certificate_hash": "5c95165a92061b5ed383af7766305e10aaa0655a"
-          }
-        },
-        {
-          "client_id": "953001093518-7tf361f83virjc95sl55nk6eke4lko1i.apps.googleusercontent.com",
+          "client_id": "558538808948-o63ukhe30oism606e7nmuhmck1dvf8l7.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCa38iUFxnZGgOi4y_K2qWyLGpm1FZ0jp4"
+          "current_key": "AIzaSyBCQ1JosQKo0eo7F53x57cRTQye331CHHg"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "953001093518-7tf361f83virjc95sl55nk6eke4lko1i.apps.googleusercontent.com",
+              "client_id": "558538808948-o63ukhe30oism606e7nmuhmck1dvf8l7.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

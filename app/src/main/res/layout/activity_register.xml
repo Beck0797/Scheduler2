@@ -94,7 +94,6 @@
             android:layout_marginTop="30dp"
             android:background="@drawable/gradient_button_bg"
             android:text="Register"
-            android:onClick="onClick"
             android:textColor="#fff"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

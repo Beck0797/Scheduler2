@@ -33,7 +33,7 @@
             android:layout_marginTop="40dp"
             android:background="@drawable/edittextunderline"
             android:ems="10"
-            android:hint="Name"
+            android:hint="Email"
             android:inputType="textPersonName"
             android:paddingBottom="5dp"
             android:textSize="14sp"

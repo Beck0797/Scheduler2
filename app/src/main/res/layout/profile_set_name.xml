@@ -3,13 +3,12 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@drawable/round_edge"
+    android:layout_marginTop="30dp"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/circle"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         >
@@ -17,21 +16,14 @@
             android:id="@+id/edit_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:inputType="text"
             android:layout_marginTop="15dp"
+            android:background="@drawable/edittextunderline"
             android:padding="10dp"
-            android:background="@drawable/border"
             android:textAlignment="textStart"
-            android:hint="enter here"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="7dp"
-            android:background="#fff"
-            android:textAllCaps="true"
-            app:boxBackgroundMode="none"
-            android:textColor="#304fff"
-            android:text="user name" />
+            android:hint="username"/>
+
         <Button
             android:id="@+id/save_name"
             android:layout_width="100dp"
@@ -42,7 +34,7 @@
             android:layout_marginTop="15dp"
             android:layout_below="@+id/edit_name"
             android:background="@drawable/border"
-            android:text="save"
+            android:text="change"
 
 
             >
