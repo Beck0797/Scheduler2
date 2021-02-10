@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -33,19 +35,26 @@ public class webpage extends AppCompatActivity {
 
     }
 
-    public void backMenu(View view) {
+    public void backMenu() {
         Intent i = new Intent(getApplicationContext(), menu.class);
         startActivity(i);
         finish();
     }
 
     public void onClickLinkRegister(View view) {
-        webPageUrl = editTextWebPageLink.getText().toString();
+        webPageUrl = editTextWebPageLink.getText().toString().trim();
         if(webPageUrl.isEmpty()){
             Toast.makeText(this, "WebPage Url can not be empty", Toast.LENGTH_SHORT).show();
         }else{
             databaseReference.setValue(webPageUrl);
+            backMenu();
         }
 
+    }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        backMenu();
+        return true;
     }
 }

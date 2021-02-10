@@ -2,26 +2,21 @@ package com.scheduler.beck;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
+import androidx.core.app.ActivityCompat;
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.ScaleAnimation;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,9 +28,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class profile extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener, profile_setFragment.BottomSheetListener {
@@ -43,6 +35,8 @@ public class profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
     private static final float PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR  = 0.9f;
     private static final float PERCENTAGE_TO_HIDE_TITLE_DETAILS     = 0.3f;
     private static final int ALPHA_ANIMATIONS_DURATION              = 200;
+    public static final int GALLERY_INTENT_CALLED = 1;
+    public static final int GALLERY_KITKAT_INTENT_CALLED = 2;
     private FloatingActionButton floatingActionButton;
     private TextView text_title, go_back_button, go_back_button2, profileName, studentNumber;
     private AppBarLayout barLayout;
@@ -50,8 +44,6 @@ public class profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference myRef;
     private FirebaseStorage storage;
-    private StorageReference storageReference;
-    private Uri imageUrl;
     private boolean fabVisible = true;
     private int barOffset;
     protected boolean appBarLocked;
@@ -59,6 +51,9 @@ public class profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
     private boolean mIsTheTitleContainerVisible = true;
     private boolean mIsTheTitleVisible          = false;
     private LinearLayout setting_profile_name, setting_student_number;
+    private String imgName;
+    SharedPreferences sharedPref;
+    String imgUrl;
 
 
 
@@ -66,6 +61,9 @@ public class profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE}, PackageManager.PERMISSION_GRANTED);
 
         floatingActionButton = findViewById(R.id.add);
         barLayout = findViewById(R.id.app_bar_layout);
@@ -100,7 +98,17 @@ public class profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
         firebaseDatabase = FirebaseDatabase.getInstance();
         myRef = firebaseDatabase.getReference(firebaseAuth.getCurrentUser().getUid());
         storage = FirebaseStorage.getInstance();
-        storageReference = storage.getReference();
+
+        imgName =""+ firebaseAuth.getCurrentUser().getUid();
+        sharedPref = getSharedPreferences("prefs", Context.MODE_PRIVATE);
+        imgUrl = sharedPref.getString(imgName, "no");
+
+        if(!imgUrl.equals("no"))
+        {
+            Log.d("Url", imgUrl);
+            circleImageView.setImageURI(Uri.parse(imgUrl));
+        }
+
         displayProfileName(); // display profile name
         // set profile photo button
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
@@ -109,9 +117,6 @@ public class profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
                 openGallery();
             }
         });
-
-        // after image uploaded, then dispay
-       displayImage();
     }
     @Override
     public void onButtonClicked(String text) {
@@ -130,93 +135,48 @@ public class profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
         }
 
     }
-     private void displayImage() {
-        storageReference.child(firebaseAuth.getCurrentUser().getUid()).child("Profile_Image").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-             public void onSuccess( final Uri uri) {
-                // Picasso.with(getApplicationContext()).load(uri).fit().centerCrop().into(circleImageView);
-                Glide.with(getApplicationContext())
-                        .load(uri)
-                        .fitCenter()
-                        .centerCrop()
-                        .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                        .preload();
-                Glide.with(getApplicationContext())
-                        .load(uri)
-                        .fitCenter()
-                        .centerCrop()
-                        .diskCacheStrategy(DiskCacheStrategy.RESOURCE) // ALL works here too
-                        .into(circleImageView);
-             }
-         }).addOnFailureListener(new OnFailureListener() {
-             @Override
-             public void onFailure(@NonNull Exception exception) {
-                 // Handle any errors
-             }
-         });
-               /* Picasso.with(getApplicationContext())
-                        .load(uri)
-                        .networkPolicy(NetworkPolicy.OFFLINE)
-                        .into(circleImageView, new Callback() {
-                            @Override
-                            public void onSuccess() {
 
-                            }
-
-                            @Override
-                            public void onError() {
-                                //Try again online if cache failed
-                                Picasso.with(getApplicationContext())
-                                        .load(uri)
-                                        .error(R.drawable.icon_person)
-                                        .into(circleImageView, new Callback() {
-                                            @Override
-                                            public void onSuccess() {
-
-                                            }
-
-                                            @Override
-                                            public void onError() {
-                                                Log.v("Picasso", "Could not fetch image");
-                                            }
-                                        });
-                            }
-                        });*/
-
-     }
     private void openGallery() {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("image/*");
-        startActivityForResult(intent, 1);
+        if (Build.VERSION.SDK_INT <19){
+            Intent intent = new Intent();
+            intent.setType("*/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(intent, GALLERY_INTENT_CALLED);
+        } else {
+            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.setType("*/*");
+            startActivityForResult(intent, GALLERY_KITKAT_INTENT_CALLED);
+        }
 
     }
     // set image
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            Uri originalUri = null;
+            if (Build.VERSION.SDK_INT < 19) {
+                originalUri = data.getData();
+            } else {
+                originalUri = data.getData();
+                final int takeFlags = data.getFlags()
+                        & (Intent.FLAG_GRANT_READ_URI_PERMISSION
+                        | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 
-        if (requestCode == 1 && resultCode == RESULT_OK
-                && data != null && data.getData() != null) {
-            imageUrl = data.getData();
-            circleImageView.setImageURI(imageUrl);
-            uploadImage();
+                try {
+                    this.getContentResolver().takePersistableUriPermission(originalUri, takeFlags);
+                } catch (SecurityException e) {
+                    e.printStackTrace();
+                }
+            }
+            SharedPreferences.Editor editor = sharedPref.edit();
+            imgUrl = originalUri.toString();
+            editor.putString(imgName, imgUrl);
+            editor.apply();
+            circleImageView.setImageURI(originalUri);
         }
     }
-    private void uploadImage() {
-        StorageReference imageReference = storageReference.child(firebaseAuth.getCurrentUser().getUid()).child("Profile_Image");  //User id/Images/Profile Pic.jpg
-        UploadTask uploadTask = imageReference.putFile(imageUrl);
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getApplicationContext(), "Upload failed!", Toast.LENGTH_SHORT).show();
-            }
-        }).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                Toast.makeText(getApplicationContext(), "Upload successful!", Toast.LENGTH_SHORT).show();
-            }
-        });
 
-    }
        // display profile name
     private void displayProfileName() {
 
@@ -275,8 +235,6 @@ public class profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
         go_back_button.startAnimation(alphaAnimation);
     }
 
-
-
     private void handleToolbarTitleVisibility(float percentage) {
         if (percentage >= PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR) {
 
@@ -293,7 +251,6 @@ public class profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
             }
         }
     }
-
 
     @Override
     public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
@@ -316,8 +273,6 @@ public class profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
     }
 
 
-
-
     private void toggleButtons(boolean visible) {
         if (visible) {
             floatingActionButton.show();
@@ -332,17 +287,6 @@ public class profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
         }
 
         floatingActionButton.setClickable(visible);
-    }
-
-    public void scaleView(View v, float startScale, float endScale) {
-        Animation anim = new ScaleAnimation(
-                1f, 1f, // Start and end values for the X axis scaling
-                startScale, endScale, // Start and end values for the Y axis scaling
-                Animation.RELATIVE_TO_SELF, 0f, // Pivot point of X scaling
-                Animation.RELATIVE_TO_SELF, 1f); // Pivot point of Y scaling
-        anim.setFillAfter(true); // Needed to keep the result of the animation
-        anim.setDuration(1000);
-        v.startAnimation(anim);
     }
 
     public void logout_button(View view) {

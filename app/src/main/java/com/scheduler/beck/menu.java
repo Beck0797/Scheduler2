@@ -123,14 +123,14 @@ public class menu extends AppCompatActivity {
                 // check if user webPage attribute is empty. If it is, then register
                 Intent intent = new Intent(getApplicationContext(), webpage.class);
                 startActivity(intent);
+                finish();
 
                 return true;
             }
         });
         web_page.setOnClickListener(new View.OnClickListener() {
-
-
             public void onClick(View v) {
+                Toast.makeText(menu.this, "Long press to change the link", Toast.LENGTH_SHORT).show();
 
                 databaseReference.addValueEventListener(new ValueEventListener() {
                     @Override
