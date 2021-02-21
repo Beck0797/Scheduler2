@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:id="@+id/above_relayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/first_layout"
+    android:layout_marginTop="-1dp"
+    android:paddingLeft = "20dp"
+    android:paddingRight= "20dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical">
+        <!--      line -->
+        <LinearLayout
+            android:id="@+id/setting"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp">
+
+
+            <EditText
+                android:id="@+id/subject_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Course name"
+                android:background="@drawable/edittextunderline"
+                android:paddingStart="5dp"
+                android:paddingBottom="5dp"
+                android:textSize="16sp">
+
+            </EditText>
+        </LinearLayout>
+        <!--      line -->
+
+
+        <LinearLayout
+            android:id="@+id/login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp"
+
+            >
+
+
+            <EditText
+                android:id="@+id/professor_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Professor name"
+                android:paddingStart="5dp"
+                android:background="@drawable/edittextunderline"
+                android:paddingBottom="5dp"
+                android:textSize="16sp">
+
+            </EditText>
+        </LinearLayout>
+        <!--         line 3   -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp"
+
+            >
+
+            <EditText
+                android:id="@+id/room_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Classroom number (optional)"
+                android:inputType="number"
+                android:paddingStart="5dp"
+                android:background="@drawable/edittextunderline"
+                android:paddingBottom="5dp"
+                android:textSize="16sp">
+
+            </EditText>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+            <CheckBox
+                android:id="@+id/checkBoxMon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Mon"
+                android:checked="false"
+                android:layout_weight="1"
+                android:layout_marginTop="16dp"
+                android:textSize="16sp"
+                android:fontFamily="sans-serif"/>
+            <CheckBox
+                android:id="@+id/checkBoxTue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tue"
+                android:checked="false"
+                android:layout_weight="1"
+                android:layout_marginTop="16dp"
+                android:textSize="16sp"
+                android:fontFamily="sans-serif"/>
+            <CheckBox
+                android:id="@+id/checkBoxWed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Wed"
+                android:checked="false"
+                android:layout_weight="1"
+                android:layout_marginTop="16dp"
+                android:textSize="16sp"
+                android:fontFamily="sans-serif"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+                <CheckBox
+                    android:id="@+id/checkBoxThu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Thu"
+                    android:layout_weight="1"
+                    android:layout_marginTop="16dp"
+                    android:checked="false"
+                    android:textSize="16sp"
+                    android:fontFamily="sans-serif"/>
+                <CheckBox
+                    android:id="@+id/checkBoxFri"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Fri"
+                    android:checked="false"
+                    android:layout_weight="1"
+                    android:layout_marginTop="16dp"
+                    android:textSize="16sp"
+                    android:fontFamily="sans-serif"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp"
+
+            >
+
+
+            <EditText
+                android:id="@+id/webex_link"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter class webex link (optional)"
+                android:paddingStart="5dp"
+                android:background="@drawable/edittextunderline"
+                android:paddingBottom="5dp"
+                android:textSize="16sp">
+
+            </EditText>
+
+
+        </LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/above_relayout"
+            android:gravity="center"
+            >
+        <Button
+
+            android:id="@+id/btnCont"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:paddingBottom="5dp"
+            android:background="@drawable/gradient_button_bg"
+            android:text="Continue"
+            android:onClick="onBtnCont"
+            android:textColor="#fff" />
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Toast;
 
@@ -182,7 +183,7 @@ public class courseList extends AppCompatActivity implements courses_adapter_dat
     public void onWhatEverClick(int position) {
         Course_display selected_item = course_displays.get(position);
         Log.d(TAG, "this is course " + selected_item.getCourse_display_name());
-        Intent intent = new Intent(this, register_class.class);
+        Intent intent = new Intent(this, tasks.class);
         intent.putExtra("class_key", selected_item.getIdkey());
         intent.putExtra("class_name", selected_item.getCourse_display_name());
         intent.putExtra("class_day", selected_item.getCourse_day_name());
@@ -202,5 +203,15 @@ public class courseList extends AppCompatActivity implements courses_adapter_dat
         String selected_key = selected_item.getIdkey();
         databaseReference.child(selected_key).removeValue();
 
+    }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            onBack2ButtonClicked(null);
+            return true;
+
+        }
+        return super.onKeyDown( keyCode, event );
     }
 }

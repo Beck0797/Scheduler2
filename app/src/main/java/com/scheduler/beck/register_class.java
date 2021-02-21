@@ -1,6 +1,9 @@
 package com.scheduler.beck;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -9,6 +12,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -24,6 +28,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.net.CookieHandler;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,12 +39,11 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class register_class extends AppCompatActivity implements View.OnClickListener {
-    String[] days = new String[]{"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
+public class register_class extends AppCompatActivity{
     private TextView time_start, time_end, time_alarm;
     public static final String TAG = "register_class";
-
-    private Map<String, ArrayList<List<Double>>> myMap;
+    public static boolean isLastFrame;
+    public static Map<String, ArrayList<List<Double>>> myMap;
     private double startTime, endTime;
     String day;
     private FirebaseAuth firebaseAuth;
@@ -48,58 +52,43 @@ public class register_class extends AppCompatActivity implements View.OnClickLis
     private Spinner spinner;
     ArrayAdapter adapter;
     String recieved_key;
-    private   boolean done = false;
+    private boolean done = false;
     private DatabaseReference myRef;
-    private EditText subject_namem,professor_name,room_number,webex_link;
     private String alarmTime, courseName;
     private int h, m, hS, mS;
     private String time_s, time_e;
-    Course_Info course_info;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_class);
         // time picker
-
-        time_start  = (TextView)findViewById(R.id.time_start_select);
-        time_end  = (TextView)findViewById(R.id.time_end_select);
-        time_alarm  = (TextView)findViewById(R.id.alarm_select);
-        subject_namem = findViewById(R.id.subject_name);
-        professor_name = findViewById(R.id.professor_name);
-        room_number = findViewById(R.id.room_number);
-        webex_link = findViewById(R.id.webex_link);
-        time_start.setOnClickListener(this);
-        time_end.setOnClickListener(this);
-        time_alarm.setOnClickListener(this);
-//        courseName = subject_namem.getText().toString();
-
-        try {
-            Intent intent = getIntent();
-            recieved_key = intent.getStringExtra("class_key").toString();
-            Log.d(TAG, "id recieved here");
-            subject_namem.setText(intent.getStringExtra("class_name"));
-            professor_name.setText(intent.getStringExtra("class_professor"));
-            room_number.setText(intent.getStringExtra("class_room"));
-            time_start.setText(intent.getStringExtra("class_start_time"));
-            time_end.setText(intent.getStringExtra("class_end_time"));
-            time_alarm.setText(intent.getStringExtra("class_alarm_time"));
-            webex_link.setText(intent.getStringExtra("class_url_link"));
-            done = true;
+        init();
+        setFragment(1);
 
 
-        } catch (NullPointerException e) {
-            done = false;
-            System.err.println("Null pointer exception");
-        }
+//        try {
+//            Intent intent = getIntent();
+//            recieved_key = intent.getStringExtra("class_key").toString();
+//            Log.d(TAG, "id recieved here");
+//            subject_namem.setText(intent.getStringExtra("class_name"));
+//            professor_name.setText(intent.getStringExtra("class_professor"));
+//            room_number.setText(intent.getStringExtra("class_room"));
+//            time_start.setText(intent.getStringExtra("class_start_time"));
+//            time_end.setText(intent.getStringExtra("class_end_time"));
+//            time_alarm.setText(intent.getStringExtra("class_alarm_time"));
+//            webex_link.setText(intent.getStringExtra("class_url_link"));
+//            done = true;
+//
+//
+//        } catch (NullPointerException e) {
+//            done = false;
+//            System.err.println("Null pointer exception");
+//        }
 
 
 
-        firebaseAuth = FirebaseAuth.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        myRef = firebaseDatabase.getReference(firebaseAuth.getCurrentUser().getUid()).child("all_class");
 
-
-        myMap = new HashMap<>();
         //adding sample data
         /*ArrayList<
                 List<Double>> monClasses = new ArrayList<List<Double>>() {{
@@ -111,34 +100,10 @@ public class register_class extends AppCompatActivity implements View.OnClickLis
         myMap =(HashMap<String, ArrayList<List<Double>>>) getIntent().getSerializableExtra("hash_map");
 
         //myMap.put("Monday", monClasses); //
-
-        // to select days of week
-        spinner = (Spinner) findViewById(R.id.spinner_days);
-
-        ArrayList<String> plantList= new ArrayList<String>(Arrays.asList(days));
-        adapter = new ArrayAdapter(this,
-                android.R.layout.simple_spinner_item, plantList);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-
-        spinner.setSelected(true);
-        SpannerItem ob = new SpannerItem();
-        spinner.setOnItemSelectedListener(ob);
-
-
-
-
     }
     // save class info
     public void onClickInsertClass(View view) {
-        if(TextUtils.isEmpty(subject_namem.getText().toString())) {
-            Toast.makeText(getApplicationContext(), "enter class name", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if(TextUtils.isEmpty(professor_name.getText().toString())) {
-            Toast.makeText(getApplicationContext(), "enter professor name", Toast.LENGTH_SHORT).show();
-            return;
-        }
+
         if(TextUtils.isEmpty(time_start.getText().toString())) {
             Toast.makeText(getApplicationContext(), "select starting time", Toast.LENGTH_SHORT).show();
             return;
@@ -154,24 +119,21 @@ public class register_class extends AppCompatActivity implements View.OnClickLis
         String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
         //String time_s = Integer.parseInt(time_start.getText().toString()) < 10 ? "0" + time_start.getText().toString() : time_start.getText().toString();
         //String time_e = Integer.parseInt(time_end.getText().toString()) < 10 ? "0"
-        course_info = new Course_Info(subject_namem.getText().toString(),  professor_name.getText().toString(), room_number.getText().toString(),
-                day, time_start.getText().toString(), time_end.getText().toString(), time_alarm.getText().toString(),webex_link.getText().toString(), date);
 
-        courseName = subject_namem.getText().toString();
+//
+//        if(isOverlaps()){
+//            Toast.makeText(getApplicationContext(), "It overlaps with another class", Toast.LENGTH_SHORT).show();
+//            return;
+//        }else{
+//            if(done)
+//                myRef.child(recieved_key).setValue(course_info);
+//            else
+//                myRef.push().setValue(course_info);
+//            Toast.makeText(getApplicationContext(), "Class registered!", Toast.LENGTH_SHORT).show();
+//        }
 
-        if(isOverlaps()){
-            Toast.makeText(getApplicationContext(), "It overlaps with another class", Toast.LENGTH_SHORT).show();
-            return;
-        }else{
-            if(done)
-                myRef.child(recieved_key).setValue(course_info);
-            else
-                myRef.push().setValue(course_info);
-            Toast.makeText(getApplicationContext(), "Class registered!", Toast.LENGTH_SHORT).show();
-        }
-
-        setAlarm(day, h, m);
-        setAlarmStart(day, hS, mS);
+//        setAlarm(day, h, m);
+//        setAlarmStart(day, hS, mS);
         Toast.makeText(this, "Set alarm", Toast.LENGTH_SHORT).show();
 
 
@@ -179,41 +141,38 @@ public class register_class extends AppCompatActivity implements View.OnClickLis
 
     }
 
-    // time picker method
-    @Override
-    public void onClick(final View v) {
-        Calendar cal = Calendar.getInstance();
-        final int hour = cal.get(Calendar.HOUR_OF_DAY);
-        final int min = cal.get(Calendar.MINUTE);
+//    // time picker method
+//    @Override
+//    public void onClick(final View v) {
+//
+//    }
+    private void setFragment(int id) {
+        isLastFrame = true;
+        Fragment fragment = new Fragment();
 
-        TimePickerDialog timePickerDialog = new TimePickerDialog(register_class.this,
-                android.R.style.Theme_Holo_Light_Dialog_NoActionBar, new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                switch (v.getId()) {
-                    case R.id.time_start_select:
-                        String temp = "" + hourOfDay + "." + minute;
-                        startTime = Double.parseDouble(temp);
-                        time_start.setText(hourOfDay + ":" + minute);
-                        h = hourOfDay;
-                        m = minute;
-                        break;
-                    case R.id.time_end_select:
-                        String temp1 = "" + hourOfDay + "." + minute;
-                        endTime = Double.parseDouble(temp1);
-                        time_end.setText(hourOfDay + ":" + minute);
-                        break;
-                    case R.id.alarm_select:
-                        time_alarm.setText(hourOfDay + ":" + minute);
-                        hS = hourOfDay;
-                        mS = minute;
-                        break;
-                    default:
-                        break;
-                }
-            }
-        },hour,min,android.text.format.DateFormat.is24HourFormat(register_class.this));
-        timePickerDialog.show();
+        if(id == 2){
+            isLastFrame = false;
+            fragment = new tasks(2);
+        }else if(id == 1){
+            fragment = new tasks(1);
+        }
+
+        FragmentManager fragmentManager = this.getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.lytFrame, fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
+
+    private void init(){
+        isLastFrame = false;
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        myRef = firebaseDatabase.getReference(firebaseAuth.getCurrentUser().getUid()).child("all_class");
+
+
+        myMap = new HashMap<>();
     }
 
 
@@ -250,116 +209,42 @@ public class register_class extends AppCompatActivity implements View.OnClickLis
 
 
     public void backToCourseList(View view) {
+        if (isLastFrame) {
+            isLastFrame = false;
+            Intent i = new Intent(getApplicationContext(), courseList.class);
+            startActivity(i);
+            finish();
 
-        Intent i = new Intent(getApplicationContext(), courseList.class);
-        startActivity(i);
-        finish();
-    }
-    private void setAlarm(String day, int h, int m) {
-
-        Calendar currentDate = Calendar.getInstance();
-        switch (day){
-            case "Monday":
-                while (currentDate.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY) {
-                    currentDate.add(Calendar.DATE, 1);
-                }
-                break;
-            case "Tuesday":
-                while (currentDate.get(Calendar.DAY_OF_WEEK) != Calendar.TUESDAY) {
-                    currentDate.add(Calendar.DATE, 1);
-                }
-                break;
-            case "Wednesday":
-                while (currentDate.get(Calendar.DAY_OF_WEEK) != Calendar.WEDNESDAY) {
-                    currentDate.add(Calendar.DATE, 1);
-                }
-                break;
-            case "Friday":
-                while (currentDate.get(Calendar.DAY_OF_WEEK) != Calendar.FRIDAY) {
-                    currentDate.add(Calendar.DATE, 1);
-                }
-                break;
+        }else{
+            onBackPressed();
 
         }
 
-        currentDate.set(Calendar.HOUR_OF_DAY, h);
-        currentDate.set(Calendar.MINUTE, m);
-        currentDate.set(Calendar.SECOND, 0);
-        currentDate.set(Calendar.MILLISECOND, 0);
 
-        Intent intent = new Intent(getApplicationContext(), AlarmBrodcast.class);
-        intent.putExtra("class", courseName);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, 0);
-        AlarmManager am = (AlarmManager) getApplicationContext().getSystemService(ALARM_SERVICE);
-        am.setRepeating(AlarmManager.RTC_WAKEUP, currentDate.getTimeInMillis(), AlarmManager.INTERVAL_DAY * 7, pendingIntent);
-
-
-        // going back to assignment list after setting alarm
-        Intent i = new Intent(getApplicationContext(), courseList.class);
-        startActivity(i);
-        finish();
     }
 
-    private void setAlarmStart(String day, int h, int m) {
+    @Override
+    public void onBackPressed() {
+        if (isLastFrame) {
+                isLastFrame = false;
+                Intent i = new Intent(getApplicationContext(), courseList.class);
+                startActivity(i);
+                finish();
 
-        Calendar currentDate = Calendar.getInstance();
-        switch (day){
-            case "Monday":
-                while (currentDate.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY) {
-                    currentDate.add(Calendar.DATE, 1);
-                }
-                break;
-            case "Tuesday":
-                while (currentDate.get(Calendar.DAY_OF_WEEK) != Calendar.TUESDAY) {
-                    currentDate.add(Calendar.DATE, 1);
-                }
-                break;
-            case "Wednesday":
-                while (currentDate.get(Calendar.DAY_OF_WEEK) != Calendar.WEDNESDAY) {
-                    currentDate.add(Calendar.DATE, 1);
-                }
-                break;
-            case "Friday":
-                while (currentDate.get(Calendar.DAY_OF_WEEK) != Calendar.FRIDAY) {
-                    currentDate.add(Calendar.DATE, 1);
-                }
-                break;
+        }else{
+                isLastFrame = true;
+            super.onBackPressed();
+
 
         }
 
-        currentDate.set(Calendar.HOUR_OF_DAY, h);
-        currentDate.set(Calendar.MINUTE, m);
-        currentDate.set(Calendar.SECOND, 0);
-        currentDate.set(Calendar.MILLISECOND, 0);
 
-        Intent intent = new Intent(getApplicationContext(), StartAlarmBrodcast.class);
-        intent.putExtra("startClass", courseName);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, 0);
-        AlarmManager am = (AlarmManager) getApplicationContext().getSystemService(ALARM_SERVICE);
-        am.setRepeating(AlarmManager.RTC_WAKEUP, currentDate.getTimeInMillis(), AlarmManager.INTERVAL_DAY * 7, pendingIntent);
-
-
-        // going back to assignment list after setting alarm
-        Intent i = new Intent(getApplicationContext(), courseList.class);
-        startActivity(i);
-        finish();
     }
 
 
 
 
-    class SpannerItem implements  AdapterView.OnItemSelectedListener {
 
-        @Override
-        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            day = days[position];
-        }
 
-        @Override
-        public void onNothingSelected(AdapterView<?> parent) {
-
-        }
-
-    }
 
 }
