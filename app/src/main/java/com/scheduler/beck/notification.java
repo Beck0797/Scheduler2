@@ -16,6 +16,7 @@ public class notification extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ThemeUtils.onActivityCreateSetTheme(this);
         setContentView(R.layout.activity_notification);
 
         recyclerView = (RecyclerView) findViewById(R.id.notificationRecycler_view);

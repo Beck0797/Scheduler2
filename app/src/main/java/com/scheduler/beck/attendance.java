@@ -57,6 +57,7 @@ public class attendance extends AppCompatActivity {
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
+            ThemeUtils.onActivityCreateSetTheme(this);
             setContentView(R.layout.activity_attendance);
             // database initialize
             firebaseAuth = FirebaseAuth.getInstance();

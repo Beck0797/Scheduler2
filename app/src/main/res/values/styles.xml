@@ -33,7 +33,33 @@
         <item name="android:paddingTop">30dp</item>
         <item name="behavior_peekHeight">400dp</item>
 
+    </style>
+    <style name="FirstTheme" >
+        <item name="colorPrimary">@color/colorPrimary</item>
 
+    </style>
+    <style name="SecondTheme" >
+        <item name="colorPrimary">@color/colorPrimary2</item>
+
+    </style>
+    <style name="Thirdheme" >
+        <item name="colorPrimary">@color/colorPrimary3</item>
+
+    </style>
+    <style name="FourthTheme" >
+        <item name="colorPrimary">@color/colorPrimary4</item>
+
+    </style>
+    <style name="FifthTheme" >
+        <item name="colorPrimary">@color/colorPrimary5</item>
+
+    </style>
+    <style name="Sixthheme" >
+        <item name="colorPrimary">@color/colorPrimary6</item>
+
+    </style>
+    <style name="Seventhheme" >
+        <item name="colorPrimary">@color/colorPrimary7</item>
 
     </style>
 

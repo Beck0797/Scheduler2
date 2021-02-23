@@ -19,10 +19,6 @@ import android.os.Handler;
 
 public class MainActivity extends AppCompatActivity {
 
-    ImageView logo;
-    TextView name, slogan;
-    Animation topAnimation;
-    Animation bottomAnimation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,20 +28,6 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreferences sharedPref = getSharedPreferences("prefs", Context.MODE_PRIVATE);
         final String isSignedIn = sharedPref.getString("isSignedIn", "no");
-
-
-        topAnimation = AnimationUtils.loadAnimation(this, R.anim.top_animation);
-        bottomAnimation = AnimationUtils.loadAnimation(this, R.anim.bottom_animation);
-
-        name = findViewById(R.id.splashName);
-        slogan = findViewById(R.id.splashSlogan);
-
-        logo = findViewById(R.id.splashLogo);
-
-        logo.setAnimation(topAnimation);
-
-        name.setAnimation(bottomAnimation);
-        slogan.setAnimation(bottomAnimation);
 
 
         new Handler().postDelayed(new Runnable() {
@@ -61,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(mainIntent);
                 finish();
             }
-        }, 3300);
+        }, 1500);
     }
 
 

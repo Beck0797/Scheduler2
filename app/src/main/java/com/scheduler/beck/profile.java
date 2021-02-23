@@ -11,7 +11,9 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.widget.LinearLayout;
@@ -30,7 +32,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class profile extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener, profile_setFragment.BottomSheetListener {
+public class profile extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener, profile_setFragment.BottomSheetListener, View.OnClickListener {
 
     private static final float PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR  = 0.9f;
     private static final float PERCENTAGE_TO_HIDE_TITLE_DETAILS     = 0.3f;
@@ -60,10 +62,21 @@ public class profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ThemeUtils.onActivityCreateSetTheme(this);
+
         setContentView(R.layout.activity_profile);
 
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.READ_EXTERNAL_STORAGE}, PackageManager.PERMISSION_GRANTED);
+
+        findViewById(R.id.button1).setOnClickListener(this);
+        findViewById(R.id.button2).setOnClickListener(this);
+        findViewById(R.id.button3).setOnClickListener(this);
+        findViewById(R.id.button4).setOnClickListener(this);
+        findViewById(R.id.button5).setOnClickListener(this);
+        findViewById(R.id.button6).setOnClickListener(this);
+        findViewById(R.id.button7).setOnClickListener(this);
+
 
         floatingActionButton = findViewById(R.id.add);
         barLayout = findViewById(R.id.app_bar_layout);
@@ -299,6 +312,34 @@ public class profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
         startActivity(intent);
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId())
+        {
+            case R.id.button1:
+                ThemeUtils.changeToTheme(this, ThemeUtils.THEME_DEFAULT);
+                break;
+            case R.id.button2:
+                ThemeUtils.changeToTheme(this, ThemeUtils.THEME_WHITE);
+                break;
+            case R.id.button3:
+                ThemeUtils.changeToTheme(this, ThemeUtils.THEME_BLUE);
+                break;
+            case R.id.button4:
+                ThemeUtils.changeToTheme(this, ThemeUtils.THEME_4);
+                break;
+            case R.id.button5:
+                ThemeUtils.changeToTheme(this, ThemeUtils.THEME_5);
+                break;
+            case R.id.button6:
+                ThemeUtils.changeToTheme(this, ThemeUtils.THEME_6);
+                break;
+            case R.id.button7:
+                ThemeUtils.changeToTheme(this, ThemeUtils.THEME_7);
+                break;
+        }
+    }
+
     class ButtonClick implements  View.OnClickListener {
 
           @Override
@@ -317,6 +358,18 @@ public class profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
                }
           }
       }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            Intent intent1 = new Intent(profile.this, menu.class);
+            startActivity(intent1);
+            finish();
+        }
+        return false;
+    }
+
 
 
 }

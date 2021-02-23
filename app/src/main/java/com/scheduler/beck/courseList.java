@@ -43,6 +43,7 @@ public class courseList extends AppCompatActivity implements courses_adapter_dat
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ThemeUtils.onActivityCreateSetTheme(this);
         setContentView(R.layout.activity_course_list);
 
         recyclerView = (RecyclerView) findViewById(R.id.courseRecycler_view);

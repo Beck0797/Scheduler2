@@ -26,6 +26,7 @@ public class button_action extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ThemeUtils.onActivityCreateSetTheme(this);
         setContentView(R.layout.activity_button_action);
         Log.d(TAG, "button action ");
 

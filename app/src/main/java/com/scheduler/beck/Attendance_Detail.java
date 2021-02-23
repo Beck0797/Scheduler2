@@ -34,6 +34,7 @@ public class Attendance_Detail extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ThemeUtils.onActivityCreateSetTheme(this);
         setContentView(R.layout.activity_attendance__detail);
         names = new ArrayList<>();
         Intent intent = getIntent();
