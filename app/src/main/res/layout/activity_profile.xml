@@ -314,7 +314,7 @@
         android:layout_width="130dp"
         android:scaleType="centerCrop"
         android:layout_height="130dp"
-        android:src="@drawable/profile_icon"
+        android:src="@drawable/icon_profile"
         app:civ_border_color="?attr/colorPrimary"
         app:endXPosition="10dp"
         app:endYPosition="10dp"
