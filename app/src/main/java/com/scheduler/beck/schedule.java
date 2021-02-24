@@ -27,6 +27,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class schedule extends AppCompatActivity {
@@ -39,6 +41,7 @@ public class schedule extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
+    private Map<String, String> multipleClassColors;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +55,7 @@ public class schedule extends AppCompatActivity {
         popUpProfessor = findViewById(R.id.popUpProfessor);
         popUpTime = findViewById(R.id.popUpCourseTime);
         popUpClassroom = findViewById(R.id.popUpClassroom);
+        multipleClassColors = new HashMap<String, String>();
 
        /*
         professorName = initialize from database
@@ -75,7 +79,7 @@ public class schedule extends AppCompatActivity {
                    Pair<Integer, Integer> pair1 = pairFind(start_time);
                    Pair<Integer, Integer> pair2 = pairFind(end_time);
                    //Log.d( TAG, " this is " + pair1.first + " : " + pair1.second);
-                   addToTimeTable((int)pair1.first, (int)pair1.second, (int)pair2.first, (int)pair2.second, course_info.getCourse_day().toString(),
+                   addToTimeTable(course_info.isMultiple(), (int)pair1.first, (int)pair1.second, (int)pair2.first, (int)pair2.second, course_info.getCourse_day().toString(),
                            course_info.getProfessor_name().toString(), course_info.getCourse_name().toString(), course_info.getClassroom_number().toString());
 
                }
@@ -120,7 +124,7 @@ public class schedule extends AppCompatActivity {
         Pair<Integer, Integer> pair = new Pair<>(int_start_hour, int_start_min);
         return pair;
     }
-    void addToTimeTable(final int startTimeHour, final int startTimeMin, final int endTimeHour, final int endTimeMin, final String weekday,
+    void addToTimeTable(boolean isMultiple, final int startTimeHour, final int startTimeMin, final int endTimeHour, final int endTimeMin, final String weekday,
                         final String professorName, final String courseName, final String classroom){
         Log.d(TAG, "printing" + startTimeHour + " : " + startTimeMin + " and " + endTimeHour + " : " + endTimeMin);
         ArrayList<String> colorsList = new ArrayList<String>();
@@ -178,12 +182,31 @@ public class schedule extends AppCompatActivity {
         cN.setLayoutParams(params);
         v.addView(cN);
         v.addView(cR);
-
-        String color = colorsList.get(randomNum);
-        while(usedColors.contains(color)){
-            randomNum = rand.nextInt((10) + 1);
+        String color;
+        if(isMultiple){
+            if(isInList(courseName)){
+                //get Color
+               color = multipleClassColors.get(courseName);
+               //check if color is used
+            }else{
+                //if not in the list add to the list
+                color = colorsList.get(randomNum);
+                while(usedColors.contains(color)){
+                    randomNum = rand.nextInt((10) + 1);
+                    color = colorsList.get(randomNum);
+                }
+                multipleClassColors.put(courseName, color);
+                usedColors.add(color);
+            }
+        }else{
             color = colorsList.get(randomNum);
+            while(usedColors.contains(color)){
+                randomNum = rand.nextInt((10) + 1);
+                color = colorsList.get(randomNum);
+            }
         }
+
+
 
         v.setBackgroundColor(Color.parseColor(color));
         usedColors.add(color);
@@ -247,6 +270,10 @@ public class schedule extends AppCompatActivity {
         });
         myLayout.addView(v);
 
+    }
+
+    private boolean isInList(String courseName) {
+        return multipleClassColors.containsKey(courseName);
     }
 
     public void backToMenu(View view) {

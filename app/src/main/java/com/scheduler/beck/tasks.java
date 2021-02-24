@@ -52,8 +52,8 @@ public class tasks extends Fragment implements View.OnClickListener {
     private boolean done = false;
     private EditText subject_namem,professor_name,room_number,webex_link;
     private Course_Info course_info;
-    String roomNumber, webPageLink, sub_name, pf_name;
-    private boolean isMultiple;
+    private  static String roomNumber, webPageLink, sub_name, pf_name;
+    private static boolean isMultiple;
     private int h, m, hS, mS;
     private double startTime, endTime;
 
@@ -272,6 +272,7 @@ public class tasks extends Fragment implements View.OnClickListener {
             i++;
             days.add(5);
         }
+        Log.d("IsMuull", "I is : " + i);
         if(i > 1) {
             isMultiple = true;
         }
@@ -281,6 +282,8 @@ public class tasks extends Fragment implements View.OnClickListener {
     }
 
     private void createCourses() {
+        Log.d("IsMuull", "I is : " + isMultiple);
+
         for(int i : days){
             if(i == 1){
                 saveCourse("Monday",
@@ -289,57 +292,60 @@ public class tasks extends Fragment implements View.OnClickListener {
                                 pf_name,
                                 roomNumber,
                                 "Monday",
-                                webPageLink,
-                                isMultiple,
                                 M_time_start.getText().toString().trim(),
                                 M_time_end.getText().toString().trim(),
-                                M_time_alarm.getText().toString().trim()
+                                M_time_alarm.getText().toString().trim(),
+                                webPageLink,
+                                isMultiple
                         )
-                        );
+                );
             }
             if(i == 2){
-                course_info = new Course_Info(
-                        sub_name,
-                        pf_name,
-                        roomNumber,
-                        "Tuesday",
-                        webPageLink,
-                        isMultiple,
-                        T_time_start.getText().toString().trim(),
-                        T_time_end.getText().toString().trim(),
-                        T_time_alarm.getText().toString().trim()
+                saveCourse("Tuesday",
+                        new Course_Info(
+                                sub_name,
+                                pf_name,
+                                roomNumber,
+                                "Tuesday",
+                                T_time_start.getText().toString().trim(),
+                                T_time_end.getText().toString().trim(),
+                                T_time_alarm.getText().toString().trim(),
+                                webPageLink,
+                                isMultiple
+                        )
                 );
-                saveCourse("Tuesday", course_info);
 
             }
             if(i == 3){
-                course_info = new Course_Info(
-                        sub_name,
-                        pf_name,
-                        roomNumber,
-                        "Wednesday",
-                        webPageLink,
-                        isMultiple,
-                        W_time_start.getText().toString().trim(),
-                        W_time_end.getText().toString().trim(),
-                        W_time_alarm.getText().toString().trim()
+                saveCourse("Wednesday",
+                        new Course_Info(
+                                sub_name,
+                                pf_name,
+                                roomNumber,
+                                "Wednesday",
+                                W_time_start.getText().toString().trim(),
+                                W_time_end.getText().toString().trim(),
+                                W_time_alarm.getText().toString().trim(),
+                                webPageLink,
+                                isMultiple
+                        )
                 );
-                saveCourse("Wednesday", course_info);
 
             }
             if(i == 4){
-                course_info = new Course_Info(
-                        sub_name,
-                        pf_name,
-                        roomNumber,
-                        "Thursday",
-                        webPageLink,
-                        isMultiple,
-                        Th_time_alarm.getText().toString().trim(),
-                        Th_time_end.getText().toString().trim(),
-                        Th_time_alarm.getText().toString().trim()
+                saveCourse("Thursday",
+                        new Course_Info(
+                                sub_name,
+                                pf_name,
+                                roomNumber,
+                                "Thursday",
+                                Th_time_start.getText().toString().trim(),
+                                Th_time_end.getText().toString().trim(),
+                                Th_time_alarm.getText().toString().trim(),
+                                webPageLink,
+                                isMultiple
+                        )
                 );
-                saveCourse("Thursday", course_info);
 
             }
             if(i == 5){
@@ -349,19 +355,15 @@ public class tasks extends Fragment implements View.OnClickListener {
                                 pf_name,
                                 roomNumber,
                                 "Friday",
-                                webPageLink,
-                                isMultiple,
-                                F_time_alarm.getText().toString().trim(),
+                                F_time_start.getText().toString().trim(),
                                 F_time_end.getText().toString().trim(),
-                                F_time_alarm.getText().toString().trim()
+                                F_time_alarm.getText().toString().trim(),
+                                webPageLink,
+                                isMultiple
                         )
-                        );
+                );
 
             }
-
-
-
-
         }
 
     }
@@ -370,19 +372,43 @@ public class tasks extends Fragment implements View.OnClickListener {
         if(isOverlaps(day)){
             Toast.makeText(getContext(), "It overlaps with another class", Toast.LENGTH_SHORT).show();
             return;
-        }else{
-            if(done)
+        }
+        else{
+            if(done){
                 myRef.child(recieved_key).setValue(course_inform);
-            else
+
+            }
+            else{
                 myRef.push().setValue(course_inform);
+
+            }
             Toast.makeText(getContext(), "Class registered!", Toast.LENGTH_SHORT).show();
         }
 
-        setAlarm(day, h, m);
-        setAlarmStart(day, hS, mS);
-        Toast.makeText(getActivity(), "Set alarm", Toast.LENGTH_SHORT).show();
-        Toast.makeText(getActivity(), "Registered!", Toast.LENGTH_SHORT).show();
+//        setAlarm(day, h, m);
+//        setAlarmStart(day, hS, mS);
+//        Toast.makeText(getActivity(), "Set alarm", Toast.LENGTH_SHORT).show();
+//        Log.d("Course Information", "\n\n\nare:\n" +
+//                "" + course_inform.getProfessor_name() +
+//                "\n" +course_inform.getCourse_name()+
+//                "\n" +course_inform.getClassroom_number()+
+//                "\n" +course_inform.getStart_time()+
+//                "\n" +course_inform.getEnd_time()+
+//                "\n" +course_inform.getAlarm_time()+
+//                "\n" +course_inform.getUrl_name()+
+//                "\n" +course_inform.isMultiple()+
+//                "\n" +course_inform.getCourse_day()+
+//                "\n\n\n");
 
+
+        Toast.makeText(getActivity(), "Registered!", Toast.LENGTH_SHORT).show();
+        goToCourseList();
+
+    }
+
+    private void goToCourseList() {
+        startActivity(new Intent(getContext(), courseList.class));
+        getActivity().finish();
     }
 
     private boolean checkFields() {
@@ -400,10 +426,10 @@ public class tasks extends Fragment implements View.OnClickListener {
         }
         webPageLink = webex_link.getText().toString().trim();
         roomNumber = room_number.getText().toString().trim();
-        if(webPageLink.isEmpty()){
+        if(webPageLink.equals("")){
             webPageLink = null;
         }
-        if(roomNumber.isEmpty()){
+        if(roomNumber.equals("")){
             roomNumber = null;
         }
         return true;

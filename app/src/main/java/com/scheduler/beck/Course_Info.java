@@ -1,7 +1,5 @@
 package com.scheduler.beck;
 
-
-
 public class Course_Info {
     private String course_name;
     private String professor_name;
@@ -22,17 +20,18 @@ public class Course_Info {
 //        this.current_date = current_date;
 //    }
 
-    public Course_Info(String course_name, String professor_name, String classroom_number, String course_day, String url_name, boolean isMultiple, String start_time, String end_time, String alarm_time) {
+    public Course_Info(String course_name, String professor_name, String classroom_number, String course_day, String start_time, String end_time, String alarm_time, String url_name, boolean isMultiple) {
         this.course_name = course_name;
         this.professor_name = professor_name;
         this.classroom_number = classroom_number;
         this.course_day = course_day;
-        this.url_name = url_name;
-        this.isMultiple = isMultiple;
         this.start_time = start_time;
         this.end_time = end_time;
         this.alarm_time = alarm_time;
+        this.url_name = url_name;
+        this.isMultiple = isMultiple;
     }
+
 
 //    public Course_Info(String course_name, String professor_name, String classroom_number, String course_day, String start_time, String end_time, String alarm_time, String url_name, String current_date) {
 //        this.course_name = course_name;

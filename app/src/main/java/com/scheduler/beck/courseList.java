@@ -68,14 +68,15 @@ public class courseList extends AppCompatActivity implements courses_adapter_dat
                     try {
                         Course_Info course_info = data.getValue(Course_Info.class);
 
+                        assert course_info != null;
                         String fetch_course_name = course_info.getCourse_name().toString();
                         String fetch_course_day = course_info.getCourse_day().toString();
                         String fetch_course_classroom = course_info.getClassroom_number().toString();
                         String fetch_course_professor = course_info.getProfessor_name().toString();
-                        //Log.d(TAG, "class name: " + fetch_course_name);
-                        //Log.d(TAG, "class name: " + fetch_course_day);
-                        //Log.d(TAG, "class name: " + fetch_course_classroom);
-                        //Log.d(TAG, "class name: " + fetch_course_professor);
+                        Log.d(TAG, "class name: " + fetch_course_name);
+                        Log.d(TAG, "class name: " + fetch_course_day);
+                        Log.d(TAG, "class name: " + fetch_course_classroom);
+                        Log.d(TAG, "class name: " + fetch_course_professor);
                         Course_display course = new Course_display(data.getKey(), fetch_course_name, fetch_course_day, fetch_course_classroom, fetch_course_professor,
                                 course_info.getStart_time().toString(), course_info.getEnd_time().toString(), course_info.getAlarm_time(), course_info.getUrl_name().toString());
 
