@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gradient_background"
-    tools:context=".menu">
+    tools:context=".MenuActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -277,12 +277,21 @@
                     android:gravity="center"
                     android:orientation="vertical"
                     android:layout_marginTop="20dp"
-                    android:layout_marginBottom="20dp">
+                    >
 
                     <ImageView
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:src="@drawable/ic_exit" />
+                    <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif"
+                    android:text="Exit"
+                    android:textAlignment="center"
+                    android:textColor="#000"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -291,7 +300,7 @@
                         android:textStyle="bold"
                         android:textColor="#000"
                         android:textAlignment="center"
-                        android:text="Exit"
+                        android:text=""
                         />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>

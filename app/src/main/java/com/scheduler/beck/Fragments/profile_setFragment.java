@@ -1,4 +1,4 @@
-package com.scheduler.beck;
+package com.scheduler.beck.Fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -16,40 +16,40 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.scheduler.beck.R;
+import com.scheduler.beck.Models.Upload;
 
-public class profile_stnumberFragment extends BottomSheetDialogFragment {private profile_setFragment.BottomSheetListener mListener;
-    private EditText user_student_number;
+public class profile_setFragment extends BottomSheetDialogFragment {
+    private BottomSheetListener mListener;
+    private EditText user_name;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.profile_student_number, container, false);
+        View v = inflater.inflate(R.layout.profile_set_name, container, false);
         getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        user_student_number = v.findViewById(R.id.edit_student_number);
-        Button save = v.findViewById(R.id.save_student_number);
+        user_name = v.findViewById(R.id.edit_name);
+        Button save = v.findViewById(R.id.save_name);
 
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
                 FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-                DatabaseReference databaseReference = firebaseDatabase.getReference(firebaseAuth.getCurrentUser().getUid());
-                if(!user_student_number.getText().toString().isEmpty()) {
-                    st_num st_n = new st_num(user_student_number.getText().toString());
-
-
-
-                    databaseReference.child("student_number").setValue(st_n);
+                DatabaseReference databaseReference = firebaseDatabase.getReference(firebaseAuth.getCurrentUser().getUid()).child("user_name");
+                if(!user_name.getText().toString().isEmpty()) {
+                    Upload userProfile = new Upload(user_name.getText().toString());
+                    databaseReference.setValue(userProfile);
                     Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            mListener.onButtonClicked("saving your student number");
+                            mListener.onButtonClicked("saving your name");
 
                         }
                     }, 2000);
                     dismiss();
                 } else {
-                    mListener.onButtonClicked("please enter your student number");
+                    mListener.onButtonClicked("please enter your name");
                 }
             }
         });
@@ -62,7 +62,7 @@ public class profile_stnumberFragment extends BottomSheetDialogFragment {private
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            mListener = (profile_setFragment.BottomSheetListener) context;
+            mListener = (BottomSheetListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString()
                     + " must implement BottomSheetListener");

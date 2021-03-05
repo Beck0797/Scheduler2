@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:id="@+id/relativeLayoutSchedule"
     android:layout_height="match_parent"
-    tools:context=".schedule"
+    tools:context=".TimetableActivity"
     android:orientation="vertical"
     android:padding="0dp" >
 

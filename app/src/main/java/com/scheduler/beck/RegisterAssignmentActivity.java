@@ -26,12 +26,14 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.scheduler.beck.Alarm.AlarmBrodcast;
+import com.scheduler.beck.Alarm.AttendanceAlarmBroadcast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.kevalpatel.ringtonepicker.RingtonePickerDialog;
 import com.kevalpatel.ringtonepicker.RingtonePickerListener;
+import com.scheduler.beck.Models.AssignmentCons;
+import com.scheduler.beck.Utils.ThemeUtils;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -42,7 +44,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class addAssignment extends AppCompatActivity  implements View.OnClickListener {
+public class RegisterAssignmentActivity extends AppCompatActivity  implements View.OnClickListener {
     public static final String TAG = "addAssignment.this";
     private TextView btnTime_start_select, btnAlarm_select, btnChooseSound, btnAddAssignmentDateselect, btnAddAssignmentAlarmDateselect;
     private Uri mCurrentSelectedUri;
@@ -62,6 +64,7 @@ public class addAssignment extends AppCompatActivity  implements View.OnClickLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ThemeUtils.onActivityCreateSetTheme(this);
         setContentView(R.layout.activity_add_assignment);
 
         // firesbase setup
@@ -88,7 +91,7 @@ public class addAssignment extends AppCompatActivity  implements View.OnClickLis
             @Override
             public boolean onLongClick(View v) {
                 btnAddAssignmentDateselect.setText("");
-                Toast.makeText(addAssignment.this, "Choose Date from Calendar", Toast.LENGTH_SHORT).show();
+                Toast.makeText(RegisterAssignmentActivity.this, "Choose Date from Calendar", Toast.LENGTH_SHORT).show();
                 isAssignmentDate = true;
                 return true;
             }
@@ -98,7 +101,7 @@ public class addAssignment extends AppCompatActivity  implements View.OnClickLis
             @Override
             public boolean onLongClick(View v) {
                 btnAddAssignmentAlarmDateselect.setText("");
-                Toast.makeText(addAssignment.this, "Choose Date from Calendar", Toast.LENGTH_SHORT).show();
+                Toast.makeText(RegisterAssignmentActivity.this, "Choose Date from Calendar", Toast.LENGTH_SHORT).show();
                 isAlarmDate = true;
                 return true;
             }
@@ -163,7 +166,7 @@ public class addAssignment extends AppCompatActivity  implements View.OnClickLis
         final int hour = cal.get(Calendar.HOUR_OF_DAY);
         final int min = cal.get(Calendar.MINUTE);
 
-        TimePickerDialog timePickerDialog = new TimePickerDialog(addAssignment.this,
+        TimePickerDialog timePickerDialog = new TimePickerDialog(RegisterAssignmentActivity.this,
                 android.R.style.Theme_Holo_Light_Dialog_NoActionBar, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -183,19 +186,19 @@ public class addAssignment extends AppCompatActivity  implements View.OnClickLis
                         break;
                 }
             }
-        }, hour, min, android.text.format.DateFormat.is24HourFormat( addAssignment.this));
+        }, hour, min, android.text.format.DateFormat.is24HourFormat( RegisterAssignmentActivity.this));
         timePickerDialog.show();
     }
 
     public void choose_audio(View view) {
 
         //Application needs read storage permission for Builder.TYPE_MUSIC .
-        if (ActivityCompat.checkSelfPermission(addAssignment.this,
+        if (ActivityCompat.checkSelfPermission(RegisterAssignmentActivity.this,
                 Manifest.permission.READ_EXTERNAL_STORAGE)
                 == PackageManager.PERMISSION_GRANTED) {
 
             RingtonePickerDialog.Builder ringtonePickerBuilder = new RingtonePickerDialog
-                    .Builder(addAssignment.this, getSupportFragmentManager())
+                    .Builder(RegisterAssignmentActivity.this, getSupportFragmentManager())
 
                     //Set title of the dialog.
                     //If set null, no title will be displayed.
@@ -239,7 +242,7 @@ public class addAssignment extends AppCompatActivity  implements View.OnClickLis
             ringtonePickerBuilder.show();
         } else {
             Toast.makeText(this, "Permission not granted!", Toast.LENGTH_SHORT).show();
-            ActivityCompat.requestPermissions(addAssignment.this,
+            ActivityCompat.requestPermissions(RegisterAssignmentActivity.this,
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     123);
         }
@@ -251,7 +254,7 @@ public class addAssignment extends AppCompatActivity  implements View.OnClickLis
             Toast.makeText(this, "Enter Assignment title", Toast.LENGTH_SHORT).show();
         }else{
             setAlarm(alarmDate, alarmTime);
-            Toast.makeText(addAssignment.this, "Alarm set to " + alarmDate + " " + alarmTime, Toast.LENGTH_SHORT).show();
+            Toast.makeText(RegisterAssignmentActivity.this, "Alarm set to " + alarmDate + " " + alarmTime, Toast.LENGTH_SHORT).show();
 
         }
 
@@ -285,7 +288,7 @@ public class addAssignment extends AppCompatActivity  implements View.OnClickLis
     }
 
     public void onBackButtonClicked(View view) {
-        Intent i = new Intent(getApplicationContext(), assignment.class);
+        Intent i = new Intent(getApplicationContext(), AssignmentActivity.class);
         startActivity(i);
         finish();
     }
@@ -293,7 +296,7 @@ public class addAssignment extends AppCompatActivity  implements View.OnClickLis
     private void setAlarm(String date, String time) {
 
         AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(getApplicationContext(), AlarmBrodcast.class);
+        Intent intent = new Intent(getApplicationContext(), AttendanceAlarmBroadcast.class);
 
         intent.putExtra("title", title);
         intent.putExtra("courseName", courseName);
@@ -311,7 +314,7 @@ public class addAssignment extends AppCompatActivity  implements View.OnClickLis
             e.printStackTrace();
         }
         // going back to assignment list after setting alarm
-        Intent i = new Intent(getApplicationContext(), assignment.class);
+        Intent i = new Intent(getApplicationContext(), AssignmentActivity.class);
         startActivity(i);
         finish();
     }

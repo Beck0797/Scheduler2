@@ -1,4 +1,4 @@
-package com.scheduler.beck;
+package com.scheduler.beck.Fragments;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -26,14 +26,19 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.scheduler.beck.Alarm.AlarmBrodcast;
+import com.scheduler.beck.Alarm.AttendanceAlarmBroadcast;
 import com.scheduler.beck.Alarm.StartAlarmBrodcast;
+import com.scheduler.beck.Models.Course_Info;
+import com.scheduler.beck.R;
+import com.scheduler.beck.courseList;
+import com.scheduler.beck.RegisterClassActivity;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 import static android.content.Context.ALARM_SERVICE;
+import static com.scheduler.beck.RegisterClassActivity.myMap;
 
 public class tasks extends Fragment implements View.OnClickListener {
     private static final String TAG = "" ;
@@ -48,14 +53,17 @@ public class tasks extends Fragment implements View.OnClickListener {
     CheckBox Mon, Tue, Wed, Thu, Fri;
     Button btnContinue, btnRegister;
     LinearLayout linLytMon, linLytTue, linLytWed, linLytThu, linLytFri;
-    String recieved_key;
-    private boolean done = false;
+    private static String recieved_key;
+    private static boolean done;
     private EditText subject_namem,professor_name,room_number,webex_link;
     private Course_Info course_info;
     private  static String roomNumber, webPageLink, sub_name, pf_name;
     private static boolean isMultiple;
+    private static boolean firstOfTwoIsDone;
+
     private int h, m, hS, mS;
     private double startTime, endTime;
+    private Intent intents;
 
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
@@ -66,8 +74,10 @@ public class tasks extends Fragment implements View.OnClickListener {
 
 
 
-    public tasks(int id) {
+    public tasks(int id, Intent intent) {
         this.id = id;
+        this.intents = intent;
+
     }
 
     @Nullable
@@ -79,25 +89,6 @@ public class tasks extends Fragment implements View.OnClickListener {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         myRef = firebaseDatabase.getReference(firebaseAuth.getCurrentUser().getUid()).child("all_class");
-
-        try {
-            Intent intent = getActivity().getIntent();
-            recieved_key = intent.getStringExtra("class_key").toString();
-            Log.d(TAG, "id recieved here");
-            subject_namem.setText(intent.getStringExtra("class_name"));
-            professor_name.setText(intent.getStringExtra("class_professor"));
-            room_number.setText(intent.getStringExtra("class_room"));
-            webex_link.setText(intent.getStringExtra("class_url_link"));
-            done = true;
-
-
-        } catch (NullPointerException e) {
-            done = false;
-            System.err.println("Null pointer exception");
-        }
-
-
-
 
         if (this.id == 2) {
             view = inflater.inflate(R.layout.layout2, container, false);
@@ -372,22 +363,21 @@ public class tasks extends Fragment implements View.OnClickListener {
         if(isOverlaps(day)){
             Toast.makeText(getContext(), "It overlaps with another class", Toast.LENGTH_SHORT).show();
             return;
-        }
-        else{
+        }else{
             if(done){
                 myRef.child(recieved_key).setValue(course_inform);
-
             }
+
             else{
                 myRef.push().setValue(course_inform);
-
             }
+
             Toast.makeText(getContext(), "Class registered!", Toast.LENGTH_SHORT).show();
         }
 
-//        setAlarm(day, h, m);
-//        setAlarmStart(day, hS, mS);
-//        Toast.makeText(getActivity(), "Set alarm", Toast.LENGTH_SHORT).show();
+        setAttendanceAlarm(day, h, m);
+        setAlarmStart(day, hS, mS);
+        Toast.makeText(getActivity(), "Set alarm", Toast.LENGTH_SHORT).show();
 //        Log.d("Course Information", "\n\n\nare:\n" +
 //                "" + course_inform.getProfessor_name() +
 //                "\n" +course_inform.getCourse_name()+
@@ -401,7 +391,6 @@ public class tasks extends Fragment implements View.OnClickListener {
 //                "\n\n\n");
 
 
-        Toast.makeText(getActivity(), "Registered!", Toast.LENGTH_SHORT).show();
         goToCourseList();
 
     }
@@ -412,6 +401,13 @@ public class tasks extends Fragment implements View.OnClickListener {
     }
 
     private boolean checkFields() {
+        if(isMultiple && done){
+            Toast.makeText(getActivity(), "Can not be updated for multiple days!", Toast.LENGTH_SHORT).show();
+            isMultiple = false;
+            setCheckBoxUnchecked();
+            return false;
+        }
+
         if(TextUtils.isEmpty(subject_namem.getText().toString())) {
             Toast.makeText(getActivity(), "enter class name", Toast.LENGTH_SHORT).show();
             return false;
@@ -427,22 +423,32 @@ public class tasks extends Fragment implements View.OnClickListener {
         webPageLink = webex_link.getText().toString().trim();
         roomNumber = room_number.getText().toString().trim();
         if(webPageLink.equals("")){
-            webPageLink = null;
+            webPageLink = "not given";
         }
         if(roomNumber.equals("")){
-            roomNumber = null;
+            roomNumber = "not given";
         }
         return true;
     }
 
+    private void setCheckBoxUnchecked() {
+        Mon.setChecked(false);
+        Tue.setChecked(false);
+        Wed.setChecked(false);
+        Thu.setChecked(false);
+        Fri.setChecked(false);
+        days = new ArrayList<>();
+
+    }
+
     private void initFragment2() {
-        Fragment fragment = new com.scheduler.beck.tasks(2);
+        Fragment fragment = new tasks(2, null);
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.lytFrame, fragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
-        register_class.isLastFrame = false;
+        RegisterClassActivity.isLastFrame = false;
 
     }
 
@@ -463,11 +469,28 @@ public class tasks extends Fragment implements View.OnClickListener {
 
         course_info = new Course_Info();
         isMultiple = false;
+        firstOfTwoIsDone = false;
+
+
+        try {
+            recieved_key = intents.getStringExtra("class_key").toString();
+            subject_namem.setText(intents.getStringExtra("class_name"));
+            professor_name.setText(intents.getStringExtra("class_professor"));
+            room_number.setText(intents.getStringExtra("class_room"));
+            webex_link.setText(intents.getStringExtra("class_url_link"));
+            done = true;
+
+
+
+        } catch (NullPointerException e) {
+            done = false;
+        }
 
 
     }
 
     private void initViewsL2(View view) {
+
         linLytMon = view.findViewById(R.id.linLytMon);
         linLytTue = view.findViewById(R.id.linLytTue);
         linLytWed = view.findViewById(R.id.linLytWed);
@@ -590,7 +613,7 @@ public class tasks extends Fragment implements View.OnClickListener {
         //Classes{[9, 12], [13, 15], [17, 19]}
         try {
             ArrayList<List<Double>> classes = new ArrayList<>();
-            classes = register_class.myMap.get(day);
+            classes = myMap.get(day);
             Log.d(TAG, "class day:" + day);
             for(int i = 0; i < classes.size(); i++) {
                 for(int j = 0; j < classes.get(i).size(); j++) {
@@ -615,8 +638,7 @@ public class tasks extends Fragment implements View.OnClickListener {
         }
         return false;
     }
-
-    private void setAlarm(String day, int h, int m) {
+    private void setAttendanceAlarm(String day, int h, int m) {
 
         Calendar currentDate = Calendar.getInstance();
         switch (day){
@@ -648,7 +670,7 @@ public class tasks extends Fragment implements View.OnClickListener {
         currentDate.set(Calendar.SECOND, 0);
         currentDate.set(Calendar.MILLISECOND, 0);
 
-        Intent intent = new Intent(getContext(), AlarmBrodcast.class);
+        Intent intent = new Intent(getContext(), AttendanceAlarmBroadcast.class);
         intent.putExtra("class", sub_name);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 0, intent, 0);
         AlarmManager am = (AlarmManager) getContext().getSystemService(ALARM_SERVICE);

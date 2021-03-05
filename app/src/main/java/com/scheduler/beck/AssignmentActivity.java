@@ -19,11 +19,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.scheduler.beck.Adapters.adapter_data;
+import com.scheduler.beck.Models.AssignmentCons;
+import com.scheduler.beck.Models.Course_Info;
+import com.scheduler.beck.Utils.ThemeUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class assignment extends AppCompatActivity {
+public class AssignmentActivity extends AppCompatActivity {
     private static final String TAG = "assignment";
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -110,14 +114,14 @@ public class assignment extends AppCompatActivity {
     }
 
     public void onAddButtonClicked(View view) {
-        Intent intent = new Intent(getApplicationContext(), addAssignment.class);
+        Intent intent = new Intent(getApplicationContext(), RegisterAssignmentActivity.class);
         intent.putExtra("arraylist", list_class);
         startActivity(intent);
         finish();
     }
 
     public void goBacktoMenu(View view) {
-        Intent intent = new Intent(getApplicationContext(), menu.class);
+        Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
         startActivity(intent);
         finish();
     }

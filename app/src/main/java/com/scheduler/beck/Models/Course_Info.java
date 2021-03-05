@@ -1,4 +1,4 @@
-package com.scheduler.beck;
+package com.scheduler.beck.Models;
 
 public class Course_Info {
     private String course_name;

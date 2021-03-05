@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
@@ -13,8 +12,9 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.scheduler.beck.Utils.ThemeUtils;
 
-public class webpage extends AppCompatActivity {
+public class WebpageActivity extends AppCompatActivity {
     private EditText editTextWebPageLink;
     private String webPageUrl;
     private FirebaseAuth firebaseAuth;
@@ -37,7 +37,7 @@ public class webpage extends AppCompatActivity {
     }
 
     public void backMenu() {
-        Intent i = new Intent(getApplicationContext(), menu.class);
+        Intent i = new Intent(getApplicationContext(), MenuActivity.class);
         startActivity(i);
         finish();
     }

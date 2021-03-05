@@ -19,6 +19,9 @@ import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.scheduler.beck.Models.Course_Info;
+import com.scheduler.beck.Models.Course_display;
+import com.scheduler.beck.Utils.ThemeUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -165,27 +168,27 @@ public class courseList extends AppCompatActivity implements courses_adapter_dat
 
 
     public void onCourseAddButtonClicked(View view) {
-        Intent intent = new Intent(getApplicationContext(), register_class.class);
+        Intent intent = new Intent(getApplicationContext(), RegisterClassActivity.class);
         intent.putExtra("hash_map", (Serializable) myMap);
         startActivity(intent);
     }
 
     public void onBack2ButtonClicked(View view) {
-        Intent intent = new Intent(getApplicationContext(), menu.class);
+        Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
         startActivity(intent);
         finish();
     }
 
     @Override
     public void onItemClick(int position) {
-        Toast.makeText(this, "Normat click at this position", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Press and hold for options menu", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onWhatEverClick(int position) {
         Course_display selected_item = course_displays.get(position);
         Log.d(TAG, "this is course " + selected_item.getCourse_display_name());
-        Intent intent = new Intent(this, tasks.class);
+        Intent intent = new Intent(this, RegisterClassActivity.class);
         intent.putExtra("class_key", selected_item.getIdkey());
         intent.putExtra("class_name", selected_item.getCourse_display_name());
         intent.putExtra("class_day", selected_item.getCourse_day_name());

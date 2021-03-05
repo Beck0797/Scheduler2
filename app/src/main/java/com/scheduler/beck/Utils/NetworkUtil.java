@@ -1,4 +1,4 @@
-package com.scheduler.beck;
+package com.scheduler.beck.Utils;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

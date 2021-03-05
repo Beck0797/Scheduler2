@@ -21,10 +21,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.scheduler.beck.Models.check_attendance_cons;
+import com.scheduler.beck.Utils.ThemeUtils;
 
 import java.util.ArrayList;
 
-public class menu extends AppCompatActivity {
+public class MenuActivity extends AppCompatActivity {
     private static final String TAG = "menu";
     private CardView register_window, schedule_window, assignment_window, attendance_window, cardViewExit, web_page;
     private ImageView image_profile;
@@ -42,7 +44,7 @@ public class menu extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference(firebaseAuth.getCurrentUser().getUid()).child("web_link");
-        Intent intent = new Intent(this, signIn.class);
+        Intent intent = new Intent(this, SignIn.class);
 
         // register_window button
         register_window = findViewById(R.id.register_card);
@@ -55,7 +57,7 @@ public class menu extends AppCompatActivity {
         schedule_window = findViewById(R.id.schedule_card);
         schedule_window.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Intent intent1 = new Intent(getApplicationContext(), schedule.class);
+                Intent intent1 = new Intent(getApplicationContext(), TimetableActivity.class);
                 startActivity(intent1);
             }
         });
@@ -65,7 +67,7 @@ public class menu extends AppCompatActivity {
         assignment_window.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), assignment.class);
+                Intent intent = new Intent(getApplicationContext(), AssignmentActivity.class);
                 startActivity(intent);
             }
         });
@@ -73,7 +75,7 @@ public class menu extends AppCompatActivity {
         image_profile = findViewById(R.id.profile_icon);
         image_profile.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), profile.class);
+                Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
                 startActivity(intent);
             }
         });
@@ -103,7 +105,7 @@ public class menu extends AppCompatActivity {
         attendance_window.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), attendance.class);
+                Intent intent = new Intent(getApplicationContext(), AttendanceActivity.class);
                 //Log.d(TAG, "sizeL: " + check_attendance_list.size());
                 Bundle bundle = new Bundle();
 
@@ -119,10 +121,10 @@ public class menu extends AppCompatActivity {
         web_page.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                Toast.makeText(menu.this, "Long press to change the link", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MenuActivity.this, "Long press to change the link", Toast.LENGTH_SHORT).show();
 
                 // check if user webPage attribute is empty. If it is, then register
-                Intent intent = new Intent(getApplicationContext(), webpage.class);
+                Intent intent = new Intent(getApplicationContext(), WebpageActivity.class);
                 startActivity(intent);
                 finish();
 
@@ -131,7 +133,7 @@ public class menu extends AppCompatActivity {
         });
         web_page.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Toast.makeText(menu.this, "Long press to change the link", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MenuActivity.this, "Long press to change the link", Toast.LENGTH_SHORT).show();
 
                 databaseReference.addValueEventListener(new ValueEventListener() {
                     @Override
@@ -149,15 +151,15 @@ public class menu extends AppCompatActivity {
                             startActivity(intent);
 
                         } catch (NullPointerException e) {
-                            Toast.makeText(menu.this, "Please save your school webpage link at first", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(getApplicationContext(), webpage.class);
+                            Toast.makeText(MenuActivity.this, "Please save your school webpage link at first", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(getApplicationContext(), WebpageActivity.class);
                             startActivity(intent);
                         }
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText(menu.this, "Please insert the link at first", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MenuActivity.this, "Please insert the link at first", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -182,7 +184,7 @@ public class menu extends AppCompatActivity {
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
         if(currentUser == null) {
-            Intent intent = new Intent(menu.this, signIn.class);
+            Intent intent = new Intent(MenuActivity.this, SignIn.class);
             startActivity(intent);
             finish();
         }

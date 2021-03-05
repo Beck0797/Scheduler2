@@ -1,4 +1,4 @@
-package com.scheduler.beck;
+package com.scheduler.beck.Adapters;
 
 
 import android.content.Context;
@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.scheduler.beck.R;
 
 public class adapterNotification extends  RecyclerView.Adapter<adapterNotification.ViewHolder> {
     private String string;

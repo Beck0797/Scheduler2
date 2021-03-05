@@ -3,13 +3,11 @@ package com.scheduler.beck;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -30,8 +28,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.scheduler.beck.Utils.ThemeUtils;
 
-public class signIn extends AppCompatActivity {
+public class SignIn extends AppCompatActivity {
     private final static  String TAG = "signIn";
     private FirebaseAuth mAuth;
     private Button login_button;
@@ -63,12 +62,12 @@ public class signIn extends AppCompatActivity {
       String email = login_edit.getText().toString().trim();
       String password = password_edit.getText().toString().trim();
       if(TextUtils.isEmpty(email)) {
-          Toast.makeText(signIn.this, "email is empty",
+          Toast.makeText(SignIn.this, "email is empty",
                   Toast.LENGTH_SHORT).show();
           return;
       }
       if(TextUtils.isEmpty(password)) {
-          Toast.makeText(signIn.this, "password is empty.",
+          Toast.makeText(SignIn.this, "password is empty.",
                   Toast.LENGTH_SHORT).show();
           return;
       }
@@ -90,7 +89,7 @@ public class signIn extends AppCompatActivity {
                           } else {
                               // If sign in fails, display a message to the user.
                               Log.w(TAG, "signInWithEmail:failure", task.getException());
-                              Toast.makeText(signIn.this, "Invalid login",
+                              Toast.makeText(SignIn.this, "Invalid login",
                                       Toast.LENGTH_SHORT).show();
                               // updateUI(null);
                           }
@@ -111,7 +110,7 @@ public class signIn extends AppCompatActivity {
       }
     }
     public void to_register_activity(View view) {
-        Intent intent = new Intent(getApplicationContext(), register.class);
+        Intent intent = new Intent(getApplicationContext(), SignUp.class);
         startActivity(intent);
         finish();
     }
@@ -141,7 +140,7 @@ public class signIn extends AppCompatActivity {
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.putString("isSignedIn", "yes");
             editor.apply();
-            Intent intent = new Intent(getApplicationContext(), menu.class);
+            Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
             startActivity(intent);
             finish();
         }
@@ -153,7 +152,7 @@ public class signIn extends AppCompatActivity {
     }
     private void showDialog(){
         AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
-        builder1.setMessage("Check you email for verification");
+        builder1.setMessage("Please verify your email. Check registered email for verification");
         builder1.setCancelable(true);
 
         builder1.setPositiveButton(
@@ -170,11 +169,20 @@ public class signIn extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         deleteCurrentUser();
-                        Intent i = new Intent(signIn.this, register.class);
+                        Intent i = new Intent(SignIn.this, SignUp.class);
                         startActivity(i);
                         dialog.cancel();
                     }
                 });
+
+        builder1.setNeutralButton(
+                "Ok",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                }
+        );
 
         AlertDialog alert11 = builder1.create();
         alert11.show();
@@ -221,11 +229,11 @@ public class signIn extends AppCompatActivity {
                             // email sent
 
 
-                            Toast.makeText(signIn.this, "Verification email is sent", Toast.LENGTH_SHORT).show();;
+                            Toast.makeText(SignIn.this, "Verification email is sent", Toast.LENGTH_SHORT).show();;
                         }
                         else
                         {
-                            Toast.makeText(signIn.this, "Try after a while", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SignIn.this, "Try after a while", Toast.LENGTH_SHORT).show();
 
                         }
                     }

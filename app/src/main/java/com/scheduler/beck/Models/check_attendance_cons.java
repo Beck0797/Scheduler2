@@ -1,4 +1,4 @@
-package com.scheduler.beck;
+package com.scheduler.beck.Models;
 
 import java.io.Serializable;
 

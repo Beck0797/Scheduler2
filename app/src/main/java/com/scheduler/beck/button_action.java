@@ -12,11 +12,13 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.scheduler.beck.Models.check_attendance_cons;
+import com.scheduler.beck.Utils.ThemeUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static com.scheduler.beck.register_class.TAG;
+import static com.scheduler.beck.RegisterClassActivity.TAG;
 
 public class button_action extends AppCompatActivity {
     private String className, status;
@@ -60,7 +62,7 @@ public class button_action extends AppCompatActivity {
         Log.d(TAG, "current date" + date);
         check_attendance_cons checkAttendanceCons = new check_attendance_cons(className, status, date);
         databaseReference.push().setValue(checkAttendanceCons);
-        Intent i = new Intent(getApplicationContext(), attendance.class);
+        Intent i = new Intent(getApplicationContext(), AttendanceActivity.class);
         startActivity(i);
 
     }

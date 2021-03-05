@@ -8,6 +8,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.scheduler.beck.Adapters.adapterNotification;
+import com.scheduler.beck.Utils.ThemeUtils;
+
 public class notification extends AppCompatActivity {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -28,7 +31,7 @@ public class notification extends AppCompatActivity {
     }
 
     public void onBack2ButtonClicked(View view) {
-        Intent intent = new Intent(getApplicationContext(), menu.class);
+        Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
         startActivity(intent);
     }
 }

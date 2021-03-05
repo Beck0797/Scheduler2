@@ -11,7 +11,6 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -30,9 +29,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.scheduler.beck.Fragments.profile_setFragment;
+import com.scheduler.beck.Fragments.profile_stnumberFragment;
+import com.scheduler.beck.Models.Upload;
+import com.scheduler.beck.Utils.ThemeUtils;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class profile extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener, profile_setFragment.BottomSheetListener, View.OnClickListener {
+public class ProfileActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener, profile_setFragment.BottomSheetListener, View.OnClickListener {
 
     private static final float PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR  = 0.9f;
     private static final float PERCENTAGE_TO_HIDE_TITLE_DETAILS     = 0.3f;
@@ -142,7 +146,7 @@ public class profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
         if(currentUser == null) {
-            Intent intent = new Intent(profile.this, signIn.class);
+            Intent intent = new Intent(ProfileActivity.this, SignIn.class);
             startActivity(intent);
             finish();
         }
@@ -221,8 +225,9 @@ public class profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     try {
                         for(DataSnapshot ds : snapshot.getChildren()) {
-                            st_num st = ds.getValue(st_num.class);
-                            studentNumber.setText(st.getStudent_number().toString());
+
+                            Log.d("StNum123,", ds.getValue().toString());
+                            studentNumber.setText(ds.getValue().toString());
                         }
                     }catch (DatabaseException e) {
                         e.printStackTrace();
@@ -308,7 +313,7 @@ public class profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
         editor.putString("isSignedIn", "no");
         editor.apply();
         FirebaseAuth.getInstance().signOut();
-        Intent intent = new Intent(profile.this, signIn.class);
+        Intent intent = new Intent(ProfileActivity.this, SignIn.class);
         startActivity(intent);
     }
 
@@ -346,11 +351,11 @@ public class profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
           public void onClick(View v) {
                switch (v.getId()) {
                    case R.id.go_back:
-                       Intent intent = new Intent(profile.this, menu.class );
+                       Intent intent = new Intent(ProfileActivity.this, MenuActivity.class );
                        startActivity(intent);
                        break;
                    case R.id.go_back2:
-                       Intent intent1 = new Intent(profile.this, menu.class);
+                       Intent intent1 = new Intent(ProfileActivity.this, MenuActivity.class);
                        startActivity(intent1);
                        break;
                    default:
@@ -363,7 +368,7 @@ public class profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            Intent intent1 = new Intent(profile.this, menu.class);
+            Intent intent1 = new Intent(ProfileActivity.this, MenuActivity.class);
             startActivity(intent1);
             finish();
         }

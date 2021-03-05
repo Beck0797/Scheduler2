@@ -17,10 +17,10 @@ public class AvatarBehavior extends CoordinatorLayout.Behavior<CircleImageView> 
     private boolean initialized = false;
     private float barSize;
     private int avaSize;
-    private profile mainActivity;
+    private ProfileActivity mainActivity;
 
     public AvatarBehavior(Context context, AttributeSet attrs) {
-        if (context instanceof profile) mainActivity = (profile) context;
+        if (context instanceof ProfileActivity) mainActivity = (ProfileActivity) context;
         if (attrs != null) {
             TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.AvatarBehavior);
             startYPosition = a.getDimension(R.styleable.AvatarBehavior_startYPosition, 0);

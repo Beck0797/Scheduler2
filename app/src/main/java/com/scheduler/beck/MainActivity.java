@@ -9,10 +9,6 @@ import android.os.Bundle;
 import android.content.Intent;
 
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import android.os.Handler;
 
@@ -35,15 +31,15 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 Intent mainIntent;
                 if(isSignedIn.equals("no")){
-                     mainIntent = new Intent(MainActivity.this, signIn.class);
+                     mainIntent = new Intent(MainActivity.this, SignIn.class);
                 }else{
-                     mainIntent = new Intent(MainActivity.this, menu.class);
+                     mainIntent = new Intent(MainActivity.this, MenuActivity.class);
 
                 }
                 startActivity(mainIntent);
                 finish();
             }
-        }, 1500);
+        }, 1000);
     }
 
 

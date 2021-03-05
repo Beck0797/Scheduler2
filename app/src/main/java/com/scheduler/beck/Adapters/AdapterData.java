@@ -1,4 +1,4 @@
-package com.scheduler.beck;
+package com.scheduler.beck.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +10,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.scheduler.beck.Attendance_Detail;
+import com.scheduler.beck.Models.AtttendanceInfo;
+import com.scheduler.beck.R;
 
 import java.util.ArrayList;
 

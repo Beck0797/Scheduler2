@@ -25,13 +25,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.scheduler.beck.Models.Course_Info;
+import com.scheduler.beck.Utils.ThemeUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-public class schedule extends AppCompatActivity {
+public class TimetableActivity extends AppCompatActivity {
     private static final String TAG = "schedule";
     private LinearLayout courseInfo;
     private RelativeLayout myLayout;
@@ -158,7 +160,7 @@ public class schedule extends AppCompatActivity {
         int randomNum = rand.nextInt((10) + 1);
 
         Resources r = getResources();
-        LinearLayout v = new LinearLayout(schedule.this);
+        LinearLayout v = new LinearLayout(TimetableActivity.this);
         v.setOrientation(LinearLayout.VERTICAL);
 
         v.setGravity(Gravity.CENTER);
@@ -277,7 +279,7 @@ public class schedule extends AppCompatActivity {
     }
 
     public void backToMenu(View view) {
-        Intent i = new Intent(getApplicationContext(), menu.class);
+        Intent i = new Intent(getApplicationContext(), MenuActivity.class);
         startActivity(i);
         finish();
     }

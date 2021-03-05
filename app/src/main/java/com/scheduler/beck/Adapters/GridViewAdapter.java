@@ -1,4 +1,4 @@
-package com.scheduler.beck;
+package com.scheduler.beck.Adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,6 +9,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.scheduler.beck.Attendance_Detail;
+import com.scheduler.beck.R;
+import com.scheduler.beck.Models.SatuesDates;
 
 import java.util.ArrayList;
 

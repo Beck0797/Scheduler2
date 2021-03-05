@@ -21,6 +21,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.scheduler.beck.Adapters.AdapterData;
+import com.scheduler.beck.Models.AtttendanceInfo;
+import com.scheduler.beck.Models.Course_Info;
+import com.scheduler.beck.Models.check_attendance_cons;
+import com.scheduler.beck.Utils.ThemeUtils;
 
 import java.util.ArrayList;
 
@@ -32,7 +37,7 @@ import lecho.lib.hellocharts.model.PieChartData;
 import lecho.lib.hellocharts.model.SliceValue;
 import lecho.lib.hellocharts.view.PieChartView;
 
-public class attendance extends AppCompatActivity {
+public class AttendanceActivity extends AppCompatActivity {
         private static final String TAG = "attendance";
         private static final float PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR  = 0.9f;
         private static final float PERCENTAGE_TO_HIDE_TITLE_DETAILS     = 0.3f;
@@ -189,7 +194,7 @@ public class attendance extends AppCompatActivity {
         }
 
     public void onBack2ButtonClicked(View view) {
-            Intent intent = new Intent(getApplicationContext(), menu.class);
+            Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
             startActivity(intent);
             finish();
     }

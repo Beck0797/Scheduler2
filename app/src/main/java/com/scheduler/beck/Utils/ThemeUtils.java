@@ -1,9 +1,11 @@
-package com.scheduler.beck;
+package com.scheduler.beck.Utils;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+
+import com.scheduler.beck.R;
 
 public class ThemeUtils
 {

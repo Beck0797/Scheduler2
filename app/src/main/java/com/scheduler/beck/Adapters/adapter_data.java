@@ -1,4 +1,4 @@
-package com.scheduler.beck;
+package com.scheduler.beck.Adapters;
 
 
 import android.content.Context;
@@ -16,6 +16,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+import com.scheduler.beck.Models.AssignmentCons;
+import com.scheduler.beck.Models.Course_Info;
+import com.scheduler.beck.R;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;

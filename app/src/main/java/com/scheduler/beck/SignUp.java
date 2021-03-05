@@ -1,9 +1,11 @@
 package com.scheduler.beck;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -25,8 +27,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.scheduler.beck.Models.Upload;
+import com.scheduler.beck.Utils.ThemeUtils;
 
-public class register extends AppCompatActivity {
+public class SignUp extends AppCompatActivity {
     private static final String TAG = "register";
     private EditText editEmail, editPassword, editConfirmPassword, editName;
     private Button registerButton;
@@ -35,6 +39,7 @@ public class register extends AppCompatActivity {
     private FirebaseStorage firebaseStorage;
 
     private FirebaseAuth firebaseAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +62,7 @@ public class register extends AppCompatActivity {
 
 
     }
+
     private boolean isNetworkConnected() {
         ConnectivityManager connectivityManager = (ConnectivityManager)
                 this.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -72,12 +78,13 @@ public class register extends AppCompatActivity {
             return false;
         }
     }
+
     public void doAuthentication() {
         String name = editName.getText().toString().trim();
         String email = editEmail.getText().toString().trim();
         String password = editPassword.getText().toString().trim();
         String confirm_password = editConfirmPassword.getText().toString().trim();
-        if(TextUtils.isEmpty(name)) {
+        if (TextUtils.isEmpty(name)) {
             Toast.makeText(getApplicationContext(), "Enter name!", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -90,21 +97,21 @@ public class register extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Enter password!", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(TextUtils.isEmpty(confirm_password)) {
+        if (TextUtils.isEmpty(confirm_password)) {
             Toast.makeText(getApplicationContext(), "Enter confirm pass!", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(password.length()< 6){
+        if (password.length() < 6) {
             Toast.makeText(this, "Password should be at least 6 characters", Toast.LENGTH_SHORT).show();
             return;
         }
         Log.d(TAG, "confirmpass" + confirm_password + " and" + password);
-        if(!(confirm_password.equals(password))) {
+        if (!(confirm_password.equals(password))) {
             Toast.makeText(getApplicationContext(), "confirm pass is not match", Toast.LENGTH_SHORT).show();
             return;
         }
         Log.d(TAG, "internet" + isNetworkConnected());
-        if(isNetworkConnected()) {
+        if (isNetworkConnected()) {
             firebaseAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
@@ -113,7 +120,7 @@ public class register extends AppCompatActivity {
                                 sendUserData();
                                 // Sign in success, update UI with the signed-in user's information
                                 Log.d(TAG, "createUserWithEmail:success");
-                                Toast.makeText(register.this, "Registration complete.",
+                                Toast.makeText(SignUp.this, "Registration complete.",
                                         Toast.LENGTH_SHORT).show();
 
                                 user = firebaseAuth.getCurrentUser();
@@ -122,7 +129,7 @@ public class register extends AppCompatActivity {
                             } else {
                                 // If sign in fails, display a message to the user.
                                 Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                                Toast.makeText(register.this, "Invalid Registration.",
+                                Toast.makeText(SignUp.this, "Invalid Registration.",
                                         Toast.LENGTH_SHORT).show();
                                 // updateUI(null);
                             }
@@ -136,10 +143,11 @@ public class register extends AppCompatActivity {
 
                         }
                     })
-                    .setActionTextColor(getResources().getColor(android.R.color.holo_red_light ))
+                    .setActionTextColor(getResources().getColor(android.R.color.holo_red_light))
                     .show();
         }
     }
+
     public void sendUserData() {
 
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
@@ -152,11 +160,11 @@ public class register extends AppCompatActivity {
     }
 
     public void goto_register(View view) {
-        Intent intent = new Intent(register.this, signIn.class);
+        Intent intent = new Intent(SignUp.this, SignIn.class);
         startActivity(intent);
     }
-    private void sendVerificationEmail()
-    {
+
+    private void sendVerificationEmail() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         user.sendEmailVerification()
@@ -165,23 +173,36 @@ public class register extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
                             // email sent
-                            Toast.makeText(register.this, "Please check email for verification", Toast.LENGTH_LONG).show();
+                            showAlert();
 
 
                             // after email is sent just logout the user and finish this activity
-                            FirebaseAuth.getInstance().signOut();
-                            startActivity(new Intent(register.this, signIn.class));
-                            finish();
-                        }
-                        else
-                        {
+
+                        } else {
                             // email not sent, so display message and restart the activity or do whatever you wish to do
-                            Toast.makeText(register.this, "Email is not valid. Please use another email", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SignUp.this, "Email is not valid. Please use another email", Toast.LENGTH_SHORT).show();
                             //restart this activity
 
 
                         }
                     }
                 });
+    }
+
+    private void showAlert() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setMessage("Please check your email for verification")
+                .setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        FirebaseAuth.getInstance().signOut();
+                        startActivity(new Intent(SignUp.this, SignIn.class));
+                        finish();
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 }

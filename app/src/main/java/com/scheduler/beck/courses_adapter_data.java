@@ -13,6 +13,8 @@ import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.scheduler.beck.Models.Course_display;
+
 import java.util.ArrayList;
 
 import static com.scheduler.beck.courseList.TAG;
