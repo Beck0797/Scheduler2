@@ -178,7 +178,7 @@
                 android:id="@+id/webex_link"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Enter class webex link (optional)"
+                android:hint="Enter online class link (optional)"
                 android:paddingStart="5dp"
                 android:background="@drawable/edittextunderline"
                 android:paddingBottom="5dp"

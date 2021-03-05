@@ -31,18 +31,24 @@ public class StartAlarmBrodcast extends BroadcastReceiver {
         notificationManager = NotificationManagerCompat.from(context);
         assert bundle != null;
         String startClass = bundle.getString("startClass");
+        String link = bundle.getString("link");
         Log.d(TAG, "1. start Class " + startClass);
 
-        Uri soundUri = Uri.parse("android.resource://" + context.getPackageName() + "/" + R.raw.crystal);
+        Uri soundUri = Uri.parse("android.resource://" + context.getPackageName() + "/" + R.raw.paper_guitar);
         String message = "The class starts soon!";
 
         Intent activityIntent = new Intent(context, MainActivity.class);
         PendingIntent contentIntent = PendingIntent.getActivity(context,
                 ++id, activityIntent, 0);
+
         Intent broadcastIntent = new Intent(context, NotificationReceiver.class);
-        broadcastIntent.putExtra("toastMessage", startClass);
+        broadcastIntent.putExtra("link", link);
+        broadcastIntent.putExtra("id", id);
+
+
         PendingIntent actionIntent = PendingIntent.getBroadcast(context,
                 id, broadcastIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
         Notification notification = new NotificationCompat.Builder(context, CHANNEL_1_ID)
                 .setSmallIcon(R.drawable.icon_notification)
                 .setContentTitle(startClass)
@@ -58,7 +64,7 @@ public class StartAlarmBrodcast extends BroadcastReceiver {
                 .setSound(soundUri)
                 .build();
 
-        notificationManager.notify(++id, notification);
+        notificationManager.notify(id, notification);
 
     }
 }

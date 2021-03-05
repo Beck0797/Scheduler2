@@ -57,7 +57,6 @@ public class RegisterClassActivity extends AppCompatActivity{
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         init();
         setFragment(intent);
 
@@ -80,7 +79,6 @@ public class RegisterClassActivity extends AppCompatActivity{
         firebaseDatabase = FirebaseDatabase.getInstance();
         myRef = firebaseDatabase.getReference(firebaseAuth.getCurrentUser().getUid()).child("all_class");
 
-        myMap = new HashMap<>();
     }
 
     public void backToCourseList(View view) {

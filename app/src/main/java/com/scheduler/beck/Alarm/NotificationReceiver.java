@@ -6,17 +6,41 @@ import android.content.Intent;
 import android.net.Uri;
 import android.widget.Toast;
 
+import androidx.core.app.NotificationManagerCompat;
+
+import com.scheduler.beck.courseList;
+
 
 public class NotificationReceiver extends BroadcastReceiver {
-
+    private NotificationManagerCompat notificationManager;
     @Override
     public void onReceive(Context context, Intent intent) {
-        String message = intent.getStringExtra("toastMessage");
+        notificationManager = NotificationManagerCompat.from(context);
+
+        Intent i = new Intent();
+        Intent it = new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS); // this closes the notification panel
+
+        String link = intent.getStringExtra("link");
+        int id = intent.getIntExtra("id", 0);
 //        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
-        Uri uri = Uri.parse("https://gachon.webex.com/meet/hwanghj"); // missing 'http://' will cause crashed
-        Intent i = new Intent(Intent.ACTION_VIEW, uri);
-        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(i);
+
+        if(link.equals("not given")){
+            i = new Intent(context, courseList.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.sendBroadcast(it);
+            context.startActivity(i);
+            Toast.makeText(context, "Course link is not given, Please register the course link by updating the class!", Toast.LENGTH_LONG).show();
+
+        }else{
+            Uri uri = Uri.parse(link); // missing 'http://' will cause crashed
+            i = new Intent(Intent.ACTION_VIEW, uri);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.sendBroadcast(it);
+            context.startActivity(i);
+        }
+        notificationManager.cancel(id);
+
+
     }
 }
 

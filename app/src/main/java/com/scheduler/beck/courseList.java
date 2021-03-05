@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +21,7 @@ import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.scheduler.beck.Alarm.StartAlarmBrodcast;
 import com.scheduler.beck.Models.Course_Info;
 import com.scheduler.beck.Models.Course_display;
 import com.scheduler.beck.Utils.ThemeUtils;
@@ -29,6 +32,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.scheduler.beck.Fragments.tasks.alarmStartMap;
 
 public class courseList extends AppCompatActivity implements courses_adapter_data.OnItemClickListener {
     public static final String TAG = "courseList";
@@ -208,7 +213,20 @@ public class courseList extends AppCompatActivity implements courses_adapter_dat
         String selected_key = selected_item.getIdkey();
         databaseReference.child(selected_key).removeValue();
 
+        cancelAlarStart();
+
+
     }
+
+    private void cancelAlarStart() {
+        int request_code = alarmStartMap.get(firebaseAuth.getCurrentUser().getUid());
+        Intent intent = new Intent(this, StartAlarmBrodcast.class);
+
+        PendingIntent sender = PendingIntent.getBroadcast(this, request_code, intent, 0);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        alarmManager.cancel(sender);
+    }
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 

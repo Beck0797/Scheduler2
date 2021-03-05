@@ -35,7 +35,9 @@ import com.scheduler.beck.RegisterClassActivity;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static android.content.Context.ALARM_SERVICE;
 import static com.scheduler.beck.RegisterClassActivity.myMap;
@@ -53,13 +55,15 @@ public class tasks extends Fragment implements View.OnClickListener {
     CheckBox Mon, Tue, Wed, Thu, Fri;
     Button btnContinue, btnRegister;
     LinearLayout linLytMon, linLytTue, linLytWed, linLytThu, linLytFri;
-    private static String recieved_key;
+    private static String recieved_key, u_key;
     private static boolean done;
     private EditText subject_namem,professor_name,room_number,webex_link;
     private Course_Info course_info;
     private  static String roomNumber, webPageLink, sub_name, pf_name;
     private static boolean isMultiple;
-    private static boolean firstOfTwoIsDone;
+
+    public static Map<String, Integer> alarmStartMap;
+    private static int requestCode;
 
     private int h, m, hS, mS;
     private double startTime, endTime;
@@ -360,6 +364,7 @@ public class tasks extends Fragment implements View.OnClickListener {
     }
 
     private void saveCourse(String day, Course_Info course_inform) {
+
         if(isOverlaps(day)){
             Toast.makeText(getContext(), "It overlaps with another class", Toast.LENGTH_SHORT).show();
             return;
@@ -375,21 +380,9 @@ public class tasks extends Fragment implements View.OnClickListener {
             Toast.makeText(getContext(), "Class registered!", Toast.LENGTH_SHORT).show();
         }
 
-        setAttendanceAlarm(day, h, m);
-        setAlarmStart(day, hS, mS);
+//        setAttendanceAlarm(day, h, m);
+        setAlarmStart(day, hS, mS-1);
         Toast.makeText(getActivity(), "Set alarm", Toast.LENGTH_SHORT).show();
-//        Log.d("Course Information", "\n\n\nare:\n" +
-//                "" + course_inform.getProfessor_name() +
-//                "\n" +course_inform.getCourse_name()+
-//                "\n" +course_inform.getClassroom_number()+
-//                "\n" +course_inform.getStart_time()+
-//                "\n" +course_inform.getEnd_time()+
-//                "\n" +course_inform.getAlarm_time()+
-//                "\n" +course_inform.getUrl_name()+
-//                "\n" +course_inform.isMultiple()+
-//                "\n" +course_inform.getCourse_day()+
-//                "\n\n\n");
-
 
         goToCourseList();
 
@@ -424,11 +417,21 @@ public class tasks extends Fragment implements View.OnClickListener {
         roomNumber = room_number.getText().toString().trim();
         if(webPageLink.equals("")){
             webPageLink = "not given";
+        }else if(!isLink(webPageLink)){
+            Toast.makeText(getContext(), "Link should start with \"http\"", Toast.LENGTH_SHORT).show();
+            return false;
         }
         if(roomNumber.equals("")){
             roomNumber = "not given";
         }
         return true;
+    }
+
+    private boolean isLink(String lnk) {
+        if(lnk.length() > 4){
+            return lnk.startsWith("http");
+        }
+        return false;
     }
 
     private void setCheckBoxUnchecked() {
@@ -469,7 +472,8 @@ public class tasks extends Fragment implements View.OnClickListener {
 
         course_info = new Course_Info();
         isMultiple = false;
-        firstOfTwoIsDone = false;
+
+        u_key = firebaseAuth.getCurrentUser().getUid();
 
 
         try {
@@ -479,11 +483,24 @@ public class tasks extends Fragment implements View.OnClickListener {
             room_number.setText(intents.getStringExtra("class_room"));
             webex_link.setText(intents.getStringExtra("class_url_link"));
             done = true;
+            u_key = recieved_key;
 
 
 
         } catch (NullPointerException e) {
             done = false;
+            u_key = firebaseAuth.getCurrentUser().getUid();
+
+        }
+
+        try{
+            if(alarmStartMap == null){
+            alarmStartMap = new HashMap<>();
+            requestCode = 100;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
 
@@ -589,7 +606,19 @@ public class tasks extends Fragment implements View.OnClickListener {
     }
 
     private void OnAlarmSelects(TextView time_alarm, int hourOfDay, int minute) {
-        time_alarm.setText(hourOfDay + ":" + minute);
+        String hour = "0", sMinute = "0", st;
+        if(hourOfDay < 10){
+            hour+=hourOfDay;
+        }else{
+            hour = ""+hourOfDay;
+        }
+        if(minute < 10){
+            sMinute+=minute;
+        }else{
+            sMinute = ""+minute;
+        }
+        st = hour + ":" + sMinute;
+        time_alarm.setText(st);
         hS = hourOfDay;
         mS = minute;
     }
@@ -597,20 +626,47 @@ public class tasks extends Fragment implements View.OnClickListener {
     private void OnEndSelect(TextView time_end, int hourOfDay, int minute) {
         String temp1 = "" + hourOfDay + "." + minute;
         endTime = Double.parseDouble(temp1);
-        time_end.setText(hourOfDay + ":" + minute);
+        String hour = "0", sMinute = "0", st;
+        if(hourOfDay < 10){
+            hour+=hourOfDay;
+        }else{
+            hour = ""+hourOfDay;
+        }
+        if(minute < 10){
+            sMinute+=minute;
+        }else{
+            sMinute = ""+minute;
+        }
+        st = hour + ":" + sMinute;
+        time_end.setText(st);
     }
 
     private void OnStartSelect(TextView time_start, int hourOfDay, int minute) {
         String temp = "" + hourOfDay + "." + minute;
         startTime = Double.parseDouble(temp);
-        time_start.setText(hourOfDay + ":" + minute);
         h = hourOfDay;
         m = minute;
+        String hour = "0", sMinute = "0", st;
+        if(hourOfDay < 10){
+            hour+=hourOfDay;
+        }else{
+            hour = ""+hourOfDay;
+        }
+        if(minute < 10){
+            sMinute+=minute;
+        }else{
+            sMinute = ""+minute;
+        }
+        st = hour + ":" + sMinute;
+        time_start.setText(st);
+
+
     }
 
     public boolean isOverlaps(String day){
 
         //Classes{[9, 12], [13, 15], [17, 19]}
+
         try {
             ArrayList<List<Double>> classes = new ArrayList<>();
             classes = myMap.get(day);
@@ -638,6 +694,7 @@ public class tasks extends Fragment implements View.OnClickListener {
         }
         return false;
     }
+
     private void setAttendanceAlarm(String day, int h, int m) {
 
         Calendar currentDate = Calendar.getInstance();
@@ -717,10 +774,11 @@ public class tasks extends Fragment implements View.OnClickListener {
 
         Intent intent = new Intent(getContext(), StartAlarmBrodcast.class);
         intent.putExtra("startClass", sub_name);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 0, intent, 0);
+        intent.putExtra("link", webPageLink );
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), ++requestCode, intent, 0);
         AlarmManager am = (AlarmManager) getContext().getSystemService(ALARM_SERVICE);
         am.setRepeating(AlarmManager.RTC_WAKEUP, currentDate.getTimeInMillis(), AlarmManager.INTERVAL_DAY * 7, pendingIntent);
-
+        alarmStartMap.put(u_key, requestCode);
 
         // going back to assignment list after setting alarm
         Intent i = new Intent(getContext(), courseList.class);
