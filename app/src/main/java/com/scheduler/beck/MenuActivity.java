@@ -91,6 +91,7 @@ public class MenuActivity extends AppCompatActivity {
                         check_attendance_list.add(new check_attendance_cons(check.getClass_name().toString(), check.getStatus().toString(), check.getDate().toString()));
                     }catch (NullPointerException e){
                         e.printStackTrace();
+                        check_attendance_list = new ArrayList<>();
                     }
                     }
             }

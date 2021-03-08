@@ -13,7 +13,9 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Toast;
+import android.util.Pair;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,6 +35,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.scheduler.beck.Fragments.tasks.alarmAttendMap;
 import static com.scheduler.beck.Fragments.tasks.alarmStartMap;
 
 public class courseList extends AppCompatActivity implements courses_adapter_data.OnItemClickListener {
@@ -211,20 +214,43 @@ public class courseList extends AppCompatActivity implements courses_adapter_dat
     public void onDeleteClick(int position) {
         Course_display selected_item = course_displays.get(position);
         String selected_key = selected_item.getIdkey();
+
+//        databaseReference.child(selected_key).get()
+//                .addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+//                    @Override
+//                    public void onSuccess(DataSnapshot dataSnapshot) {
+//                        for (DataSnapshot data : dataSnapshot.getChildren()) {
+//                            Course_Info course = data.getValue(Course_Info.class);
+//                            deleteFromMyMap(course);
+//                        }
+//                    }
+//                });
+
         databaseReference.child(selected_key).removeValue();
 
-        cancelAlarStart();
+        cancelAlarStart(selected_key);
+
+
 
 
     }
 
-    private void cancelAlarStart() {
-        int request_code = alarmStartMap.get(firebaseAuth.getCurrentUser().getUid());
-        Intent intent = new Intent(this, StartAlarmBrodcast.class);
+//    private void deleteFromMyMap( Course_Info course) {
+//
+//    }
 
-        PendingIntent sender = PendingIntent.getBroadcast(this, request_code, intent, 0);
-        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        alarmManager.cancel(sender);
+    private void cancelAlarStart(String class_key) {
+        PendingIntent pendingIntentStart = alarmStartMap.get(class_key);
+        PendingIntent pendingIntentAttend = alarmAttendMap.get(class_key);
+
+        Log.d("cancelAlarm", "User Id is  "+ class_key);
+
+        AlarmManager alarmManagerStart = (AlarmManager) getSystemService(ALARM_SERVICE);
+        AlarmManager alarmManagerAttend = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+        alarmManagerStart.cancel(pendingIntentStart);
+        alarmManagerAttend.cancel(pendingIntentAttend);
+
     }
 
     @Override

@@ -16,6 +16,7 @@ import androidx.core.app.NotificationManagerCompat;
 import com.scheduler.beck.MainActivity;
 import com.scheduler.beck.R;
 
+
 import static com.scheduler.beck.Alarm.NotificationChannels.CHANNEL_1_ID;
 import static com.scheduler.beck.RegisterClassActivity.TAG;
 
@@ -26,7 +27,8 @@ public class StartAlarmBrodcast extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        id = 57;
+
+        id = (int)(Math.random() * 1000 + 1);
         Bundle bundle = intent.getExtras();
         notificationManager = NotificationManagerCompat.from(context);
         assert bundle != null;

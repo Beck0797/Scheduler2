@@ -55,15 +55,19 @@ public class tasks extends Fragment implements View.OnClickListener {
     CheckBox Mon, Tue, Wed, Thu, Fri;
     Button btnContinue, btnRegister;
     LinearLayout linLytMon, linLytTue, linLytWed, linLytThu, linLytFri;
-    private static String recieved_key, u_key;
+    private static String recieved_key, c_key;
     private static boolean done;
     private EditText subject_namem,professor_name,room_number,webex_link;
     private Course_Info course_info;
     private  static String roomNumber, webPageLink, sub_name, pf_name;
     private static boolean isMultiple;
 
-    public static Map<String, Integer> alarmStartMap;
+    public static Map<String, PendingIntent> alarmStartMap;
+    public static Map<String, PendingIntent> alarmAttendMap;
+
+
     private static int requestCode;
+
 
     private int h, m, hS, mS;
     private double startTime, endTime;
@@ -374,15 +378,15 @@ public class tasks extends Fragment implements View.OnClickListener {
             }
 
             else{
-                myRef.push().setValue(course_inform);
+                myRef.child(c_key).setValue(course_inform);
             }
 
             Toast.makeText(getContext(), "Class registered!", Toast.LENGTH_SHORT).show();
         }
 
-//        setAttendanceAlarm(day, h, m);
-        setAlarmStart(day, hS, mS-1);
-        Toast.makeText(getActivity(), "Set alarm", Toast.LENGTH_SHORT).show();
+        setAttendanceAlarm(day, h, m);// it will check attendance after five minutes once class has started.
+
+//        setAlarmStart(day, hS, mS-1);
 
         goToCourseList();
 
@@ -473,8 +477,6 @@ public class tasks extends Fragment implements View.OnClickListener {
         course_info = new Course_Info();
         isMultiple = false;
 
-        u_key = firebaseAuth.getCurrentUser().getUid();
-
 
         try {
             recieved_key = intents.getStringExtra("class_key").toString();
@@ -483,19 +485,21 @@ public class tasks extends Fragment implements View.OnClickListener {
             room_number.setText(intents.getStringExtra("class_room"));
             webex_link.setText(intents.getStringExtra("class_url_link"));
             done = true;
-            u_key = recieved_key;
+            c_key = recieved_key;
 
 
 
         } catch (NullPointerException e) {
             done = false;
-            u_key = firebaseAuth.getCurrentUser().getUid();
+            c_key =  myRef.push().getKey();
 
         }
 
         try{
             if(alarmStartMap == null){
             alarmStartMap = new HashMap<>();
+            alarmAttendMap = new HashMap<>();
+
             requestCode = 100;
             }
 
@@ -729,9 +733,11 @@ public class tasks extends Fragment implements View.OnClickListener {
 
         Intent intent = new Intent(getContext(), AttendanceAlarmBroadcast.class);
         intent.putExtra("class", sub_name);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 0, intent, 0);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), ++requestCode, intent, 0);
         AlarmManager am = (AlarmManager) getContext().getSystemService(ALARM_SERVICE);
         am.setRepeating(AlarmManager.RTC_WAKEUP, currentDate.getTimeInMillis(), AlarmManager.INTERVAL_DAY * 7, pendingIntent);
+
+        alarmAttendMap.put(c_key, pendingIntent);
 
 
         // going back to assignment list after setting alarm
@@ -772,13 +778,17 @@ public class tasks extends Fragment implements View.OnClickListener {
         currentDate.set(Calendar.SECOND, 0);
         currentDate.set(Calendar.MILLISECOND, 0);
 
-        Intent intent = new Intent(getContext(), StartAlarmBrodcast.class);
-        intent.putExtra("startClass", sub_name);
-        intent.putExtra("link", webPageLink );
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), ++requestCode, intent, 0);
+        Intent iAlarmStart = new Intent(getContext(), StartAlarmBrodcast.class);
+        iAlarmStart.putExtra("startClass", sub_name);
+        iAlarmStart.putExtra("link", webPageLink );
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), ++requestCode, iAlarmStart, 0);
         AlarmManager am = (AlarmManager) getContext().getSystemService(ALARM_SERVICE);
         am.setRepeating(AlarmManager.RTC_WAKEUP, currentDate.getTimeInMillis(), AlarmManager.INTERVAL_DAY * 7, pendingIntent);
-        alarmStartMap.put(u_key, requestCode);
+
+        alarmStartMap.put(c_key, pendingIntent);
+
+        Log.d("cancelAlarm", "User Id in reg is "+ c_key);
+
 
         // going back to assignment list after setting alarm
         Intent i = new Intent(getContext(), courseList.class);
