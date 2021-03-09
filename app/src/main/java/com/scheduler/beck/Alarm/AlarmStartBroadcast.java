@@ -20,7 +20,7 @@ import com.scheduler.beck.R;
 import static com.scheduler.beck.Alarm.NotificationChannels.CHANNEL_1_ID;
 import static com.scheduler.beck.RegisterClassActivity.TAG;
 
-public class StartAlarmBrodcast extends BroadcastReceiver {
+public class AlarmStartBroadcast extends BroadcastReceiver {
     private static int id;
     private NotificationManagerCompat notificationManager;
 
@@ -43,7 +43,7 @@ public class StartAlarmBrodcast extends BroadcastReceiver {
         PendingIntent contentIntent = PendingIntent.getActivity(context,
                 ++id, activityIntent, 0);
 
-        Intent broadcastIntent = new Intent(context, NotificationReceiver.class);
+        Intent broadcastIntent = new Intent(context, AlarmStartReceiver.class);
         broadcastIntent.putExtra("link", link);
         broadcastIntent.putExtra("id", id);
 

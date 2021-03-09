@@ -13,9 +13,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Toast;
-import android.util.Pair;
 
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,7 +21,6 @@ import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.scheduler.beck.Alarm.StartAlarmBrodcast;
 import com.scheduler.beck.Models.Course_Info;
 import com.scheduler.beck.Models.Course_display;
 import com.scheduler.beck.Utils.ThemeUtils;
@@ -35,6 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.scheduler.beck.Alarm.AlarmAttendReceiver.attendMap;
 import static com.scheduler.beck.Fragments.tasks.alarmAttendMap;
 import static com.scheduler.beck.Fragments.tasks.alarmStartMap;
 
@@ -228,18 +226,31 @@ public class courseList extends AppCompatActivity implements courses_adapter_dat
 
         databaseReference.child(selected_key).removeValue();
 
-        cancelAlarStart(selected_key);
+        cancelAlarms(selected_key);
+        deleteAttend(selected_key);
 
 
 
 
     }
 
+    private void deleteAttend(String selected_key) {
+        String attKey = attendMap.get(selected_key);
+        FirebaseAuth firebaseAuthAtt = FirebaseAuth.getInstance();
+        FirebaseDatabase firebaseDatabaseAtt = firebaseDatabase.getInstance();
+        DatabaseReference databaseReferenceAtt = firebaseDatabase.getReference(firebaseAuth.getCurrentUser().getUid()).child("attendance");
+
+        Log.d("DelAttend", "att key is " + attKey);
+
+        assert attKey != null;
+        databaseReferenceAtt.child(attKey).removeValue();
+    }
+
 //    private void deleteFromMyMap( Course_Info course) {
 //
 //    }
 
-    private void cancelAlarStart(String class_key) {
+    private void cancelAlarms(String class_key) {
         PendingIntent pendingIntentStart = alarmStartMap.get(class_key);
         PendingIntent pendingIntentAttend = alarmAttendMap.get(class_key);
 

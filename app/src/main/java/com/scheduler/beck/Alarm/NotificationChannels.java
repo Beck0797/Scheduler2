@@ -12,6 +12,8 @@ import com.scheduler.beck.R;
 
 public class NotificationChannels extends Application {
     public static final String CHANNEL_1_ID = "channel1";
+    public static final String CHANNEL_2_ID = "channel2";
+
 
     @Override
     public void onCreate() {
@@ -30,6 +32,13 @@ public class NotificationChannels extends Application {
             );
             channel1.setDescription("This is Channel 1");
 
+            NotificationChannel channel2 = new NotificationChannel(
+                    CHANNEL_2_ID,
+                    "Channel 2",
+                    NotificationManager.IMPORTANCE_DEFAULT
+            );
+            channel2.setDescription("This is Channel 2");
+
             AudioAttributes audioAttributes = new AudioAttributes.Builder()
                     .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
                     .setUsage(AudioAttributes.USAGE_ALARM)
@@ -38,7 +47,7 @@ public class NotificationChannels extends Application {
 
 
             NotificationManager manager = getSystemService(NotificationManager.class);
-
+            manager.createNotificationChannel(channel2);
             manager.createNotificationChannel(channel1);
         }
     }

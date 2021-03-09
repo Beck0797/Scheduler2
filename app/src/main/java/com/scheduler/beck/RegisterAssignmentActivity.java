@@ -26,7 +26,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.scheduler.beck.Alarm.AttendanceAlarmBroadcast;
+import com.scheduler.beck.Alarm.AlarmAttendBroadcast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -296,7 +296,7 @@ public class RegisterAssignmentActivity extends AppCompatActivity  implements Vi
     private void setAlarm(String date, String time) {
 
         AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(getApplicationContext(), AttendanceAlarmBroadcast.class);
+        Intent intent = new Intent(getApplicationContext(), AlarmAttendBroadcast.class);
 
         intent.putExtra("title", title);
         intent.putExtra("courseName", courseName);

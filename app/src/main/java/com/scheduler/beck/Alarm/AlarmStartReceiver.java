@@ -11,7 +11,7 @@ import androidx.core.app.NotificationManagerCompat;
 import com.scheduler.beck.courseList;
 
 
-public class NotificationReceiver extends BroadcastReceiver {
+public class AlarmStartReceiver extends BroadcastReceiver {
     private NotificationManagerCompat notificationManager;
     @Override
     public void onReceive(Context context, Intent intent) {

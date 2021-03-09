@@ -81,12 +81,13 @@ public class AttendanceActivity extends AppCompatActivity {
         absence_show = findViewById(R.id.absence_show);
         tardiness = findViewById(R.id.tardiness_show);
         names = new ArrayList<>();
-        try {
-            Bundle bundle = getIntent().getExtras();
+
+        Bundle bundle = getIntent().getExtras();
+        int isThereList = bundle.getInt("isThereList");
+        if(isThereList == 1) {
             check_list = (ArrayList<check_attendance_cons>) bundle.getSerializable("attendance_info");
-        } catch (Exception e) {
+        }else{
             check_list = new ArrayList<>();
-            e.printStackTrace();
         }
 
 
@@ -130,7 +131,6 @@ public class AttendanceActivity extends AppCompatActivity {
                 }
             }
         }
-        Log.d(TAG, "hashmap_size" + att_calc.size());
         databaseReference.child("all_class").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -179,9 +179,9 @@ public class AttendanceActivity extends AppCompatActivity {
             pieData.add(new SliceValue(total_att == 0 ? 0 : (total_att / total) * 100, Color.BLUE));
             pieData.add(new SliceValue(total_abs == 0 ? 0 : (total_abs / total) * 100, Color.RED));
             pieData.add(new SliceValue(total_tar == 0 ? 0 : (total_tar / total) * 100, Color.parseColor("#FF8C00")));
-            attendace_show.setText("attendance" + String.format("%.1f", total_att == 0 ? 0 : (total_att / total) * 100) + " %");
-            absence_show.setText("absence" + String.format("%.1f", total_abs == 0 ? 0 : (total_abs / total) * 100) + " %");
-            tardiness.setText("tardiness" + String.format("%.1f", total_tar == 0 ? 0 : (total_tar / total) * 100) + " %");
+            attendace_show.setText("attendance" + String.format(" %.1f", total_att == 0 ? 0 : (total_att / total) * 100) + " %");
+            absence_show.setText("absence" + String.format(" %.1f", total_abs == 0 ? 0 : (total_abs / total) * 100) + " %");
+            tardiness.setText("tardiness" + String.format(" %.1f", total_tar == 0 ? 0 : (total_tar / total) * 100) + " %");
         } catch (ArithmeticException e) {
             e.printStackTrace();
         }

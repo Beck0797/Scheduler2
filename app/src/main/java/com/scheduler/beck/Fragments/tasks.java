@@ -26,8 +26,8 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.scheduler.beck.Alarm.AttendanceAlarmBroadcast;
-import com.scheduler.beck.Alarm.StartAlarmBrodcast;
+import com.scheduler.beck.Alarm.AlarmAttendBroadcast;
+import com.scheduler.beck.Alarm.AlarmStartBroadcast;
 import com.scheduler.beck.Models.Course_Info;
 import com.scheduler.beck.R;
 import com.scheduler.beck.courseList;
@@ -386,7 +386,7 @@ public class tasks extends Fragment implements View.OnClickListener {
 
         setAttendanceAlarm(day, h, m);// it will check attendance after five minutes once class has started.
 
-//        setAlarmStart(day, hS, mS-1);
+        setAlarmStart(day, hS, mS-1);
 
         goToCourseList();
 
@@ -731,8 +731,10 @@ public class tasks extends Fragment implements View.OnClickListener {
         currentDate.set(Calendar.SECOND, 0);
         currentDate.set(Calendar.MILLISECOND, 0);
 
-        Intent intent = new Intent(getContext(), AttendanceAlarmBroadcast.class);
+        Intent intent = new Intent(getContext(), AlarmAttendBroadcast.class);
         intent.putExtra("class", sub_name);
+        intent.putExtra("c_key", c_key);
+
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), ++requestCode, intent, 0);
         AlarmManager am = (AlarmManager) getContext().getSystemService(ALARM_SERVICE);
         am.setRepeating(AlarmManager.RTC_WAKEUP, currentDate.getTimeInMillis(), AlarmManager.INTERVAL_DAY * 7, pendingIntent);
@@ -778,7 +780,7 @@ public class tasks extends Fragment implements View.OnClickListener {
         currentDate.set(Calendar.SECOND, 0);
         currentDate.set(Calendar.MILLISECOND, 0);
 
-        Intent iAlarmStart = new Intent(getContext(), StartAlarmBrodcast.class);
+        Intent iAlarmStart = new Intent(getContext(), AlarmStartBroadcast.class);
         iAlarmStart.putExtra("startClass", sub_name);
         iAlarmStart.putExtra("link", webPageLink );
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), ++requestCode, iAlarmStart, 0);

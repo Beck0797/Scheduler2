@@ -41,6 +41,7 @@ public class MenuActivity extends AppCompatActivity {
         ThemeUtils.onActivityCreateSetTheme(this);
         setContentView(R.layout.activity_menu);
 
+        check_attendance_list = new ArrayList<>();
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference(firebaseAuth.getCurrentUser().getUid()).child("web_link");
@@ -91,7 +92,7 @@ public class MenuActivity extends AppCompatActivity {
                         check_attendance_list.add(new check_attendance_cons(check.getClass_name().toString(), check.getStatus().toString(), check.getDate().toString()));
                     }catch (NullPointerException e){
                         e.printStackTrace();
-                        check_attendance_list = new ArrayList<>();
+//                        check_attendance_list = new ArrayList<>();
                     }
                     }
             }
@@ -109,9 +110,16 @@ public class MenuActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), AttendanceActivity.class);
                 //Log.d(TAG, "sizeL: " + check_attendance_list.size());
                 Bundle bundle = new Bundle();
+                if(!check_attendance_list.isEmpty()){
 
-                bundle.putSerializable("attendance_info", check_attendance_list);
+                    bundle.putSerializable("attendance_info", check_attendance_list);
+                    bundle.putInt("isThereList", 1);
+
+                }else{
+                    bundle.putInt("isThereList", 0);
+                }
                 intent.putExtras(bundle);
+
                 startActivity(intent);
             }
         });

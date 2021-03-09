@@ -19,7 +19,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".button_action" />
         <activity android:name=".MenuActivity" />
         <activity android:name=".Attendance_Detail" />
         <activity android:name=".RegisterAssignmentActivity" />
@@ -62,9 +61,10 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".Alarm.AttendanceAlarmBroadcast" />
-        <receiver android:name=".Alarm.StartAlarmBrodcast" />
-        <receiver android:name=".Alarm.NotificationReceiver" />
+        <receiver android:name=".Alarm.AlarmAttendBroadcast" />
+        <receiver android:name=".Alarm.AlarmStartBroadcast" />
+        <receiver android:name=".Alarm.AlarmStartReceiver" />
+        <receiver android:name=".Alarm.AlarmAttendReceiver" />
 
 
         <meta-data
