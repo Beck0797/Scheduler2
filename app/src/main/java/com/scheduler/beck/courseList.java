@@ -1,12 +1,15 @@
 package com.scheduler.beck;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -63,6 +66,17 @@ public class courseList extends AppCompatActivity implements courses_adapter_dat
         databaseReference = firebaseDatabase.getReference(firebaseAuth.getCurrentUser().getUid()).child("all_class");
 
         databaseReference1 = firebaseDatabase.getReference(firebaseAuth.getCurrentUser().getUid()).child("all_class").child("assignments");
+
+        try {
+            Intent intentLink = getIntent();
+
+            int alert = intentLink.getIntExtra("alert", 0);
+            if (alert == 1) {
+                showAlertNoLink();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         course_displays = new ArrayList<>();
         recyclerView.setHasFixedSize(true);
@@ -263,6 +277,20 @@ public class courseList extends AppCompatActivity implements courses_adapter_dat
         alarmManagerAttend.cancel(pendingIntentAttend);
 
     }
+    private void showAlertNoLink() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setMessage("Course link is not given.\nPlease register the course link by updating the class!")
+                .setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {

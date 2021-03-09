@@ -384,7 +384,7 @@ public class tasks extends Fragment implements View.OnClickListener {
             Toast.makeText(getContext(), "Class registered!", Toast.LENGTH_SHORT).show();
         }
 
-        setAttendanceAlarm(day, h, m);// it will check attendance after five minutes once class has started.
+        setAttendanceAlarm(day, h, m+2);// it will check attendance after five minutes once class has started.
 
         setAlarmStart(day, hS, mS-1);
 

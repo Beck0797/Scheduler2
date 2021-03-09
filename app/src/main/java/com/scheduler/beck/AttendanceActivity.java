@@ -146,10 +146,11 @@ public class AttendanceActivity extends AppCompatActivity {
                         if (att_calc.containsKey(course_info.getCourse_name().toString())) {
                             check = true;
                             Point p = att_calc.get(course_info.getCourse_name().toString());
-                            String att_s = String.format("%.1f", p.getAtt() == 0 ? 0 : p.getAtt() / total_att * 100);
+                            float all = p.getAbs()+p.getAtt()+p.getTard();
+                            String att_s = String.format("%.1f", p.getAtt() == 0 ? 0 : p.getAtt() / all * 100);
                             //Log.d(TAG, "another" + p.getAbs());
-                            String abs_s = String.format("%.1f", p.getAbs() == 0 ? 0 : p.getAbs() / total_abs * 100);
-                            String tar_d = String.format("%.1f", p.getTard() == 0 ? 0 : p.getTard() / total_tar * 100);
+                            String abs_s = String.format("%.1f", p.getAbs() == 0 ? 0 : p.getAbs() / all * 100);
+                            String tar_d = String.format("%.1f", p.getTard() == 0 ? 0 : p.getTard() / all * 100);
                             names.add(new AtttendanceInfo(course_info.getCourse_name().toString(), course_info.getCourse_day().toString()
                                     , course_info.getClassroom_number().toString(), course_info.getProfessor_name().toString(),
                                     att_s + "%", abs_s + "%", tar_d + "%"));
