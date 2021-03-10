@@ -12,9 +12,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.RemoteViews;
-import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 
@@ -23,7 +21,6 @@ import com.scheduler.beck.AssignmentActivity;
 
 import static com.scheduler.beck.Alarm.NotificationChannels.CHANNEL_1_ID;
 import static com.scheduler.beck.Alarm.NotificationChannels.CHANNEL_2_ID;
-import static com.scheduler.beck.RegisterClassActivity.TAG;
 
 public class AlarmAttendBroadcast extends BroadcastReceiver {
     private static int request_code, nId;
@@ -49,7 +46,7 @@ public class AlarmAttendBroadcast extends BroadcastReceiver {
             Intent intent1 = new Intent(context, AssignmentActivity.class);
             Uri soundUri = Uri.parse("android.resource://" + context.getPackageName() + "/" + R.raw.paper_guitar);
 
-            RemoteViews contentView = new RemoteViews(context.getPackageName(), R.layout.notification_layout);
+            RemoteViews contentView = new RemoteViews(context.getPackageName(), R.layout.assign_notification_layout);
             //assignment title
             contentView.setTextViewText(R.id.title, title);
             contentView.setTextViewText(R.id.course, courseName + ": ");
@@ -85,8 +82,9 @@ public class AlarmAttendBroadcast extends BroadcastReceiver {
 
             // it is class
             request_code++;
-
-            NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            RemoteViews contentView = new RemoteViews(context.getPackageName(), R.layout.attend_notification_layout);
+            //assignment title
+            contentView.setTextViewText(R.id.txtClass2, claass);
 
             Intent iYes = new Intent(context, AlarmAttendReceiver.class);
             iYes.putExtra("num", 1);
@@ -112,24 +110,30 @@ public class AlarmAttendBroadcast extends BroadcastReceiver {
 
             PiL = PendingIntent.getBroadcast(context, ++request_code, iLate, PendingIntent.FLAG_UPDATE_CURRENT);
 
-            Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            contentView.setOnClickPendingIntent(R.id.btnYes, PiY);
+            contentView.setOnClickPendingIntent(R.id.btnNo, PiN);
+            contentView.setOnClickPendingIntent(R.id.btnLate, PiL);
 
-            Notification notification = new NotificationCompat.Builder(context, CHANNEL_2_ID)
-                    .setSmallIcon(R.drawable.icon_notification)
-                    .setContentTitle(claass)
-                    .setContentText("Are you attending the class?")
-                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                    .setCategory(NotificationCompat.CATEGORY_ALARM)
-                    .setColor(Color.BLUE)
-                    .setOnlyAlertOnce(true)
-                    .setOngoing(true) // not removed in swipe
-                    .addAction(R.drawable.ic_launcher_foreground, "Yes", PiY)
-                    .addAction(R.drawable.ic_launcher_foreground, "No", PiN)
-                    .addAction(R.drawable.ic_launcher_foreground, "Late", PiL)
-                    .setDefaults(Notification.DEFAULT_VIBRATE)
-                    .setSound(uri)
-                    .build();
 
+            NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, CHANNEL_2_ID);
+            mBuilder.setSmallIcon(R.drawable.icon_notification);
+            mBuilder.setAutoCancel(true);
+            mBuilder.setOngoing(true); // not removed in swipe
+            mBuilder.setPriority(Notification.PRIORITY_DEFAULT);
+            mBuilder.build().flags = Notification.PRIORITY_DEFAULT;
+            mBuilder.setContent(contentView);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                String channelId = "channel_id";
+                NotificationChannel channel = new NotificationChannel(CHANNEL_2_ID, "Channel 2", NotificationManager.IMPORTANCE_HIGH);
+                channel.enableVibration(true);
+                notificationManager.createNotificationChannel(channel);
+                mBuilder.setChannelId(CHANNEL_2_ID);
+            }
+
+            Notification notification = mBuilder.build();
+            assert notificationManager != null;
             notificationManager.notify(nId, notification);
 
 

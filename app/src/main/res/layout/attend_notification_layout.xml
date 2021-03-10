@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    >
+
+    <RelativeLayout
+        android:id="@+id/layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        >
+
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/app_logo" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/icon">
+            <TextView
+                android:id="@+id/txtClass2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Algorithm"
+                android:textSize="16sp"
+                android:textColor="@color/Black"
+                android:textStyle="bold"
+                />
+            <TextView
+                android:id="@+id/title"
+                android:layout_marginTop="3dp"
+                android:layout_marginStart="3dp"
+                android:layout_below="@+id/txtClass2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Are you attending the class?"
+                android:textColor="#000000"
+                android:textSize="13sp" />
+
+
+        </RelativeLayout>
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout"
+        android:orientation="horizontal"
+        android:layout_marginTop="7dp"
+        >
+        <Button
+            android:id="@+id/btnYes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="30dp"
+            android:layout_alignParentEnd="true"
+            android:textColor="@color/White"
+            android:padding="5dp"
+            android:background="@drawable/notification_button_bg"
+            android:layout_centerVertical="true"
+            android:text="Yes"/>
+        <Button
+            android:id="@+id/btnNo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="30dp"
+            android:layout_alignParentEnd="true"
+            android:textColor="@color/White"
+            android:padding="5dp"
+            android:layout_marginStart="7dp"
+            android:background="@drawable/notification_button_bg"
+            android:layout_centerVertical="true"
+            android:text="No"/>
+        <Button
+            android:id="@+id/btnLate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="30dp"
+            android:layout_alignParentEnd="true"
+            android:textColor="@color/White"
+            android:padding="5dp"
+            android:layout_marginStart="7dp"
+            android:background="@drawable/notification_button_bg"
+            android:layout_centerVertical="true"
+            android:text="Late"/>
+
+
+    </LinearLayout>
+
+
+
+
+</RelativeLayout>
