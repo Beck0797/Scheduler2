@@ -3,6 +3,8 @@ package com.scheduler.beck;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.os.Bundle;
 
 
@@ -34,6 +36,9 @@ import com.scheduler.beck.Utils.ThemeUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import static com.scheduler.beck.Fragments.tasks.alarmStartMap;
+import static com.scheduler.beck.RegisterAssignmentActivity.assignAlarmMap;
 
 public class AssignmentActivity extends AppCompatActivity {
     private static final String TAG = "assignment";
@@ -184,7 +189,7 @@ public class AssignmentActivity extends AppCompatActivity {
                 deleteAssignment(key);
 
                 data.notifyDataSetChanged();
-                
+
                 snackbar.dismiss();
 
 
@@ -218,6 +223,16 @@ public class AssignmentActivity extends AppCompatActivity {
                 }
             }
         });
+
+        cancelAlarm(key);
+    }
+
+    private void cancelAlarm(String key) {
+        PendingIntent pendingIntent = assignAlarmMap.get(key);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        alarmManager.cancel(pendingIntent);
+
+
     }
 }
 

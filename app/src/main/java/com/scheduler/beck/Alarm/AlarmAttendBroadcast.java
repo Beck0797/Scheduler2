@@ -49,11 +49,11 @@ public class AlarmAttendBroadcast extends BroadcastReceiver {
             Intent intent1 = new Intent(context, AssignmentActivity.class);
             Uri soundUri = Uri.parse("android.resource://" + context.getPackageName() + "/" + R.raw.paper_guitar);
 
-
             RemoteViews contentView = new RemoteViews(context.getPackageName(), R.layout.notification_layout);
             //assignment title
             contentView.setTextViewText(R.id.title, title);
-            contentView.setTextViewText(R.id.course, courseName);
+            contentView.setTextViewText(R.id.course, courseName + ": ");
+
             NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, "notify_001");
             mBuilder.setSmallIcon(R.drawable.icon_notification);
