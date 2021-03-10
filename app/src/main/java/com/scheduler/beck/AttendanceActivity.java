@@ -86,8 +86,11 @@ public class AttendanceActivity extends AppCompatActivity {
         int isThereList = bundle.getInt("isThereList");
         if(isThereList == 1) {
             check_list = (ArrayList<check_attendance_cons>) bundle.getSerializable("attendance_info");
+            findViewById(R.id.txtNoAttend).setVisibility(View.GONE);
         }else{
             check_list = new ArrayList<>();
+            findViewById(R.id.txtNoAttend).setVisibility(View.VISIBLE);
+
         }
 
 

@@ -264,30 +264,6 @@ public class RegisterAssignmentActivity extends AppCompatActivity implements Vie
         finish();
     }
 
-    private void setAlarm(String date, String time, String key) {
-
-        AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(getApplicationContext(), AlarmAttendBroadcast.class);
-
-        intent.putExtra("title", title);
-        intent.putExtra("courseName", courseName);
-
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), ++reqCode, intent, PendingIntent.FLAG_ONE_SHOT);
-        String dateandtime = date + " " + timeTonotify;
-        DateFormat formatter = new SimpleDateFormat("d-M-yyyy hh:mm");
-        assignAlarmMap.put(key, pendingIntent);
-        try {
-            Date date1 = formatter.parse(dateandtime);
-            am.set(AlarmManager.RTC_WAKEUP, date1.getTime(), pendingIntent);
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        // going back to assignment list after setting alarm
-        Intent i = new Intent(getApplicationContext(), AssignmentActivity.class);
-        startActivity(i);
-        finish();
-    }
 
     public String FormatTime(int hour, int minute) {
 

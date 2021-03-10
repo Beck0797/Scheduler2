@@ -35,6 +35,9 @@ public class adapter_data extends  RecyclerView.Adapter<adapter_data.ViewHolder>
     private String take_key;
     private static  final String TAG = "adapter_data";
     private DatabaseReference databaseReference;
+
+
+
     public adapter_data(Context context, ArrayList<AssignmentCons> assignmentCons, DatabaseReference databaseReference) {
         this.assign_list = assignmentCons;
         this.context = context;
@@ -55,6 +58,8 @@ public class adapter_data extends  RecyclerView.Adapter<adapter_data.ViewHolder>
         final AssignmentCons assignCons = assign_list.get(position);
         holder.assignment_title.setText(assignCons.getAssign_title());
         holder.assignment_course_name.setText(assignCons.getAssign_coursename());
+
+
 
         if(assignCons.getTime_left() == null) {
             holder.assignment_deadline.setText("calculating...");

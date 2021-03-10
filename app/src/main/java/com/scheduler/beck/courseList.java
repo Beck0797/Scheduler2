@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -51,6 +52,7 @@ public class courseList extends AppCompatActivity implements courses_adapter_dat
     private courses_adapter_data adapter_data;
     private Map<String, ArrayList<List<Double>>> myMap;
     private ArrayList<List<Double>> list_double;
+    private TextView txtNoCourse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +60,7 @@ public class courseList extends AppCompatActivity implements courses_adapter_dat
         ThemeUtils.onActivityCreateSetTheme(this);
         setContentView(R.layout.activity_course_list);
 
+        txtNoCourse = findViewById(R.id.txtNoCourse);
         recyclerView = (RecyclerView) findViewById(R.id.courseRecycler_view);
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -116,6 +119,13 @@ public class courseList extends AppCompatActivity implements courses_adapter_dat
                 recyclerView.setAdapter(adapter_data);
                 adapter_data.setOnItemClickListener(courseList.this);
                 adapter_data.notifyDataSetChanged();
+
+                if(adapter_data.getItemCount() == 0){
+                    txtNoCourse.setVisibility(View.VISIBLE);
+                }else{
+                    txtNoCourse.setVisibility(View.GONE);
+
+                }
 
 
             }

@@ -73,6 +73,15 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/my_toolbar">
 
+        <TextView
+            android:id="@+id/txtNoCourse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No Course Registered"
+            android:textSize="18sp"
+            android:layout_centerInParent="true"
+            />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/courseRecycler_view"
             android:layout_width="match_parent"

@@ -51,6 +51,7 @@ public class AssignmentActivity extends AppCompatActivity {
     private HashMap<String, String> list_class;
     private ArrayList<AssignmentCons> assignmentFetch;
     private adapter_data data;
+    private TextView noAssign;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +59,7 @@ public class AssignmentActivity extends AppCompatActivity {
         ThemeUtils.onActivityCreateSetTheme(this);
         setContentView(R.layout.activity_assignment);
 
-
+        noAssign = findViewById(R.id.txtNoAssign);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -71,23 +72,29 @@ public class AssignmentActivity extends AppCompatActivity {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                   for(DataSnapshot dataSnapshot: snapshot.getChildren()) {
-                        DataSnapshot getdata = dataSnapshot.child("assignments");
-                       for(DataSnapshot innerdata : getdata.getChildren()) {
-                           Log.d(TAG, "print: " + innerdata);
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    DataSnapshot getdata = dataSnapshot.child("assignments");
+                    for (DataSnapshot innerdata : getdata.getChildren()) {
+                        Log.d(TAG, "print: " + innerdata);
 
-                           AssignmentCons assignmentCons = innerdata.getValue(AssignmentCons.class);
+                        AssignmentCons assignmentCons = innerdata.getValue(AssignmentCons.class);
 
-                           assignmentFetch.add(new AssignmentCons(innerdata.getKey().toString(), assignmentCons.getAssign_coursename(),assignmentCons.getAssign_title().toString(),
-                                   assignmentCons.getAssign_duedate().toString(), assignmentCons.getAssign_duetime().toString()));
+                        assignmentFetch.add(new AssignmentCons(innerdata.getKey().toString(), assignmentCons.getAssign_coursename(), assignmentCons.getAssign_title().toString(),
+                                assignmentCons.getAssign_duedate().toString(), assignmentCons.getAssign_duetime().toString()));
 
 
-                       }
+                    }
 
-                   }
-                   data = new adapter_data(getApplicationContext(), assignmentFetch, databaseReference);
-                   recyclerView.setAdapter(data);
-                   data.notifyDataSetChanged();
+                }
+                data = new adapter_data(getApplicationContext(), assignmentFetch, databaseReference);
+                recyclerView.setAdapter(data);
+                data.notifyDataSetChanged();
+                if (data.getItemCount() == 0) {
+                    findViewById(R.id.txtNoAssign).setVisibility(View.VISIBLE);
+                } else {
+                    findViewById(R.id.txtNoAssign).setVisibility(View.GONE);
+
+                }
 
             }
 
@@ -103,9 +110,6 @@ public class AssignmentActivity extends AppCompatActivity {
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
 
-
-
-
         // firesbase setup
 
         // specify an adapter (see also next example)
@@ -116,7 +120,7 @@ public class AssignmentActivity extends AppCompatActivity {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot data : snapshot.getChildren()) {
+                for (DataSnapshot data : snapshot.getChildren()) {
                     Course_Info courseInfo = data.getValue(Course_Info.class);
                     list_class.put(courseInfo.getCourse_name().toString(), data.getKey());
                 }
@@ -159,19 +163,18 @@ public class AssignmentActivity extends AppCompatActivity {
         }
     };
 
-    public void myCustomSnackbar(final RecyclerView.ViewHolder viewHolder)
-    {
+    public void myCustomSnackbar(final RecyclerView.ViewHolder viewHolder) {
         // Create the Snackbar
         LinearLayout.LayoutParams objLayoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         final Snackbar snackbar = Snackbar.make(findViewById(R.id.parent), "", Snackbar.LENGTH_INDEFINITE);
         // Get the Snackbar's layout view
         Snackbar.SnackbarLayout layout = (Snackbar.SnackbarLayout) snackbar.getView();
-        layout.setPadding(0,0,0,0);
+        layout.setPadding(0, 0, 0, 0);
         // Hide the text
 //        TextView textView = (TextView) layout.findViewById(android.support.design.R.id.snackbar_text);
 //        textView.setVisibility(View.INVISIBLE);
 
-        LayoutInflater mInflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
+        LayoutInflater mInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         // Inflate our custom view
         View snackView = getLayoutInflater().inflate(R.layout.snack_bar, null);
         // Configure the view
@@ -217,7 +220,7 @@ public class AssignmentActivity extends AppCompatActivity {
         databaseReference1.get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
             @Override
             public void onSuccess(DataSnapshot snapshot) {
-                for(DataSnapshot dataSnapshot: snapshot.getChildren()) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     DataSnapshot getdata = dataSnapshot.child("assignments");
                     getdata.getRef().child(key).removeValue();
                 }

@@ -54,6 +54,15 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/my_toolbar">
 
+        <TextView
+            android:id="@+id/txtNoAssign"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No Assignment"
+            android:textSize="18sp"
+            android:layout_centerInParent="true"
+            />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:scrollbars="vertical"

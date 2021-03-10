@@ -610,6 +610,14 @@ public class tasks extends Fragment implements View.OnClickListener {
     }
 
     private void OnAlarmSelects(TextView time_alarm, int hourOfDay, int minute) {
+        if(hourOfDay > 23 || hourOfDay < 7){
+            Toast.makeText(getContext(), "Alarm time should be between 7am - 11pm", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(hourOfDay > endTime){
+            Toast.makeText(getContext(), "Alarm time should be earlier than end time", Toast.LENGTH_SHORT).show();
+            return;
+        }
         String hour = "0", sMinute = "0", st;
         if(hourOfDay < 10){
             hour+=hourOfDay;
@@ -628,8 +636,18 @@ public class tasks extends Fragment implements View.OnClickListener {
     }
 
     private void OnEndSelect(TextView time_end, int hourOfDay, int minute) {
+        if(hourOfDay > 23 || hourOfDay < 8){
+            Toast.makeText(getContext(), "Class time should be between 8am - 11pm", Toast.LENGTH_SHORT).show();
+            return;
+        }
         String temp1 = "" + hourOfDay + "." + minute;
         endTime = Double.parseDouble(temp1);
+
+        if(endTime < startTime){
+            Toast.makeText(getContext(), "Start time and End time does not match", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         String hour = "0", sMinute = "0", st;
         if(hourOfDay < 10){
             hour+=hourOfDay;
@@ -646,8 +664,14 @@ public class tasks extends Fragment implements View.OnClickListener {
     }
 
     private void OnStartSelect(TextView time_start, int hourOfDay, int minute) {
+        if(hourOfDay > 23 || hourOfDay < 8){
+            Toast.makeText(getContext(), "Class time should be between 8am - 11pm", Toast.LENGTH_SHORT).show();
+            return;
+        }
         String temp = "" + hourOfDay + "." + minute;
         startTime = Double.parseDouble(temp);
+
+
         h = hourOfDay;
         m = minute;
         String hour = "0", sMinute = "0", st;
@@ -662,6 +686,7 @@ public class tasks extends Fragment implements View.OnClickListener {
             sMinute = ""+minute;
         }
         st = hour + ":" + sMinute;
+
         time_start.setText(st);
 
 

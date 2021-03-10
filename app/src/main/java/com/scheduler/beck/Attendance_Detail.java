@@ -58,6 +58,12 @@ public class Attendance_Detail extends AppCompatActivity {
                         names.add(new SatuesDates(ch.getDate().toString(), ch.getStatus().toString()));
                     }
                 }
+
+                if(names.isEmpty()){
+                    findViewById(R.id.NoAttendGrid).setVisibility(View.VISIBLE);
+                }else{
+                    findViewById(R.id.NoAttendGrid).setVisibility(View.GONE);
+                }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -72,6 +78,8 @@ public class Attendance_Detail extends AppCompatActivity {
 
         adapter = new GridViewAdapter(this, names);
         recyclerView.setAdapter(adapter);
+
+
     }
 
    class ListSpacingDecoration extends RecyclerView.ItemDecoration {
