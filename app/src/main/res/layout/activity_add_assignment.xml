@@ -242,14 +242,6 @@
                                     android:textSize="16sp" />
 
 
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:fontFamily="sans-serif-black"
-                                    android:text="Alarm sound:"
-                                    android:layout_margin="12dp"
-                                    android:textColor="#000"
-                                    android:textSize="16sp" />
 
 
                             </LinearLayout>
@@ -311,18 +303,7 @@
                                     android:textAlignment="center"
                                     android:textSize="16sp" />
 
-                                <TextView
-                                    android:id="@+id/btnChooseSound"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="8dp"
-                                    android:padding="4dp"
-                                    android:layout_marginStart="28dp"
-                                    android:background="@drawable/border_text"
-                                    android:hint="set sound"
-                                    android:onClick="choose_audio"
-                                    android:textAlignment="center"
-                                    android:textSize="16sp" />
+
 
 
                             </LinearLayout>

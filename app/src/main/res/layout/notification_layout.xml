@@ -9,13 +9,6 @@
         android:layout_height="64dp"
         android:padding="10dp">
 
-<!--        <Button-->
-<!--            android:id="@+id/flashButton"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="50dp"-->
-<!--            android:layout_alignParentRight="true"-->
-<!--            android:layout_centerVertical="true"-->
-<!--            android:text="Snozz off" />-->
 
         <ImageView
             android:id="@+id/icon"
@@ -25,7 +18,7 @@
             android:layout_marginLeft="-10dp"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
-            android:src="@drawable/my_logo" />
+            android:src="@drawable/app_logo" />
 
         <RelativeLayout
             android:layout_width="wrap_content"

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -94,6 +95,12 @@ public class adapter_data extends  RecyclerView.Adapter<adapter_data.ViewHolder>
                 }
             });
         }
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "Swipe assignment to delete", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
     public void setHandler(){
         final Handler handler = new Handler();
@@ -192,6 +199,7 @@ public class adapter_data extends  RecyclerView.Adapter<adapter_data.ViewHolder>
         String date;
         String time;
       }
+
 
 }
 

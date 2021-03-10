@@ -46,7 +46,7 @@ import java.util.Map;
 
 public class RegisterAssignmentActivity extends AppCompatActivity  implements View.OnClickListener {
     public static final String TAG = "addAssignment.this";
-    private TextView btnTime_start_select, btnAlarm_select, btnChooseSound, btnAddAssignmentDateselect, btnAddAssignmentAlarmDateselect;
+    private TextView btnTime_start_select, btnAlarm_select, btnAddAssignmentDateselect, btnAddAssignmentAlarmDateselect;
     private Uri mCurrentSelectedUri;
     private CalendarView mCalendarView;
     private boolean isAssignmentDate, isAlarmDate;
@@ -82,7 +82,6 @@ public class RegisterAssignmentActivity extends AppCompatActivity  implements Vi
         mCalendarView = findViewById(R.id.calendarView);
         btnAlarm_select = findViewById(R.id.btnAlarmTime);
         btnAddAssignmentAlarmDateselect = findViewById(R.id.btnAddAssignmentAlarmDateselect);
-        btnChooseSound = findViewById(R.id.btnChooseSound);
         btnTime_start_select = findViewById(R.id.btnDueTime_select);
         btnAddAssignmentDateselect = findViewById(R.id.btnAddAssignmentDateselect);
         assignmentTitle = findViewById(R.id.assignmentTitle);
@@ -190,64 +189,6 @@ public class RegisterAssignmentActivity extends AppCompatActivity  implements Vi
         timePickerDialog.show();
     }
 
-    public void choose_audio(View view) {
-
-        //Application needs read storage permission for Builder.TYPE_MUSIC .
-        if (ActivityCompat.checkSelfPermission(RegisterAssignmentActivity.this,
-                Manifest.permission.READ_EXTERNAL_STORAGE)
-                == PackageManager.PERMISSION_GRANTED) {
-
-            RingtonePickerDialog.Builder ringtonePickerBuilder = new RingtonePickerDialog
-                    .Builder(RegisterAssignmentActivity.this, getSupportFragmentManager())
-
-                    //Set title of the dialog.
-                    //If set null, no title will be displayed.
-                    .setTitle("Select ringtone")
-
-                    //set the currently selected uri, to mark that ringtone as checked by default.
-                    //If no ringtone is currently selected, pass null.
-                    .setCurrentRingtoneUri(mCurrentSelectedUri)
-
-                    //Allow user to select default ringtone set in phone settings.
-                    .displayDefaultRingtone(true)
-
-                    //Allow user to select silent (i.e. No ringtone.).
-                    .displaySilentRingtone(true)
-
-                    //set the text to display of the positive (ok) button.
-                    //If not set OK will be the default text.
-                    .setPositiveButtonText("SET RINGTONE")
-
-                    //set text to display as negative button.
-                    //If set null, negative button will not be displayed.
-                    .setCancelButtonText("CANCEL")
-
-                    //Set flag true if you want to play the sample of the clicked tone.
-                    .setPlaySampleWhileSelection(true)
-
-                    //Set the callback listener.
-                    .setListener(new RingtonePickerListener() {
-                        @Override
-                        public void OnRingtoneSelected(@NonNull String ringtoneName, Uri ringtoneUri) {
-                            mCurrentSelectedUri = ringtoneUri;
-                            btnChooseSound.setBackground(getResources().getDrawable(R.drawable.edittextunderline));
-                            btnChooseSound.setText(String.format("%s", ringtoneName));
-                        }
-                    });
-            ringtonePickerBuilder.addRingtoneType(RingtonePickerDialog.Builder.TYPE_ALARM);
-
-
-
-            //Display the dialog.
-            ringtonePickerBuilder.show();
-        } else {
-            Toast.makeText(this, "Permission not granted!", Toast.LENGTH_SHORT).show();
-            ActivityCompat.requestPermissions(RegisterAssignmentActivity.this,
-                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                    123);
-        }
-    }
-
     public void onAddAssignmentClicked(View view) {
         title = assignmentTitle.getText().toString().trim();
         if(title.isEmpty()){
@@ -259,7 +200,7 @@ public class RegisterAssignmentActivity extends AppCompatActivity  implements Vi
         }
 
         Log.d(TAG, "working" + hashMap.get(take_class));
-        AssignmentCons assignmentCons = new AssignmentCons(take_class,assignmentTitle.getText().toString(), btnAddAssignmentDateselect.getText().toString(), btnTime_start_select.getText().toString());
+        AssignmentCons assignmentCons = new AssignmentCons(take_class,assignmentTitle.getText().toString().trim(), btnAddAssignmentDateselect.getText().toString(), btnTime_start_select.getText().toString());
         databaseReference.child(hashMap.get(take_class)).child("assignments").push().setValue(assignmentCons);
     }
     public void onbtnAddAssignmentDateselectClicked(View view) {

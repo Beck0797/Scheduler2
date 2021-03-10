@@ -21,6 +21,7 @@ import androidx.core.app.NotificationCompat;
 import com.scheduler.beck.R;
 import com.scheduler.beck.AssignmentActivity;
 
+import static com.scheduler.beck.Alarm.NotificationChannels.CHANNEL_1_ID;
 import static com.scheduler.beck.Alarm.NotificationChannels.CHANNEL_2_ID;
 import static com.scheduler.beck.RegisterClassActivity.TAG;
 
@@ -45,10 +46,9 @@ public class AlarmAttendBroadcast extends BroadcastReceiver {
         if(claass == null) {
             // it is assignment
             nId++;
-            Toast.makeText(context, "It is assignment. Claaas is " + claass, Toast.LENGTH_SHORT).show();
-            Log.d(TAG, "It is assignment. Claaas is " + claass);
-
             Intent intent1 = new Intent(context, AssignmentActivity.class);
+            Uri soundUri = Uri.parse("android.resource://" + context.getPackageName() + "/" + R.raw.paper_guitar);
+
 
             RemoteViews contentView = new RemoteViews(context.getPackageName(), R.layout.notification_layout);
             //assignment title
@@ -58,20 +58,22 @@ public class AlarmAttendBroadcast extends BroadcastReceiver {
             NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, "notify_001");
             mBuilder.setSmallIcon(R.drawable.icon_notification);
             mBuilder.setAutoCancel(true);
-            mBuilder.setPriority(Notification.PRIORITY_DEFAULT);
+            mBuilder.setPriority(Notification.PRIORITY_HIGH);
             mBuilder.setOnlyAlertOnce(true);
             mBuilder.build().flags = Notification.PRIORITY_DEFAULT;
+            mBuilder.setSound(soundUri);
+
 
             PendingIntent pendingIntent = PendingIntent.getActivity(context, nId, intent1, PendingIntent.FLAG_ONE_SHOT);
             intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             mBuilder.setContent(contentView);
             mBuilder.setContentIntent(pendingIntent);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                String channelId = "channel_id";
-                NotificationChannel channel = new NotificationChannel(channelId, "channel name", NotificationManager.IMPORTANCE_DEFAULT);
+//                String channelId = "channel_id";
+                NotificationChannel channel = new NotificationChannel(CHANNEL_1_ID, "Channel 1", NotificationManager.IMPORTANCE_HIGH);
                 channel.enableVibration(true);
                 notificationManager.createNotificationChannel(channel);
-                mBuilder.setChannelId(channelId);
+                mBuilder.setChannelId(CHANNEL_1_ID);
             }
             Notification notification = mBuilder.build();
             assert notificationManager != null;
