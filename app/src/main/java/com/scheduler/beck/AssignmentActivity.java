@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -231,11 +232,27 @@ public class AssignmentActivity extends AppCompatActivity {
     }
 
     private void cancelAlarm(String key) {
-        PendingIntent pendingIntent = assignAlarmMap.get(key);
-        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        alarmManager.cancel(pendingIntent);
+        try {
+            PendingIntent pendingIntent = assignAlarmMap.get(key);
+            AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+            alarmManager.cancel(pendingIntent);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
 
+    }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            Intent i = new Intent(this, MenuActivity.class);
+            startActivity(i);
+            finish();
+            return true;
+
+        }
+        return super.onKeyDown( keyCode, event );
     }
 }
 

@@ -61,7 +61,7 @@
                         android:layout_marginTop="80dp"
                         android:layout_marginBottom="0dp"
                         android:gravity="bottom"
-                        android:text="Tiger"
+                        android:text="User Name"
                         android:textColor="#fff"
                         android:textSize="18sp"
                         android:textStyle="bold" />

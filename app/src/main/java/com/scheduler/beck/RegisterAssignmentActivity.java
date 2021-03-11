@@ -16,6 +16,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -62,7 +63,7 @@ public class RegisterAssignmentActivity extends AppCompatActivity implements Vie
     private String timeTonotify, alarmTime, alarmDate, title, courseName;
     public static Map<String, PendingIntent> assignAlarmMap;
     private static int reqCode;
-    Calendar c;
+    Calendar c, cDue;
     private String take;
 
     @Override
@@ -93,6 +94,7 @@ public class RegisterAssignmentActivity extends AppCompatActivity implements Vie
         isAssignmentDate = false;
         isAlarmDate = false;
         c = Calendar.getInstance();
+        cDue = Calendar.getInstance();
         spinner = findViewById(R.id.spinner_subjects);
         mCalendarView = findViewById(R.id.calendarView);
         btnAlarm_select = findViewById(R.id.btnAlarmTime);
@@ -129,6 +131,10 @@ public class RegisterAssignmentActivity extends AppCompatActivity implements Vie
                 c.set(Calendar.YEAR, year);
                 c.set(Calendar.MONTH, month);
                 c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+                cDue.set(Calendar.YEAR, year);
+                cDue.set(Calendar.MONTH, month);
+                cDue.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 month = month + 1;
 
 
@@ -191,6 +197,9 @@ public class RegisterAssignmentActivity extends AppCompatActivity implements Vie
                 switch (v.getId()) {
                     case R.id.btnDueTime_select:
                         btnTime_start_select.setText((hourOfDay < 10 ? "0" + hourOfDay : hourOfDay) + ":" + (minute < 10 ? "0" + minute : minute));
+                        cDue.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                        cDue.set(Calendar.MINUTE, minute);
+                        cDue.set(Calendar.SECOND, 0);
                         break;
                     case R.id.btnAlarmTime:
                         c.set(Calendar.HOUR_OF_DAY, hourOfDay);
@@ -213,25 +222,61 @@ public class RegisterAssignmentActivity extends AppCompatActivity implements Vie
 
     public void onAddAssignmentClicked(View view) {
         String key = databaseReference.push().getKey();
-
         title = assignmentTitle.getText().toString().trim();
-        if (title.isEmpty()) {
-            Toast.makeText(this, "Enter Assignment title", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (c.before(Calendar.getInstance())) {
-            Toast.makeText(this, "Alarm can not be set to past", Toast.LENGTH_SHORT).show();
+
+        if(!checkField()){
             return;
         }
 
         startAlarmInFlow(key);
 //            setAlarm(alarmDate, alarmTime, key);
-        Toast.makeText(RegisterAssignmentActivity.this, "Alarm set to " + alarmDate + " " + alarmTime, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "Alarm set to " + alarmDate + " " + alarmTime, Toast.LENGTH_SHORT).show();
 
 
         Log.d(TAG, "working" + hashMap.get(take_class));
         AssignmentCons assignmentCons = new AssignmentCons(take_class, assignmentTitle.getText().toString().trim(), btnAddAssignmentDateselect.getText().toString(), btnTime_start_select.getText().toString());
-        databaseReference.child(hashMap.get(take_class)).child("assignments").child(key).setValue(assignmentCons);
+        String cKey = hashMap.get(take_class);
+
+        databaseReference =  databaseReference.child(cKey);
+        databaseReference.child("assignments").child(key).setValue(assignmentCons);
+
+        Intent i = new Intent(getApplicationContext(), AssignmentActivity.class);
+        startActivity(i);
+        finish();
+    }
+
+    private boolean checkField() {
+        if (title.isEmpty()) {
+            Toast.makeText(this, "Enter Assignment title", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(btnAddAssignmentDateselect.getText().equals("")){
+            Toast.makeText(this, "Choose due date", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(btnTime_start_select.getText().equals("")){
+            Toast.makeText(this, "Set due time", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(btnAddAssignmentAlarmDateselect.getText().equals("")){
+            Toast.makeText(this, "Choose alarm date", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(btnAlarm_select.getText().equals("")) {
+            Toast.makeText(this, "Set alarm time", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (cDue.before(Calendar.getInstance())) {
+            Toast.makeText(this, "Assignment can not be due to past", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (c.before(Calendar.getInstance())) {
+            Toast.makeText(this, "Alarm can not be set to past", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+            return true;
     }
 
     public void onbtnAddAssignmentDateselectClicked(View view) {
@@ -305,9 +350,19 @@ public class RegisterAssignmentActivity extends AppCompatActivity implements Vie
 
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
 
-        Intent i = new Intent(getApplicationContext(), AssignmentActivity.class);
-        startActivity(i);
-        finish();
+
+    }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            Intent i = new Intent(this, AssignmentActivity.class);
+            startActivity(i);
+            finish();
+            return true;
+
+        }
+        return super.onKeyDown( keyCode, event );
     }
 }
 

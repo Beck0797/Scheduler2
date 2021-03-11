@@ -144,6 +144,8 @@
                                 android:id="@+id/assignmentTitle"
                                 android:layout_width="match_parent"
                                 android:layout_height="20dp"
+                                android:maxLines="1"
+                                android:inputType="text"
                                 android:layout_marginStart="25dp"
                                 android:background="@drawable/edittextunderline"
                                 android:hint="Give title to the Assignment"

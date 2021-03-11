@@ -3,6 +3,7 @@ package com.scheduler.beck;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,6 +19,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -275,30 +277,52 @@ public class courseList extends AppCompatActivity implements courses_adapter_dat
 //    }
 
     private void cancelAlarms(String class_key) {
-        PendingIntent pendingIntentStart = alarmStartMap.get(class_key);
-        PendingIntent pendingIntentAttend = alarmAttendMap.get(class_key);
+        try {
+            PendingIntent pendingIntentStart = alarmStartMap.get(class_key);
+            PendingIntent pendingIntentAttend = alarmAttendMap.get(class_key);
 
-        Log.d("cancelAlarm", "User Id is  "+ class_key);
+            Log.d("cancelAlarm", "User Id is  " + class_key);
 
-        AlarmManager alarmManagerStart = (AlarmManager) getSystemService(ALARM_SERVICE);
-        AlarmManager alarmManagerAttend = (AlarmManager) getSystemService(ALARM_SERVICE);
+            AlarmManager alarmManagerStart = (AlarmManager) getSystemService(ALARM_SERVICE);
+            AlarmManager alarmManagerAttend = (AlarmManager) getSystemService(ALARM_SERVICE);
 
-        alarmManagerStart.cancel(pendingIntentStart);
-        alarmManagerAttend.cancel(pendingIntentAttend);
+            alarmManagerStart.cancel(pendingIntentStart);
+            alarmManagerAttend.cancel(pendingIntentAttend);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
     }
     private void showAlertNoLink() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        String txt = "Course link is not given.\nPlease register the course link by updating the class!";
 
-        builder.setMessage("Course link is not given.\nPlease register the course link by updating the class!")
-                .setCancelable(false)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
+        final Snackbar snackbar = Snackbar.make(findViewById(R.id.activity_course_list), txt, Snackbar.LENGTH_INDEFINITE);
+
+        snackbar.setActionTextColor(getResources().getColor(android.R.color.black));
+        snackbar.setAction("Close", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        snackbar.dismiss();
                     }
                 });
-        AlertDialog alert = builder.create();
-        alert.show();
+
+        View sbView = snackbar.getView();
+        sbView.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
+        snackbar.show();
+
+
+
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//
+//        builder.setMessage("Course link is not given.\nPlease register the course link by updating the class!")
+//                .setCancelable(false)
+//                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int id) {
+//                        dialog.cancel();
+//                    }
+//                });
+//        AlertDialog alert = builder.create();
+//        alert.show();
     }
 
 

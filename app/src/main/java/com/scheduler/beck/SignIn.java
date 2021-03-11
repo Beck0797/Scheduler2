@@ -3,6 +3,7 @@ package com.scheduler.beck;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -98,15 +99,18 @@ public class SignIn extends AppCompatActivity {
                       }
                   });
       } else {
-          Snackbar.make(findViewById(R.id.signin_activity), "NO INTERNET CONNECTION", Snackbar.LENGTH_LONG)
-                  .setAction("CLOSE", new View.OnClickListener() {
+          Snackbar snackbar = Snackbar.make(findViewById(R.id.signin_activity), "No Internet Connection", Snackbar.LENGTH_LONG)
+                  .setAction("Close", new View.OnClickListener() {
                       @Override
                       public void onClick(View view) {
 
                       }
                   })
-                  .setActionTextColor(getResources().getColor(android.R.color.holo_red_light ))
-                  .show();
+                  .setActionTextColor(getResources().getColor(android.R.color.black));
+
+          View sbView = snackbar.getView();
+          sbView.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
+          snackbar.show();
       }
     }
     public void to_register_activity(View view) {

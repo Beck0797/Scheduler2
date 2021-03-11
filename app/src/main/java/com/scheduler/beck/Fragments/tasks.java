@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -374,6 +375,11 @@ public class tasks extends Fragment implements View.OnClickListener {
             return;
         }else{
             if(done){
+                // if it is update
+                // delete previously set alarms
+                cancelAlarms(recieved_key);
+
+                // update the course
                 myRef.child(recieved_key).setValue(course_inform);
             }
 
@@ -386,7 +392,7 @@ public class tasks extends Fragment implements View.OnClickListener {
 
         setAttendanceAlarm(day, h, m+2);// it will check attendance after five minutes once class has started.
 
-        setAlarmStart(day, hS, mS-1);
+        setAlarmStart(day, hS, mS);
 
         goToCourseList();
 
@@ -479,6 +485,7 @@ public class tasks extends Fragment implements View.OnClickListener {
 
 
         try {
+            // it is update
             recieved_key = intents.getStringExtra("class_key").toString();
             subject_namem.setText(intents.getStringExtra("class_name"));
             professor_name.setText(intents.getStringExtra("class_professor"));
@@ -750,6 +757,10 @@ public class tasks extends Fragment implements View.OnClickListener {
                 break;
 
         }
+        if (currentDate.before(Calendar.getInstance())) {
+            currentDate.add(Calendar.DATE, 1);
+
+        }
 
         currentDate.set(Calendar.HOUR_OF_DAY, h);
         currentDate.set(Calendar.MINUTE, m);
@@ -776,6 +787,7 @@ public class tasks extends Fragment implements View.OnClickListener {
     private void setAlarmStart(String day, int h, int m) {
 
         Calendar currentDate = Calendar.getInstance();
+
         switch (day){
             case "Monday":
                 while (currentDate.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY) {
@@ -805,6 +817,11 @@ public class tasks extends Fragment implements View.OnClickListener {
         currentDate.set(Calendar.SECOND, 0);
         currentDate.set(Calendar.MILLISECOND, 0);
 
+        if (currentDate.before(Calendar.getInstance())) {
+            currentDate.add(Calendar.DATE, 1);
+
+        }
+
         Intent iAlarmStart = new Intent(getContext(), AlarmStartBroadcast.class);
         iAlarmStart.putExtra("startClass", sub_name);
         iAlarmStart.putExtra("link", webPageLink );
@@ -822,5 +839,23 @@ public class tasks extends Fragment implements View.OnClickListener {
         startActivity(i);
         getActivity().finish();
     }
+    private void cancelAlarms(String class_key) {
+        try {
+            PendingIntent pendingIntentStart = alarmStartMap.get(class_key);
+            PendingIntent pendingIntentAttend = alarmAttendMap.get(class_key);
+
+            Log.d("cancelAlarm", "User Id is  " + class_key);
+
+            AlarmManager alarmManagerStart = (AlarmManager) getContext().getSystemService(ALARM_SERVICE);
+            AlarmManager alarmManagerAttend = (AlarmManager) getContext().getSystemService(ALARM_SERVICE);
+
+            alarmManagerStart.cancel(pendingIntentStart);
+            alarmManagerAttend.cancel(pendingIntentAttend);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
 
 }

@@ -250,17 +250,36 @@ public class TimetableActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 courseInfo.setVisibility(View.VISIBLE);
-                String s ="";
-                if(startTimeMin == 0){
-                    s = "Time: " + startTimeHour + ":00";
+
+                String shour = "0", sMinute = "0", st;
+                if(startTimeHour < 10){
+                    shour+=startTimeHour;
                 }else{
-                    s = "Time: " + startTimeHour + ":" + startTimeMin;
+                    shour = ""+startTimeHour;
                 }
-                if(endTimeMin == 0) {
-                    s = s + " - " + endTimeHour + ":00";
+                if(startTimeMin < 10){
+                    sMinute+=startTimeMin;
                 }else{
-                    s = s + " - "+ endTimeHour + ":" + endTimeMin;
+                    sMinute = ""+startTimeMin;
                 }
+                st = shour + ":" + sMinute;
+
+
+                String ehour = "0", eMinute = "0", et;
+                if(endTimeHour < 10){
+                   ehour+=endTimeHour;
+                }else{
+                    ehour = ""+endTimeHour;
+                }
+                if(endTimeMin < 10){
+                    eMinute+=endTimeMin;
+                }else{
+                    eMinute = ""+endTimeMin;
+                }
+                et = ehour + ":" + eMinute;
+
+                String s = "Time: "+ st + " - " + et;
+
                 popUpTime.setText(s);
 
 //                need to be initialized from database

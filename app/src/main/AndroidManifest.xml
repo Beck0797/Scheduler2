@@ -22,7 +22,6 @@
         <activity android:name=".MenuActivity" />
         <activity android:name=".Attendance_Detail" />
         <activity android:name=".RegisterAssignmentActivity" />
-        <activity android:name=".notification" />
         <activity android:name=".WebpageActivity" />
         <activity android:name=".courseList" />
         <activity
