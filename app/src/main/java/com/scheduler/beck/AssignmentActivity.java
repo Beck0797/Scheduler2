@@ -235,7 +235,10 @@ public class AssignmentActivity extends AppCompatActivity {
         try {
             PendingIntent pendingIntent = assignAlarmMap.get(key);
             AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-            alarmManager.cancel(pendingIntent);
+            if(pendingIntent != null){
+                alarmManager.cancel(pendingIntent);
+            }
+
         }catch (Exception e){
             e.printStackTrace();
         }

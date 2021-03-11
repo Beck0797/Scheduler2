@@ -757,15 +757,16 @@ public class tasks extends Fragment implements View.OnClickListener {
                 break;
 
         }
-        if (currentDate.before(Calendar.getInstance())) {
-            currentDate.add(Calendar.DATE, 1);
-
-        }
 
         currentDate.set(Calendar.HOUR_OF_DAY, h);
         currentDate.set(Calendar.MINUTE, m);
         currentDate.set(Calendar.SECOND, 0);
         currentDate.set(Calendar.MILLISECOND, 0);
+
+        if (currentDate.before(Calendar.getInstance())) { // it prevents alarm to fire up immediately if it past for the day
+            currentDate.add(Calendar.DATE, 1);
+
+        }
 
         Intent intent = new Intent(getContext(), AlarmAttendBroadcast.class);
         intent.putExtra("class", sub_name);
@@ -849,8 +850,11 @@ public class tasks extends Fragment implements View.OnClickListener {
             AlarmManager alarmManagerStart = (AlarmManager) getContext().getSystemService(ALARM_SERVICE);
             AlarmManager alarmManagerAttend = (AlarmManager) getContext().getSystemService(ALARM_SERVICE);
 
-            alarmManagerStart.cancel(pendingIntentStart);
-            alarmManagerAttend.cancel(pendingIntentAttend);
+            if(pendingIntentAttend != null && pendingIntentStart != null){
+                alarmManagerStart.cancel(pendingIntentStart);
+                alarmManagerAttend.cancel(pendingIntentAttend);
+            }
+
         }catch (Exception e){
             e.printStackTrace();
         }

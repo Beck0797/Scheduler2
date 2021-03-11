@@ -253,17 +253,22 @@ public class courseList extends AppCompatActivity implements courses_adapter_dat
         databaseReference.child(selected_key).removeValue();
 
         cancelAlarms(selected_key);
-        deleteAttend(selected_key);
 
+        try{
+        if(attendMap != null) {
+            deleteAttend(selected_key);
+        }
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
     }
 
     private void deleteAttend(String selected_key) {
         String attKey = attendMap.get(selected_key);
-        FirebaseAuth firebaseAuthAtt = FirebaseAuth.getInstance();
-        FirebaseDatabase firebaseDatabaseAtt = firebaseDatabase.getInstance();
+
         DatabaseReference databaseReferenceAtt = firebaseDatabase.getReference(firebaseAuth.getCurrentUser().getUid()).child("attendance");
 
         Log.d("DelAttend", "att key is " + attKey);
@@ -286,8 +291,10 @@ public class courseList extends AppCompatActivity implements courses_adapter_dat
             AlarmManager alarmManagerStart = (AlarmManager) getSystemService(ALARM_SERVICE);
             AlarmManager alarmManagerAttend = (AlarmManager) getSystemService(ALARM_SERVICE);
 
-            alarmManagerStart.cancel(pendingIntentStart);
-            alarmManagerAttend.cancel(pendingIntentAttend);
+            if(pendingIntentAttend != null && pendingIntentStart != null){
+                alarmManagerStart.cancel(pendingIntentStart);
+                alarmManagerAttend.cancel(pendingIntentAttend);
+            }
         }catch (Exception e){
             e.printStackTrace();
         }

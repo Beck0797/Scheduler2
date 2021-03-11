@@ -56,7 +56,6 @@
         android:minHeight="40dp"
         android:layout_alignParentEnd="true"
         android:textColor="@color/White"
-        android:padding="5dp"
         android:background="@drawable/notification_button_bg"
         android:layout_centerVertical="true"
         android:text="Open link"/>

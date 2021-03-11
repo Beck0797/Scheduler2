@@ -230,7 +230,7 @@ public class RegisterAssignmentActivity extends AppCompatActivity implements Vie
 
         startAlarmInFlow(key);
 //            setAlarm(alarmDate, alarmTime, key);
-        Toast.makeText(getApplicationContext(), "Alarm set to " + alarmDate + " " + alarmTime, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Alarm set to " + alarmDate + " " + alarmTime, Toast.LENGTH_SHORT).show();
 
 
         Log.d(TAG, "working" + hashMap.get(take_class));
@@ -240,7 +240,7 @@ public class RegisterAssignmentActivity extends AppCompatActivity implements Vie
         databaseReference =  databaseReference.child(cKey);
         databaseReference.child("assignments").child(key).setValue(assignmentCons);
 
-        Intent i = new Intent(getApplicationContext(), AssignmentActivity.class);
+        Intent i = new Intent(this, AssignmentActivity.class);
         startActivity(i);
         finish();
     }
