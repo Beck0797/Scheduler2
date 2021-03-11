@@ -230,6 +230,8 @@ public class courseList extends AppCompatActivity implements courses_adapter_dat
         intent.putExtra("class_end_time", selected_item.getEnd_display_time());
         intent.putExtra("class_alarm_time", selected_item.getAlarm_display_time());
         intent.putExtra("class_url_link", selected_item.getUrl_display_name());
+        intent.putExtra("hash_map", (Serializable) myMap);
+
 
         startActivity(intent);
     }
