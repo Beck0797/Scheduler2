@@ -366,6 +366,9 @@ public class tasks extends Fragment implements View.OnClickListener {
             }
         }
 
+        goToCourseList();
+
+
     }
 
     private void saveCourse(String day, Course_Info course_inform) {
@@ -384,17 +387,18 @@ public class tasks extends Fragment implements View.OnClickListener {
             }
 
             else{
+                c_key =  myRef.push().getKey();
+
                 myRef.child(c_key).setValue(course_inform);
             }
 
             Toast.makeText(getContext(), "Class registered!", Toast.LENGTH_SHORT).show();
         }
 
-        setAttendanceAlarm(day, h, m+2);// it will check attendance after five minutes once class has started.
+        setAttendanceAlarm(day, h, m+5);// it will check attendance after five minutes once class has started.
 
         setAlarmStart(day, hS, mS);
 
-        goToCourseList();
 
     }
 
@@ -498,7 +502,6 @@ public class tasks extends Fragment implements View.OnClickListener {
 
         } catch (NullPointerException e) {
             done = false;
-            c_key =  myRef.push().getKey();
 
         }
 
@@ -750,6 +753,11 @@ public class tasks extends Fragment implements View.OnClickListener {
                     currentDate.add(Calendar.DATE, 1);
                 }
                 break;
+            case "Thursday":
+                while (currentDate.get(Calendar.DAY_OF_WEEK) != Calendar.THURSDAY) {
+                    currentDate.add(Calendar.DATE, 1);
+                }
+                break;
             case "Friday":
                 while (currentDate.get(Calendar.DAY_OF_WEEK) != Calendar.FRIDAY) {
                     currentDate.add(Calendar.DATE, 1);
@@ -802,6 +810,11 @@ public class tasks extends Fragment implements View.OnClickListener {
                 break;
             case "Wednesday":
                 while (currentDate.get(Calendar.DAY_OF_WEEK) != Calendar.WEDNESDAY) {
+                    currentDate.add(Calendar.DATE, 1);
+                }
+                break;
+            case "Thursday":
+                while (currentDate.get(Calendar.DAY_OF_WEEK) != Calendar.THURSDAY) {
                     currentDate.add(Calendar.DATE, 1);
                 }
                 break;

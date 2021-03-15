@@ -41,6 +41,7 @@ import java.util.Map;
 import static com.scheduler.beck.Alarm.AlarmAttendReceiver.attendMap;
 import static com.scheduler.beck.Fragments.tasks.alarmAttendMap;
 import static com.scheduler.beck.Fragments.tasks.alarmStartMap;
+import static com.scheduler.beck.RegisterClassActivity.myMap;
 
 public class courseList extends AppCompatActivity implements courses_adapter_data.OnItemClickListener {
     public static final String TAG = "courseList";
@@ -230,10 +231,34 @@ public class courseList extends AppCompatActivity implements courses_adapter_dat
         intent.putExtra("class_end_time", selected_item.getEnd_display_time());
         intent.putExtra("class_alarm_time", selected_item.getAlarm_display_time());
         intent.putExtra("class_url_link", selected_item.getUrl_display_name());
+
+        //delete this class from Map
+        deleteUpdatingClassFromMap(selected_item);
+
         intent.putExtra("hash_map", (Serializable) myMap);
 
 
         startActivity(intent);
+    }
+
+    private void deleteUpdatingClassFromMap(Course_display selected_item) {
+        ArrayList<List<Double>> classes = myMap.get(selected_item.getCourse_day_name());
+
+        final Double s_time = makeDouble(selected_item.getStart_display_time());
+        final Double e_time = makeDouble(selected_item.getEnd_display_time());
+
+        List<Double> classTimes = Arrays.<Double>asList(s_time, e_time);
+
+        for( List<Double> list : classes){
+            if(list.equals(classTimes)){
+                classes.remove(list);
+                Log.d("UpdateMap", "removed");
+            }
+        }
+
+
+
+
     }
 
     @Override
