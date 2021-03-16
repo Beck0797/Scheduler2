@@ -81,8 +81,8 @@ public class TimetableActivity extends AppCompatActivity {
                    Pair<Integer, Integer> pair1 = pairFind(start_time);
                    Pair<Integer, Integer> pair2 = pairFind(end_time);
                    //Log.d( TAG, " this is " + pair1.first + " : " + pair1.second);
-                   addToTimeTable(course_info.isMultiple(), (int)pair1.first, (int)pair1.second, (int)pair2.first, (int)pair2.second, course_info.getCourse_day().toString(),
-                           course_info.getProfessor_name().toString(), course_info.getCourse_name().toString(), course_info.getClassroom_number().toString());
+                   addToTimeTable(course_info.isMultiple(), (int)pair1.first, (int)pair1.second, (int)pair2.first, (int)pair2.second, course_info.getCourse_day(),
+                           course_info.getProfessor_name(), course_info.getCourse_name(), course_info.getClassroom_number());
 
                }
            }

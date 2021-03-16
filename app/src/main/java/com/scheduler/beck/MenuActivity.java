@@ -110,7 +110,7 @@ public class MenuActivity extends AppCompatActivity {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     try {
                         check_attendance_cons check = dataSnapshot.getValue(check_attendance_cons.class);
-                        check_attendance_list.add(new check_attendance_cons(check.getClass_name().toString(), check.getStatus().toString(), check.getDate().toString()));
+                        check_attendance_list.add(new check_attendance_cons(check.getClass_name(), check.getStatus(), check.getDate()));
                     }catch (NullPointerException e){
                         e.printStackTrace();
 //                        check_attendance_list = new ArrayList<>();
@@ -212,17 +212,13 @@ public class MenuActivity extends AppCompatActivity {
     private boolean isNetworkConnected() {
         ConnectivityManager connectivityManager = (ConnectivityManager)
                 this.getSystemService(Context.CONNECTIVITY_SERVICE);
-        if ((connectivityManager
+        return (connectivityManager
                 .getNetworkInfo(ConnectivityManager.TYPE_MOBILE) != null && connectivityManager
                 .getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED)
                 || (connectivityManager
                 .getNetworkInfo(ConnectivityManager.TYPE_WIFI) != null && connectivityManager
                 .getNetworkInfo(ConnectivityManager.TYPE_WIFI)
-                .getState() == NetworkInfo.State.CONNECTED)) {
-            return true;
-        } else {
-            return false;
-        }
+                .getState() == NetworkInfo.State.CONNECTED);
     }
 
     @Override

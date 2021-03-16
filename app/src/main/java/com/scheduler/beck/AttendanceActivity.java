@@ -49,8 +49,8 @@ public class AttendanceActivity extends AppCompatActivity {
     private AppBarLayout attendance_appbar;
     private Toolbar attendance_toolbar;
     private TextView attendance_bottom_title, attendance_bottom_goback;
-    private boolean mIsTheTitleContainerVisible = true;
-    private boolean mIsTheTitleVisible = false;
+    private final boolean mIsTheTitleContainerVisible = true;
+    private final boolean mIsTheTitleVisible = false;
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
@@ -102,11 +102,11 @@ public class AttendanceActivity extends AppCompatActivity {
                 int at = 0;
                 int ab = 0;
                 int tar = 0;
-                Log.d(TAG, "class status" + check_list.get(i).getStatus().toString());
-                if (check_list.get(i).getStatus().toString().equals("attendance")) {
+                Log.d(TAG, "class status" + check_list.get(i).getStatus());
+                if (check_list.get(i).getStatus().equals("attendance")) {
                     at = 1;
                     total_att += 1;
-                } else if (check_list.get(i).getStatus().toString().equals("absence")) {
+                } else if (check_list.get(i).getStatus().equals("absence")) {
                     ab = 1;
                     total_abs += 1;
                 } else {
@@ -141,27 +141,27 @@ public class AttendanceActivity extends AppCompatActivity {
                     try {
                         Course_Info course_info = dataSnapshot.getValue(Course_Info.class);
                         boolean check = false;
-                        if (att_calc.containsKey(course_info.getCourse_name().toString())) {
-                            Log.d(TAG, "print true: " + course_info.getCourse_name().toString());
+                        if (att_calc.containsKey(course_info.getCourse_name())) {
+                            Log.d(TAG, "print true: " + course_info.getCourse_name());
                         } else {
-                            Log.d(TAG, "print false: " + course_info.getCourse_name().toString());
+                            Log.d(TAG, "print false: " + course_info.getCourse_name());
                         }
-                        if (att_calc.containsKey(course_info.getCourse_name().toString())) {
+                        if (att_calc.containsKey(course_info.getCourse_name())) {
                             check = true;
-                            Point p = att_calc.get(course_info.getCourse_name().toString());
+                            Point p = att_calc.get(course_info.getCourse_name());
                             float all = p.getAbs()+p.getAtt()+p.getTard();
                             String att_s = String.format("%.1f", p.getAtt() == 0 ? 0 : p.getAtt() / all * 100);
                             //Log.d(TAG, "another" + p.getAbs());
                             String abs_s = String.format("%.1f", p.getAbs() == 0 ? 0 : p.getAbs() / all * 100);
                             String tar_d = String.format("%.1f", p.getTard() == 0 ? 0 : p.getTard() / all * 100);
-                            names.add(new AtttendanceInfo(course_info.getCourse_name().toString(), course_info.getCourse_day().toString()
-                                    , course_info.getClassroom_number().toString(), course_info.getProfessor_name().toString(),
+                            names.add(new AtttendanceInfo(course_info.getCourse_name(), course_info.getCourse_day()
+                                    , course_info.getClassroom_number(), course_info.getProfessor_name(),
                                     att_s + "%", abs_s + "%", tar_d + "%"));
                         }
 
                         if (check == false) {
-                            names.add(new AtttendanceInfo(course_info.getCourse_name().toString(), course_info.getCourse_day().toString()
-                                    , course_info.getClassroom_number().toString(), course_info.getProfessor_name().toString(),
+                            names.add(new AtttendanceInfo(course_info.getCourse_name(), course_info.getCourse_day()
+                                    , course_info.getClassroom_number(), course_info.getProfessor_name(),
                                     "0%", "0%", "0%"));
                         }
 

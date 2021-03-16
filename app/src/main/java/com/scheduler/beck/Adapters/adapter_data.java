@@ -30,11 +30,11 @@ import java.util.Locale;
 
 public class adapter_data extends  RecyclerView.Adapter<adapter_data.ViewHolder> {
     public ArrayList<AssignmentCons> assign_list;
-    private Context context;
+    private final Context context;
     boolean check = false;
     private String take_key;
     private static  final String TAG = "adapter_data";
-    private DatabaseReference databaseReference;
+    private final DatabaseReference databaseReference;
 
 
 
@@ -165,11 +165,11 @@ public class adapter_data extends  RecyclerView.Adapter<adapter_data.ViewHolder>
                         diffmin = (int)(diffmin) % (int)(60);
                         String time_left;
                         if(diffDays != 0) {
-                           time_left = Integer.toString(diffDays) + "d " + Integer.toString(diffhours) + "h" + Integer.toString(diffmin) + "m";
+                           time_left = diffDays + "d " + diffhours + "h" + diffmin + "m";
                         } else if(diffhours != 0) {
-                            time_left = Integer.toString(diffhours) + "h" + Integer.toString(diffmin) + "m";
+                            time_left = diffhours + "h" + diffmin + "m";
                         } else {
-                             time_left = Integer.toString(diffmin) + "m";
+                             time_left = diffmin + "m";
                         }
 
                          assign_list.get(i).setTime_left(time_left);
@@ -191,7 +191,9 @@ public class adapter_data extends  RecyclerView.Adapter<adapter_data.ViewHolder>
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView assignment_title, assignment_course_name, assignment_deadline;
+        private final TextView assignment_title;
+        private final TextView assignment_course_name;
+        private final TextView assignment_deadline;
         public ViewHolder(View itemView) {
             super(itemView);
             assignment_title = itemView.findViewById(R.id.assignment_title);

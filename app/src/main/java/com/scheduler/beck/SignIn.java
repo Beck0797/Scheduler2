@@ -121,17 +121,13 @@ public class SignIn extends AppCompatActivity {
     private boolean isNetworkConnected() {
         ConnectivityManager connectivityManager = (ConnectivityManager)
                 this.getSystemService(Context.CONNECTIVITY_SERVICE);
-        if ((connectivityManager
+        return (connectivityManager
                 .getNetworkInfo(ConnectivityManager.TYPE_MOBILE) != null && connectivityManager
                 .getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED)
                 || (connectivityManager
                 .getNetworkInfo(ConnectivityManager.TYPE_WIFI) != null && connectivityManager
                 .getNetworkInfo(ConnectivityManager.TYPE_WIFI)
-                .getState() == NetworkInfo.State.CONNECTED)) {
-            return true;
-        } else {
-            return false;
-        }
+                .getState() == NetworkInfo.State.CONNECTED);
     }
 
     private void checkIfEmailVerified()
@@ -233,7 +229,7 @@ public class SignIn extends AppCompatActivity {
                             // email sent
 
 
-                            Toast.makeText(SignIn.this, "Verification email is sent", Toast.LENGTH_SHORT).show();;
+                            Toast.makeText(SignIn.this, "Verification email is sent", Toast.LENGTH_SHORT).show();
                         }
                         else
                         {

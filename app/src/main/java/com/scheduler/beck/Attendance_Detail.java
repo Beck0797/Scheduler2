@@ -42,9 +42,9 @@ public class Attendance_Detail extends AppCompatActivity {
         setContentView(R.layout.activity_attendance__detail);
         names = new ArrayList<>();
         Intent intent = getIntent();
-        class_name = intent.getStringExtra("class_name").toString();
-        absence_statues  = intent.getStringExtra("absence_statues").toString();
-        attendance_statues = intent.getStringExtra("attendance_statues").toString();
+        class_name = intent.getStringExtra("class_name");
+        absence_statues  = intent.getStringExtra("absence_statues");
+        attendance_statues = intent.getStringExtra("attendance_statues");
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
@@ -55,7 +55,7 @@ public class Attendance_Detail extends AppCompatActivity {
                 for(DataSnapshot data: snapshot.getChildren()) {
                     check_attendance_cons ch = data.getValue(check_attendance_cons.class);
                     if(class_name.equals(ch.getClass_name())) {
-                        names.add(new SatuesDates(ch.getDate().toString(), ch.getStatus().toString()));
+                        names.add(new SatuesDates(ch.getDate(), ch.getStatus()));
                     }
                 }
 
@@ -88,8 +88,8 @@ public class Attendance_Detail extends AppCompatActivity {
 
         private int orientation = -1;
         private int spanCount = -1;
-        private int spacing;
-        private int halfSpacing;
+        private final int spacing;
+        private final int halfSpacing;
 
 
   public ListSpacingDecoration(Context context,int spacingDimen) {

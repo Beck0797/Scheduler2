@@ -54,7 +54,7 @@ public class ProfileActivity extends AppCompatActivity implements AppBarLayout.O
     private int barOffset;
     protected boolean appBarLocked;
     private CircleImageView circleImageView;
-    private boolean mIsTheTitleContainerVisible = true;
+    private final boolean mIsTheTitleContainerVisible = true;
     private boolean mIsTheTitleVisible          = false;
     private LinearLayout setting_profile_name, setting_student_number;
     private String imgName;
@@ -207,8 +207,8 @@ public class ProfileActivity extends AppCompatActivity implements AppBarLayout.O
                         try {
 
 
-                            profileName.setText(upload.getName().toString());
-                            text_title.setText(upload.getName().toString());
+                            profileName.setText(upload.getName());
+                            text_title.setText(upload.getName());
                         } catch (NullPointerException e) {
                             e.printStackTrace();
                         }

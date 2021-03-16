@@ -37,7 +37,7 @@ public class RegisterClassActivity extends AppCompatActivity{
     private Spinner spinner;
     ArrayAdapter adapter;
     String recieved_key;
-    private boolean done = false;
+    private final boolean done = false;
     private DatabaseReference myRef;
     private String alarmTime, courseName;
     private int h, m, hS, mS;

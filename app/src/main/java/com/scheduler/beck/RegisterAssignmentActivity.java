@@ -166,7 +166,7 @@ public class RegisterAssignmentActivity extends AppCompatActivity implements Vie
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 if (list_of_classes.isEmpty() == false) {
-                    take_class = list_of_classes.get(position).toString();
+                    take_class = list_of_classes.get(position);
                     courseName = take_class;
 
                 }

@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.scheduler.beck.R;
 
 public class adapterNotification extends  RecyclerView.Adapter<adapterNotification.ViewHolder> {
-    private String string;
-    private Context context;
+    private final String string;
+    private final Context context;
 
     public adapterNotification(Context context, String string) {
         this.string = string;
@@ -40,7 +40,7 @@ public class adapterNotification extends  RecyclerView.Adapter<adapterNotificati
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView assignment;
+        private final TextView assignment;
         public ViewHolder(View itemView) {
             super(itemView);
             assignment = itemView.findViewById(R.id.txtCourseName);

@@ -46,7 +46,7 @@ import static com.scheduler.beck.RegisterClassActivity.myMap;
 public class tasks extends Fragment implements View.OnClickListener {
     private static final String TAG = "" ;
     private static List<Integer> days;
-    private int id;
+    private final int id;
     private TextView M_time_start, M_time_end, M_time_alarm,
                      T_time_start, T_time_end, T_time_alarm,
                      W_time_start, W_time_end, W_time_alarm,
@@ -72,7 +72,7 @@ public class tasks extends Fragment implements View.OnClickListener {
 
     private int h, m, hS, mS;
     private double startTime, endTime;
-    private Intent intents;
+    private final Intent intents;
 
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
@@ -387,7 +387,7 @@ public class tasks extends Fragment implements View.OnClickListener {
             Toast.makeText(getContext(), "It overlaps with another class", Toast.LENGTH_SHORT).show();
             return false;
         }else{
-            if(done){
+            if(done && recieved_key != null){
                 // if it is update
                 // delete previously set alarms
                 cancelAlarms(recieved_key);
@@ -500,7 +500,7 @@ public class tasks extends Fragment implements View.OnClickListener {
 
         try {
             // it is update
-            recieved_key = intents.getStringExtra("class_key").toString();
+            recieved_key = intents.getStringExtra("class_key");
             subject_namem.setText(intents.getStringExtra("class_name"));
             professor_name.setText(intents.getStringExtra("class_professor"));
             room_number.setText(intents.getStringExtra("class_room"));

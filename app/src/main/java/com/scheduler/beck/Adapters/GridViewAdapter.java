@@ -19,8 +19,8 @@ import java.util.ArrayList;
 public class GridViewAdapter extends RecyclerView.Adapter<GridViewAdapter.ViewHolder> {
     Attendance_Detail obj = new Attendance_Detail();
     private String[] mData;
-    private LayoutInflater mInflater;
-    private ArrayList<SatuesDates> list;
+    private final LayoutInflater mInflater;
+    private final ArrayList<SatuesDates> list;
 
     // data is passed into the constructor
     public GridViewAdapter(Context context, ArrayList<SatuesDates> list) {

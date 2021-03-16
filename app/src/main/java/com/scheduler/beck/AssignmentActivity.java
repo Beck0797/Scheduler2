@@ -80,8 +80,8 @@ public class AssignmentActivity extends AppCompatActivity {
 
                         AssignmentCons assignmentCons = innerdata.getValue(AssignmentCons.class);
 
-                        assignmentFetch.add(new AssignmentCons(innerdata.getKey().toString(), assignmentCons.getAssign_coursename(), assignmentCons.getAssign_title().toString(),
-                                assignmentCons.getAssign_duedate().toString(), assignmentCons.getAssign_duetime().toString()));
+                        assignmentFetch.add(new AssignmentCons(innerdata.getKey(), assignmentCons.getAssign_coursename(), assignmentCons.getAssign_title(),
+                                assignmentCons.getAssign_duedate(), assignmentCons.getAssign_duetime()));
 
 
                     }
@@ -123,7 +123,7 @@ public class AssignmentActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot data : snapshot.getChildren()) {
                     Course_Info courseInfo = data.getValue(Course_Info.class);
-                    list_class.put(courseInfo.getCourse_name().toString(), data.getKey());
+                    list_class.put(courseInfo.getCourse_name(), data.getKey());
                 }
             }
 
@@ -135,6 +135,10 @@ public class AssignmentActivity extends AppCompatActivity {
     }
 
     public void onAddButtonClicked(View view) {
+        if(list_class.isEmpty()){
+            Toast.makeText(this, "There is no class to add assignment. Register class first!", Toast.LENGTH_SHORT).show();
+            return;
+        }
         Intent intent = new Intent(getApplicationContext(), RegisterAssignmentActivity.class);
         intent.putExtra("arraylist", list_class);
         startActivity(intent);

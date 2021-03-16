@@ -98,16 +98,16 @@ public class courseList extends AppCompatActivity implements courses_adapter_dat
                         Course_Info course_info = data.getValue(Course_Info.class);
 
                         assert course_info != null;
-                        String fetch_course_name = course_info.getCourse_name().toString();
-                        String fetch_course_day = course_info.getCourse_day().toString();
-                        String fetch_course_classroom = course_info.getClassroom_number().toString();
-                        String fetch_course_professor = course_info.getProfessor_name().toString();
+                        String fetch_course_name = course_info.getCourse_name();
+                        String fetch_course_day = course_info.getCourse_day();
+                        String fetch_course_classroom = course_info.getClassroom_number();
+                        String fetch_course_professor = course_info.getProfessor_name();
                         Log.d(TAG, "class name: " + fetch_course_name);
                         Log.d(TAG, "class name: " + fetch_course_day);
                         Log.d(TAG, "class name: " + fetch_course_classroom);
                         Log.d(TAG, "class name: " + fetch_course_professor);
                         Course_display course = new Course_display(data.getKey(), fetch_course_name, fetch_course_day, fetch_course_classroom, fetch_course_professor,
-                                course_info.getStart_time().toString(), course_info.getEnd_time().toString(), course_info.getAlarm_time(), course_info.getUrl_name().toString());
+                                course_info.getStart_time(), course_info.getEnd_time(), course_info.getAlarm_time(), course_info.getUrl_name());
 
                         //Log.d(TAG, "internal: " + course.getCourse_display_name());
                         course_displays.add(course);
@@ -160,7 +160,7 @@ public class courseList extends AppCompatActivity implements courses_adapter_dat
                         //Log.d(TAG, "time checking" + e_time);
                         ArrayList<
                                 List<Double>> monClasses = new ArrayList<List<Double>>() {{
-                            add(Arrays.<Double>asList(s_time, e_time));
+                            add(Arrays.asList(s_time, e_time));
                         }};
                         myMap.put(courseinfo.getCourse_day(), monClasses);
                     }catch(DatabaseException e) {
@@ -247,7 +247,7 @@ public class courseList extends AppCompatActivity implements courses_adapter_dat
         final Double s_time = makeDouble(selected_item.getStart_display_time());
         final Double e_time = makeDouble(selected_item.getEnd_display_time());
 
-        List<Double> classTimes = Arrays.<Double>asList(s_time, e_time);
+        List<Double> classTimes = Arrays.asList(s_time, e_time);
 
         for( List<Double> list : classes){
             if(list.equals(classTimes)){
@@ -255,6 +255,7 @@ public class courseList extends AppCompatActivity implements courses_adapter_dat
                 Log.d("UpdateMap", "removed");
             }
         }
+
 
 
 

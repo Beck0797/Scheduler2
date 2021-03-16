@@ -39,7 +39,7 @@ public class AlarmAttendReceiver extends BroadcastReceiver {
         notificationManager = NotificationManagerCompat.from(context);
 
         firebaseAuth = FirebaseAuth.getInstance();
-        firebaseDatabase = firebaseDatabase.getInstance();
+        firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference(firebaseAuth.getCurrentUser().getUid()).child("attendance");
 
         try{

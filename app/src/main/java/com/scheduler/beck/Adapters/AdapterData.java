@@ -23,7 +23,7 @@ public class AdapterData extends RecyclerView.Adapter<AdapterData.ViewHolder>{
 
 
         private ArrayList<AtttendanceInfo> mImageNames = new ArrayList<>();
-        private Context mContext;
+        private final Context mContext;
 
         public AdapterData(Context context, ArrayList<AtttendanceInfo> imageNames){
             mImageNames = imageNames;

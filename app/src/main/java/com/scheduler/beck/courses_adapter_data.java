@@ -21,8 +21,8 @@ import static com.scheduler.beck.courseList.TAG;
 
 public class courses_adapter_data extends  RecyclerView.Adapter<courses_adapter_data.ViewHolder> {
 
-    private Context context;
-    private ArrayList<Course_display> list;
+    private final Context context;
+    private final ArrayList<Course_display> list;
 
     private static OnItemClickListener listener;
     public courses_adapter_data(Context context, ArrayList<Course_display> list) {
@@ -55,8 +55,11 @@ public class courses_adapter_data extends  RecyclerView.Adapter<courses_adapter_
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements  View.OnClickListener, View.OnCreateContextMenuListener, MenuItem.OnMenuItemClickListener{
-        private TextView course_name, course_day, course_room_number, course_professor_name;
-        private CardView linearLayout;
+        private final TextView course_name;
+        private final TextView course_day;
+        private final TextView course_room_number;
+        private final TextView course_professor_name;
+        private final CardView linearLayout;
 
         public ViewHolder(View itemView) {
             super(itemView);
