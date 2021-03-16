@@ -53,7 +53,7 @@ public class courseList extends AppCompatActivity implements courses_adapter_dat
     private DatabaseReference databaseReference, databaseReference1;
     ArrayList<Course_display> course_displays;
     private courses_adapter_data adapter_data;
-    private Map<String, ArrayList<List<Double>>> myMap;
+    private static Map<String, ArrayList<List<Double>>> myMap;
     private ArrayList<List<Double>> list_double;
     private TextView txtNoCourse;
 
@@ -162,7 +162,7 @@ public class courseList extends AppCompatActivity implements courses_adapter_dat
                                 List<Double>> monClasses = new ArrayList<List<Double>>() {{
                             add(Arrays.<Double>asList(s_time, e_time));
                         }};
-                        myMap.put(courseinfo.getCourse_day().toString(), monClasses);
+                        myMap.put(courseinfo.getCourse_day(), monClasses);
                     }catch(DatabaseException e) {
                         e.printStackTrace();
                     }

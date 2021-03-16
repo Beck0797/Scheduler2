@@ -286,7 +286,7 @@ public class tasks extends Fragment implements View.OnClickListener {
 
         for(int i : days){
             if(i == 1){
-                saveCourse("Monday",
+                if(!saveCourse("Monday",
                         new Course_Info(
                                 sub_name,
                                 pf_name,
@@ -298,10 +298,12 @@ public class tasks extends Fragment implements View.OnClickListener {
                                 webPageLink,
                                 isMultiple
                         )
-                );
+                )){
+                    return;
+                }
             }
             if(i == 2){
-                saveCourse("Tuesday",
+                if(!saveCourse("Tuesday",
                         new Course_Info(
                                 sub_name,
                                 pf_name,
@@ -313,11 +315,13 @@ public class tasks extends Fragment implements View.OnClickListener {
                                 webPageLink,
                                 isMultiple
                         )
-                );
+                )){
+                    return;
+                }
 
             }
             if(i == 3){
-                saveCourse("Wednesday",
+                if(!saveCourse("Wednesday",
                         new Course_Info(
                                 sub_name,
                                 pf_name,
@@ -329,13 +333,15 @@ public class tasks extends Fragment implements View.OnClickListener {
                                 webPageLink,
                                 isMultiple
                         )
-                );
+                )){
+                    return;
+                }
 
             }
             if(i == 4){
-                saveCourse("Thursday",
+                if(!saveCourse("Thursday",
                         new Course_Info(
-                                sub_name,
+                         sub_name,
                                 pf_name,
                                 roomNumber,
                                 "Thursday",
@@ -345,11 +351,13 @@ public class tasks extends Fragment implements View.OnClickListener {
                                 webPageLink,
                                 isMultiple
                         )
-                );
+                )){
+                    return;
+                }
 
             }
             if(i == 5){
-                saveCourse("Friday",
+                if(!saveCourse("Friday",
                         new Course_Info(
                                 sub_name,
                                 pf_name,
@@ -361,7 +369,9 @@ public class tasks extends Fragment implements View.OnClickListener {
                                 webPageLink,
                                 isMultiple
                         )
-                );
+                )){
+                    return;
+                }
 
             }
         }
@@ -371,11 +381,11 @@ public class tasks extends Fragment implements View.OnClickListener {
 
     }
 
-    private void saveCourse(String day, Course_Info course_inform) {
+    private boolean saveCourse(String day, Course_Info course_inform) {
 
         if(isOverlaps(day)){
             Toast.makeText(getContext(), "It overlaps with another class", Toast.LENGTH_SHORT).show();
-            return;
+            return false;
         }else{
             if(done){
                 // if it is update
@@ -398,7 +408,7 @@ public class tasks extends Fragment implements View.OnClickListener {
         setAttendanceAlarm(day, h, m+5);// it will check attendance after five minutes once class has started.
 
         setAlarmStart(day, hS, mS);
-
+        return true;
 
     }
 
@@ -705,14 +715,15 @@ public class tasks extends Fragment implements View.OnClickListener {
     public boolean isOverlaps(String day){
 
         //Classes{[9, 12], [13, 15], [17, 19]}
+        Log.d("UGHFHG", "myMap is:" + myMap.get(day));
 
         try {
             ArrayList<List<Double>> classes = new ArrayList<>();
             classes = myMap.get(day);
-            Log.d(TAG, "class day:" + day);
+            Log.d("UGHFHG", "classes size is:" + classes.size());
             for(int i = 0; i < classes.size(); i++) {
                 for(int j = 0; j < classes.get(i).size(); j++) {
-                    Log.d(TAG, "class time: " + classes.get(i).get(j));
+                    Log.d("UGHFHG", "class time: " + classes.get(i).get(j));
                 }
             }
             Log.d(TAG, "Current start_time: " + startTime);
