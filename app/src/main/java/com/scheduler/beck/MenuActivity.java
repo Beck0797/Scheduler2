@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -17,6 +18,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -28,6 +30,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.scheduler.beck.Models.check_attendance_cons;
+import com.scheduler.beck.Utils.OnSwipeTouchListener;
 import com.scheduler.beck.Utils.ThemeUtils;
 
 import java.util.ArrayList;
@@ -40,6 +43,7 @@ public class MenuActivity extends AppCompatActivity {
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference, databaseReference1;
     public ArrayList<check_attendance_cons> check_attendance_list;
+    private RelativeLayout menuLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +66,8 @@ public class MenuActivity extends AppCompatActivity {
             snackbar.show();
         }
 
+        menuLayout = findViewById(R.id.drawer_layout);
+        setOnSwipe();
         check_attendance_list = new ArrayList<>();
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
@@ -207,6 +213,27 @@ public class MenuActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private void setOnSwipe() {
+        menuLayout.setOnTouchListener(new OnSwipeTouchListener(MenuActivity.this) {
+            public void onSwipeTop() {
+                finish();
+                finishAffinity();
+                System.exit(0);
+
+            }
+            public void onSwipeRight() {
+                startActivity(new Intent(MenuActivity.this,ProfileActivity.class));
+            }
+            public void onSwipeLeft() {
+                startActivity(new Intent(MenuActivity.this,TimetableActivity.class));
+            }
+            public void onSwipeBottom() {
+            }
+
+        });
     }
 
     private boolean isNetworkConnected() {
