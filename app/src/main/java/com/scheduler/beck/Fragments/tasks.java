@@ -405,7 +405,7 @@ public class tasks extends Fragment implements View.OnClickListener {
             Toast.makeText(getContext(), "Class registered!", Toast.LENGTH_SHORT).show();
         }
 
-        setAttendanceAlarm(day, h, m+5);// it will check attendance after five minutes once class has started.
+        setAttendanceAlarm(day, h, m+2);// it will check attendance after five minutes once class has started.
 
         setAlarmStart(day, hS, mS);
         return true;
@@ -418,7 +418,7 @@ public class tasks extends Fragment implements View.OnClickListener {
     }
 
     private boolean checkFields() {
-        if(isMultiple && done){
+        if(isMultiple && recieved_key != null){
             Toast.makeText(getActivity(), "Can not be updated for multiple days!", Toast.LENGTH_SHORT).show();
             isMultiple = false;
             setCheckBoxUnchecked();

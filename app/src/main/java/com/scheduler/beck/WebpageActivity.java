@@ -46,10 +46,16 @@ public class WebpageActivity extends AppCompatActivity {
         webPageUrl = editTextWebPageLink.getText().toString().trim();
         if(webPageUrl.isEmpty()){
             Toast.makeText(this, "WebPage Url can not be empty", Toast.LENGTH_SHORT).show();
-        }else{
+            return;
+        }
+        if(!isLink(webPageUrl)){
+            Toast.makeText(this, "Link should start with \"http\"", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
             databaseReference.setValue(webPageUrl);
             backMenu();
-        }
+
 
     }
     @Override
@@ -58,4 +64,11 @@ public class WebpageActivity extends AppCompatActivity {
         backMenu();
         return true;
     }
+    private boolean isLink(String lnk) {
+        if(lnk.length() > 4){
+            return lnk.startsWith("http");
+        }
+        return false;
+    }
+
 }

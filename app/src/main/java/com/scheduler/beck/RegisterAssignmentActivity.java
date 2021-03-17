@@ -128,13 +128,6 @@ public class RegisterAssignmentActivity extends AppCompatActivity implements Vie
         mCalendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-                c.set(Calendar.YEAR, year);
-                c.set(Calendar.MONTH, month);
-                c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-
-                cDue.set(Calendar.YEAR, year);
-                cDue.set(Calendar.MONTH, month);
-                cDue.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 month = month + 1;
 
 
@@ -144,12 +137,18 @@ public class RegisterAssignmentActivity extends AppCompatActivity implements Vie
                     btnAddAssignmentDateselect.setBackground(getResources().getDrawable(R.drawable.edittextunderline));
                     btnAddAssignmentDateselect.setText(date);
                     isAssignmentDate = false;
+                    cDue.set(Calendar.YEAR, year);
+                    cDue.set(Calendar.MONTH, month-1);
+                    cDue.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 }
                 if (isAlarmDate) {
                     btnAddAssignmentAlarmDateselect.setBackground(getResources().getDrawable(R.drawable.edittextunderline));
                     btnAddAssignmentAlarmDateselect.setText(date);
                     alarmDate = year + "-" + (month < 10 ? "0" + month : month) + "-" + (dayOfMonth < 10 ? "0" + dayOfMonth : dayOfMonth);
                     isAlarmDate = false;
+                    c.set(Calendar.YEAR, year);
+                    c.set(Calendar.MONTH, month-1);
+                    c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 }
 
 

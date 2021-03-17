@@ -301,7 +301,6 @@ public class courseList extends AppCompatActivity implements courses_adapter_dat
 
         Log.d("DelAttend", "att key is " + attKey);
 
-        assert attKey != null;
         databaseReferenceAtt.child(attKey).removeValue();
     }
 

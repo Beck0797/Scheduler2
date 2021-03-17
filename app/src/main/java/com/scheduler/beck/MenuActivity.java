@@ -44,6 +44,7 @@ public class MenuActivity extends AppCompatActivity {
     private DatabaseReference databaseReference, databaseReference1;
     public ArrayList<check_attendance_cons> check_attendance_list;
     private RelativeLayout menuLayout;
+    private static String webLink;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -169,7 +170,10 @@ public class MenuActivity extends AppCompatActivity {
         });
         web_page.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Toast.makeText(MenuActivity.this, "Long press to change the link", Toast.LENGTH_SHORT).show();
+                if(webLink != null){
+                    Toast.makeText(MenuActivity.this, "Long press to change the link", Toast.LENGTH_SHORT).show();
+
+                }
 
                 databaseReference.addValueEventListener(new ValueEventListener() {
                     @Override
@@ -178,6 +182,7 @@ public class MenuActivity extends AppCompatActivity {
                         try {
                             String link;
                             link = snapshot.getValue().toString();
+                            webLink = link;
 
                             Log.d(TAG, "link" + link);
                             Intent intent = new Intent();
@@ -187,7 +192,7 @@ public class MenuActivity extends AppCompatActivity {
                             startActivity(intent);
 
                         } catch (NullPointerException e) {
-                            Toast.makeText(MenuActivity.this, "Please save your school webpage link at first", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MenuActivity.this, "Please save your school webpage link first", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getApplicationContext(), WebpageActivity.class);
                             startActivity(intent);
                         }
@@ -196,6 +201,8 @@ public class MenuActivity extends AppCompatActivity {
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
                         Toast.makeText(MenuActivity.this, "Please insert the link at first", Toast.LENGTH_SHORT).show();
+                        webLink = null;
+
                     }
                 });
 
